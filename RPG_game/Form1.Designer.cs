@@ -1,7 +1,7 @@
 ﻿
 namespace RPG_game
 {
-    partial class Form1
+    partial class Battle_form
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -68,6 +68,7 @@ namespace RPG_game
             this.atk_Button.TabIndex = 2;
             this.atk_Button.Text = "ATTACK";
             this.atk_Button.UseVisualStyleBackColor = false;
+            this.atk_Button.Click += new System.EventHandler(this.atk_Button_Click);
             // 
             // panel1
             // 
@@ -175,7 +176,7 @@ namespace RPG_game
             this.Atttack_lbl.TabIndex = 7;
             this.Atttack_lbl.Text = "Attack";
             // 
-            // Form1
+            // Battle_form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -188,7 +189,7 @@ namespace RPG_game
             this.Controls.Add(this.atk_Button);
             this.Controls.Add(this.richTextBox1);
             this.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Name = "Form1";
+            this.Name = "Battle_form";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
