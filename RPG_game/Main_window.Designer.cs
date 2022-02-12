@@ -1,7 +1,7 @@
 ﻿
 namespace RPG_game
 {
-    partial class Battle_form
+    partial class Main_window
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -49,6 +49,7 @@ namespace RPG_game
             // 
             this.richTextBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBox1.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.richTextBox1.ForeColor = System.Drawing.SystemColors.Window;
             this.richTextBox1.Location = new System.Drawing.Point(12, 12);
             this.richTextBox1.Name = "richTextBox1";
@@ -176,7 +177,7 @@ namespace RPG_game
             this.Atttack_lbl.TabIndex = 7;
             this.Atttack_lbl.Text = "Attack";
             // 
-            // Battle_form
+            // Main_window
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -189,8 +190,8 @@ namespace RPG_game
             this.Controls.Add(this.atk_Button);
             this.Controls.Add(this.richTextBox1);
             this.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Name = "Battle_form";
-            this.Text = "Form1";
+            this.Name = "Main_window";
+            this.Text = "RPG game";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

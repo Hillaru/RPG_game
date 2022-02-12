@@ -17,7 +17,7 @@ namespace RPG_game
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Battle_form());
+            Application.Run(new Main_window());
         }
     }
 }

@@ -10,13 +10,13 @@ using System.Windows.Forms;
 
 namespace RPG_game
 {
-    public partial class Battle_form : Form
+    public partial class Main_window : Form
     {
-        public Battle_form()
+        public Main_window()
         {
             InitializeComponent();
-
-
+            Player_info db_Stats = new Player_info();
+            
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -26,7 +26,7 @@ namespace RPG_game
 
         private void atk_Button_Click(object sender, EventArgs e)
         {
-
+           
         }
     }
 }
