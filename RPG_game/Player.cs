@@ -21,7 +21,8 @@ namespace RPG_game
             {
                 Current_stats[i] = _Stats[i];
                 Max_stats[i] = _Stats[i];
-            }       
+            }
+            Current_stats[(int)Stat.exp] = 0;
         }
 
         public object Clone()
@@ -40,7 +41,7 @@ namespace RPG_game
             _Stats = new int[Constants.Stats_list_size];
             _Stats[(int)Stat.hp] = 15;
             _Stats[(int)Stat.stamina] = 20;
-            _Stats[(int)Stat.exp] = 0;
+            _Stats[(int)Stat.exp] = 10;
             _Stats[(int)Stat.lvl] = 1;
             _Stats[(int)Stat.defence] = 2;
             _Stats[(int)Stat.strength] = 10;
