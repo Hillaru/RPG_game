@@ -8,9 +8,10 @@ namespace RPG_game
 {
     public class Constants
     {
-        public static int Stats_list_size = 10;
+        public static int Stats_list_size = 15;
         public static int Enemy_list_size = 10;
         public static int Player_list_size = 5;
+        public static int Max_player_squad_size = 3;
     }
 
     public enum Stat : int
@@ -21,7 +22,8 @@ namespace RPG_game
         stamina = 5,
         mana = 6,
         defence = 7,
-        strength = 8
+        strength = 8,
+        speed = 9
     }
 
     public enum Loot : int

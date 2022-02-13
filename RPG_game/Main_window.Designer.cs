@@ -53,6 +53,7 @@ namespace RPG_game
             this.richTextBox1.ForeColor = System.Drawing.SystemColors.Window;
             this.richTextBox1.Location = new System.Drawing.Point(12, 12);
             this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.ReadOnly = true;
             this.richTextBox1.Size = new System.Drawing.Size(776, 312);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
@@ -192,6 +193,7 @@ namespace RPG_game
             this.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.Name = "Main_window";
             this.Text = "RPG game";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Main_window_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

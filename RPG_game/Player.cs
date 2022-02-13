@@ -28,9 +28,6 @@ namespace RPG_game
         {
             return new Player(Name, Max_stats);
         }
-
-        //реализовать возможность запуска с сохранением Db_stats(...)
-        //реализовать возможность загрузки сохранения Load_save(...)
     }
 
     public class Players_db
@@ -47,6 +44,7 @@ namespace RPG_game
             _Stats[(int)Stat.lvl] = 1;
             _Stats[(int)Stat.defence] = 2;
             _Stats[(int)Stat.strength] = 10;
+            _Stats[(int)Stat.speed] = 10;
             Playable_characters_list[(int)PlayableCharacters.hero] = new Player("Герой", _Stats);
         }
     }

@@ -8,19 +8,26 @@ namespace RPG_game
 {
     public class Enemy : ICloneable
     {
-        public int[] Stats = new int[Constants.Stats_list_size];
         //public List<Loot> Drop_list;
         public string Name;
+        public int[] Max_stats;
+        public int[] Current_stats;
 
         public Enemy(string _Name, int[] _Stats)
         {
             Name = _Name;
-            Stats = _Stats;
+            Max_stats = new int[Constants.Stats_list_size];
+            Current_stats = new int[Constants.Stats_list_size];
+            for (int i = 0; i < Constants.Stats_list_size; i++)
+            {
+                Current_stats[i] = _Stats[i];
+                Max_stats[i] = _Stats[i];
+            }
         }
 
         public object Clone()
         {
-            return new Enemy(Name, Stats);
+            return new Enemy(Name, Max_stats);
         }
     }
 
@@ -37,6 +44,7 @@ namespace RPG_game
             _Stats[(int)Stat.lvl] = 1;
             _Stats[(int)Stat.defence] = 5;
             _Stats[(int)Stat.strength] = 4;
+            _Stats[(int)Stat.speed] = 5;
             Enemies_list[(int)Enemies.small_slime] = new Enemy("Маленький слайм", _Stats);
 
             _Stats = new int[Constants.Stats_list_size];
@@ -45,6 +53,7 @@ namespace RPG_game
             _Stats[(int)Stat.lvl] = 3;
             _Stats[(int)Stat.defence] = 10;
             _Stats[(int)Stat.strength] = 8;
+            _Stats[(int)Stat.speed] = 12;
             Enemies_list[(int)Enemies.weak_skeleton] = new Enemy("Слабый скелет", _Stats);
 
             _Stats = new int[Constants.Stats_list_size];
@@ -53,6 +62,7 @@ namespace RPG_game
             _Stats[(int)Stat.lvl] = 3;
             _Stats[(int)Stat.defence] = 3;
             _Stats[(int)Stat.strength] = 6;
+            _Stats[(int)Stat.speed] = 4;
             Enemies_list[(int)Enemies.rotting_zombie] = new Enemy("Гниющий зомби", _Stats);
 
             _Stats = new int[Constants.Stats_list_size];
@@ -61,6 +71,7 @@ namespace RPG_game
             _Stats[(int)Stat.lvl] = 5;
             _Stats[(int)Stat.defence] = 20;
             _Stats[(int)Stat.strength] = 13;
+            _Stats[(int)Stat.speed] = 14;
             Enemies_list[(int)Enemies.armored_skeleton] = new Enemy("Бронированный скелет", _Stats);
         }
     }
