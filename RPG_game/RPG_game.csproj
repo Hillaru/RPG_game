@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Battle_controller.cs" />
-    <Compile Include="Player_info.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Enemies_db.cs" />
     <Compile Include="Id_list.cs" />
     <Compile Include="Main_window.cs">

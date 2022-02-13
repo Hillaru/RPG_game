@@ -10,6 +10,7 @@ namespace RPG_game
     {
         public static int Stats_list_size = 10;
         public static int Enemy_list_size = 10;
+        public static int Player_list_size = 5;
     }
 
     public enum Stat : int
@@ -34,5 +35,10 @@ namespace RPG_game
         weak_skeleton = 2,
         rotting_zombie = 3,
         armored_skeleton = 4
+    }
+
+    public enum PlayableCharacters : int 
+    {
+        hero = 1
     }
 }

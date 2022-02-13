@@ -15,7 +15,7 @@ namespace RPG_game
         public Main_window()
         {
             InitializeComponent();
-            Player_info db_Stats = new Player_info();
+            Player db_Stats = new Player();
             
         }
 

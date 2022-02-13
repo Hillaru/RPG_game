@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RPG_game
 {
-    public class Enemy
+    public class Enemy : ICloneable
     {
         public int[] Stats = new int[Constants.Stats_list_size];
         //public List<Loot> Drop_list;
@@ -17,6 +17,11 @@ namespace RPG_game
             Name = _Name;
             Stats = _Stats;
         }
+
+        public object Clone()
+        {
+            return new Enemy(Name, Stats);
+        }
     }
 
     public class Enemies_db
@@ -24,7 +29,7 @@ namespace RPG_game
         public Enemy[] Enemies_list = new Enemy[Constants.Enemy_list_size];
         int[] _Stats;
 
-        Enemies_db()
+        public Enemies_db()
         {
             _Stats = new int[Constants.Stats_list_size];
             _Stats[(int)Stat.hp] = 10;
