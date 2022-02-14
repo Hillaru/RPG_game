@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace RPG_game
 {
-    public class Enemy : ICloneable
+    public class Enemy : Unit 
     {
         //public List<Loot> Drop_list;
-        public string Name;
-        public int[] Max_stats;
-        public int[] Current_stats;
 
         public Enemy(string _Name, int[] _Stats)
         {
@@ -24,7 +21,6 @@ namespace RPG_game
                 Max_stats[i] = _Stats[i];
             }
         }
-
         public object Clone()
         {
             return new Enemy(Name, Max_stats);

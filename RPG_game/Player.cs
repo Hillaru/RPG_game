@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace RPG_game
 {
-    public class Player : ICloneable
+    public class Player : Unit
     { 
-        public int[] Max_stats;
-        public int[] Current_stats;
-        public string Name;
-
         public Player(string _Name, int[] _Stats)
         {
             Name = _Name;
