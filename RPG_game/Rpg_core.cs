@@ -9,11 +9,14 @@ namespace RPG_game
 {
     class Rpg_core
     {
-        Players_db P_db = new Players_db();
+        Battle_controller BC;
         Player[] Player_squad = new Player[Constants.Max_player_squad_size];
+
+        Random Rand = new Random();
 
         public void Initialize_player_squad()
         {
+            Players_db P_db = new Players_db();
             Player_squad[0] = (Player)P_db.Playable_characters_list[(int)PlayableCharacters.hero].Clone();
         }
 
@@ -23,9 +26,29 @@ namespace RPG_game
             Game_loop();
         }
 
+        private Enemy[] Generate_enemy_squad()
+        {
+            Enemies_db E_db = new Enemies_db();
+            int Average_lvl = Player_squad[0].Current_stats[(int)Stat.lvl];
+            int Max_squad_size = 1 + Average_lvl / 10;
+
+            Enemy[] Enemy_squad = new Enemy[Rand.Next(1, Max_squad_size)];
+            for (int i = 0; i < Enemy_squad.Length; i++)
+            {
+                Enemy_squad[i] = (Enemy)E_db.Enemies_list[Rand.Next(1, 4)].Clone();
+                Enemy_squad[i].Current_stats[(int)Stat.lvl] = Rand.Next(Average_lvl - 2, Average_lvl + 1);
+                if (Enemy_squad[i].Current_stats[(int)Stat.lvl] <= 0)
+                    Enemy_squad[i].Current_stats[(int)Stat.lvl] = 1;
+            }
+
+            return (Enemy_squad);
+        }
+
         public void Game_loop()
         {
-            Battle_controller BC = new Battle_controller();
+            
+            BC = new Battle_controller(Player_squad, Generate_enemy_squad());
+
             Game_loop();
         }
     }
