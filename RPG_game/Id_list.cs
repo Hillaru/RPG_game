@@ -12,6 +12,14 @@ namespace RPG_game
         public static int Enemy_list_size = 10;
         public static int Player_list_size = 5;
         public static int Max_player_squad_size = 3;
+        public static int Body_parts_count = 3;
+    }
+
+    public enum Body_part : int
+    {
+        head = 0,
+        body = 1,
+        legs = 2
     }
 
     public enum Stat : int

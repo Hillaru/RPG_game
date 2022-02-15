@@ -39,6 +39,21 @@ namespace RPG_game
             }
         }
 
+        public void Physical_attack(Unit Attacker, Unit Defender, Body_part body_Part)
+        {
+            double Atk = Attacker.Current_stats[(int)Stat.strength];
+            double Def = Defender.Current_stats[(int)Stat.defence];
+
+            Atk -= Def;
+
+            if (Defender.Defended_state[(int)body_Part] == true)
+                Def *= 2;
+
+            Atk *= Defender.Body_part_multiplier[(int)body_Part];
+
+            Defender.Current_stats[(int)Stat.hp] -= (int)Math.Round(Atk);
+        }
+
         public void Update_turn_order()
         {
             Turn_order = new List<Unit>();

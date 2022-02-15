@@ -8,9 +8,13 @@ namespace RPG_game
 {
     public class Player : Unit
     { 
-        public Player(string _Name, int[] _Stats)
+        public Player(string _Name, int[] _Stats, double[] _Body_part_multiplier)
         {
             Name = _Name;
+
+            for (int i = 0; i < Constants.Body_parts_count; i++)
+                Body_part_multiplier[i] = _Body_part_multiplier[i];
+
             Max_stats = new int[Constants.Stats_list_size];
             Current_stats = new int[Constants.Stats_list_size];
             for (int i = 0; i < Constants.Stats_list_size; i++)
@@ -23,7 +27,7 @@ namespace RPG_game
 
         public object Clone()
         {
-            return new Player(Name, Max_stats);
+            return new Player(Name, Max_stats, Body_part_multiplier);
         }
     }
 
@@ -31,6 +35,7 @@ namespace RPG_game
     {
         public Player[] Playable_characters_list = new Player[Constants.Player_list_size];
         int[] _Stats;
+        double[] _Body_part_multiplier = new double[Constants.Body_parts_count];
 
         public Players_db()
         {
@@ -42,7 +47,10 @@ namespace RPG_game
             _Stats[(int)Stat.defence] = 2;
             _Stats[(int)Stat.strength] = 10;
             _Stats[(int)Stat.speed] = 10;
-            Playable_characters_list[(int)PlayableCharacters.hero] = new Player("Герой", _Stats);
+            _Body_part_multiplier[(int)Body_part.head] = 1;
+            _Body_part_multiplier[(int)Body_part.body] = 1;
+            _Body_part_multiplier[(int)Body_part.legs] = 1;
+            Playable_characters_list[(int)PlayableCharacters.hero] = new Player("Герой", _Stats, _Body_part_multiplier);
         }
     }
 }
