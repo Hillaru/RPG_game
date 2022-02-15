@@ -11,7 +11,7 @@ namespace RPG_game
     {
         Player[] Player_squad;
         Enemy[] Enemy_squad;
-        List<int> Turn_order = new List<int>();
+        List<Unit> Turn_order = new List<Unit>();
 
         public Battle_controller(Player[] _Player_squad, Enemy[] _Enemy_squad)
         {
@@ -19,10 +19,35 @@ namespace RPG_game
             Enemy[] Enemy_squad = _Enemy_squad;
         }
         
-        private void Update_turn_order()
+        private void Sort_by_speed()
         {
+            int i, j;
+            Unit x;
+            int size = Turn_order.Count();
 
-           
+            for (i = 0; i < size; i++)
+            {           
+                for (j = size - 1; j > i; j--)
+                {     
+                    if (Turn_order[j - 1].Current_stats[(int)Stat.speed] < Turn_order[j].Current_stats[(int)Stat.speed])
+                    {
+                        x = Turn_order[j - 1]; 
+                        Turn_order[j - 1] = Turn_order[j]; 
+                        Turn_order[j] = x;
+                    }
+                }
+            }
+        }
+
+        public void Update_turn_order()
+        {
+            Turn_order = new List<Unit>();
+            foreach (Player p in Player_squad)
+                Turn_order.Add(p);
+            foreach (Enemy e in Enemy_squad)
+                Turn_order.Add(e);
+            Sort_by_speed();
+
         }
     }
 }
