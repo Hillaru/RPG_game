@@ -10,7 +10,7 @@ namespace RPG_game
     class Rpg_core
     {
         Battle_controller BC;
-        Player[] Player_squad = new Player[Constants.Max_player_squad_size];
+        List<Player> Player_squad = new List<Player>(Constants.Max_player_squad_size);
 
         Random Rand = new Random();
 
