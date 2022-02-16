@@ -26,14 +26,14 @@ namespace RPG_game
             Game_loop();
         }
 
-        private Enemy[] Generate_enemy_squad()
+        private List<Enemy> Generate_enemy_squad()
         {
             Enemies_db E_db = new Enemies_db();
             int Average_lvl = Player_squad[0].Current_stats[(int)Stat.lvl];
             int Max_squad_size = 1 + Average_lvl / 10;
 
-            Enemy[] Enemy_squad = new Enemy[Rand.Next(1, Max_squad_size)];
-            for (int i = 0; i < Enemy_squad.Length; i++)
+            List<Enemy> Enemy_squad = new List<Enemy>(Rand.Next(1, Max_squad_size));
+            for (int i = 0; i < Enemy_squad.Count; i++)
             {
                 Enemy_squad[i] = (Enemy)E_db.Enemies_list[Rand.Next(1, 4)].Clone();
                 Enemy_squad[i].Current_stats[(int)Stat.lvl] = Rand.Next(Average_lvl - 2, Average_lvl + 1);

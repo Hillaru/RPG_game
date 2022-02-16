@@ -15,6 +15,17 @@ namespace RPG_game
         public static int Body_parts_count = 3;
     }
 
+    public enum Log_type : int
+    {
+        battle_start = 0, //+
+        turn_order, //+
+        turn, //+
+        attack,
+        end_of_raund,
+        raund_number,
+        end_of_battle
+    }
+
     public enum Body_part : int
     {
         head = 0,
