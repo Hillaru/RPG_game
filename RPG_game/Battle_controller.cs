@@ -13,7 +13,7 @@ namespace RPG_game
         List<Player> Player_squad;
         List<Enemy> Enemy_squad;
         List<Unit> Turn_order = new List<Unit>();
-        int Cureent_turn = 0;
+        int Cureent_turn = 0, Raund_num = 1;
         List<String> Log = new List<string>();
         List<String> New_log = new List<string>();
 
@@ -22,7 +22,7 @@ namespace RPG_game
             Player_squad = _Player_squad;
             Enemy_squad = _Enemy_squad;
         }
-        
+
         private void Sort_by_speed()
         {
             int i, j;
@@ -30,13 +30,13 @@ namespace RPG_game
             int size = Turn_order.Count();
 
             for (i = 0; i < size; i++)
-            {           
+            {
                 for (j = size - 1; j > i; j--)
-                {     
+                {
                     if (Turn_order[j - 1].Current_stats[(int)Stat.speed] < Turn_order[j].Current_stats[(int)Stat.speed])
                     {
-                        x = Turn_order[j - 1]; 
-                        Turn_order[j - 1] = Turn_order[j]; 
+                        x = Turn_order[j - 1];
+                        Turn_order[j - 1] = Turn_order[j];
                         Turn_order[j] = x;
                     }
                 }
@@ -114,8 +114,48 @@ namespace RPG_game
                             Log_line += e.Name + " ";
                         break;
                     }
-                    
+
+                case Log_type.raund_number:
+                    {
+                        Log_line = "Раунд№ " + Raund_num;
+                        break;
+                    }
+
+                case Log_type.end_of_raund:
+                    {
+                        Log_line = "Конец раунда";
+                        break;
+                    }
+
                 default: return;
+            }
+
+            New_log.Add(Log_line);
+        }
+        public void Logger(Log_type Type, bool Win)
+        {
+            if (Type == Log_type.end_of_battle)
+                if (Win)
+                    New_log.Add("ПОБЕДА");
+                else
+                    New_log.Add("ПОРАЖЕНИЕ");
+        }
+        public void Logger(Log_type Type, Unit unit)
+        {
+            if (Type == Log_type.death)
+            {
+                New_log.Add($"{unit.Name} погиб");
+            }
+        }
+        public void Logger(Log_type Type, Unit Attacker, Unit Defender, Body_part body_Part, int Dmg)
+        {
+            String Log_line;
+            if (Type == Log_type.attack)
+            {
+                if (Defender.Defended_state[(int)body_Part] == true)
+                    Log_line = $"{Attacker.Name} атакует {Defender.Name} и наносит {Dmg} урона (блок)";
+                else
+                    Log_line = $"{Attacker.Name} атакует {Defender.Name} и наносит {Dmg} урона";
             }
         }
     }

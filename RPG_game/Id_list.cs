@@ -20,10 +20,11 @@ namespace RPG_game
         battle_start = 0, //+
         turn_order, //+
         turn, //+
-        attack,
-        end_of_raund,
-        raund_number,
-        end_of_battle
+        attack, //++++
+        end_of_raund, //+
+        raund_number, //+
+        end_of_battle, //++ 
+        death //++
     }
 
     public enum Body_part : int
