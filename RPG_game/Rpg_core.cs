@@ -10,14 +10,14 @@ namespace RPG_game
     class Rpg_core
     {
         Battle_controller BC;
-        List<Player> Player_squad = new List<Player>(Constants.Max_player_squad_size);
+        List<Player> Player_squad;
 
         Random Rand = new Random();
 
         public void Initialize_player_squad()
         {
             Players_db P_db = new Players_db();
-            Player_squad[0] = (Player)P_db.Playable_characters_list[(int)PlayableCharacters.hero].Clone();
+            Player_squad.Add((Player)P_db.Playable_characters_list[(int)PlayableCharacters.hero].Clone());
         }
 
         public void Start_new_game()

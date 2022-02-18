@@ -10,12 +10,14 @@ namespace RPG_game
 {
     class Battle_controller
     {
-        List<Player> Player_squad;
-        List<Enemy> Enemy_squad;
+        public List<Player> Player_squad;
+        public List<Enemy> Enemy_squad;
         List<Unit> Turn_order = new List<Unit>();
-        int Cureent_turn = 0, Raund_num = 1;
-        List<String> Log = new List<string>();
+        int Curent_turn = 0, Raund_num = 1;
+        List<String> Old_log = new List<string>();
         List<String> New_log = new List<string>();
+        Random rand = new Random();
+        public Battle_status Status = Battle_status.in_process;
 
         public Battle_controller(List<Player> _Player_squad, List<Enemy> _Enemy_squad)
         {
@@ -24,6 +26,10 @@ namespace RPG_game
             Logger(Log_type.battle_start);
             Logger(Log_type.raund_number);
             Update_turn_order();
+            Logger(Log_type.turn_order);
+
+            if (!Turn_order[Curent_turn].Is_playable)
+                Turn();
         }
 
         private void Sort_by_speed()
@@ -59,7 +65,64 @@ namespace RPG_game
 
         public void Turn()
         {
+            if (Turn_order[Curent_turn].Is_playable)
+                return;
+            Logger(Log_type.turn);
 
+            Enemy Attacker = (Enemy)Turn_order[Curent_turn];
+            Body_part Defended_part = (Body_part)rand.Next(0, 2);
+            Body_part Part_to_attack = (Body_part)rand.Next(0, 2);
+            Unit Target = Player_squad[rand.Next(0, Player_squad.Count - 1)];
+
+            Set_defended_state(Attacker, Defended_part);
+            Physical_attack(Attacker, Target, Part_to_attack);
+
+            Status = Win_condition();
+            if (Status != Battle_status.in_process)
+                return;
+
+            if (Curent_turn < Turn_order.Count() - 1)
+                Curent_turn++;
+            else
+            {
+                Logger(Log_type.end_of_raund);
+                Raund_num++;
+                Curent_turn = 0;
+                Logger(Log_type.raund_number);
+                Update_turn_order();
+                Logger(Log_type.turn_order);
+            }
+            if (!Turn_order[Curent_turn].Is_playable)
+                Turn();
+        }
+        public void Turn(Body_part Defended_part, Body_part Part_to_attack, Unit Target)
+        {
+            if (!Turn_order[Curent_turn].Is_playable)
+                return;
+            Logger(Log_type.turn);
+
+            Player Attacker = (Player)Turn_order[Curent_turn];
+
+            Set_defended_state(Attacker, Defended_part);
+            Physical_attack(Attacker, Target, Part_to_attack);
+
+            Status = Win_condition();
+            if (Status != Battle_status.in_process)
+                return;
+
+            if (Curent_turn < Turn_order.Count() - 1)
+                Curent_turn++;
+            else
+            {
+                Logger(Log_type.end_of_raund);
+                Raund_num++;
+                Curent_turn = 0;
+                Logger(Log_type.raund_number);
+                Update_turn_order();
+                Logger(Log_type.turn_order);
+            }
+            if (!Turn_order[Curent_turn].Is_playable)
+                Turn();
         }
 
         public Battle_status Win_condition()
@@ -133,6 +196,16 @@ namespace RPG_game
             Logger(Log_type.turn_order);
         }
 
+        public List<String> Logger()
+        {
+            List<String> Logs = new List<string>();
+            foreach (String l in New_log)
+                Logs.Add(l);
+            Old_log.AddRange(New_log);
+            New_log.Clear();
+
+            return Logs;
+        }
         public void Logger(Log_type Type)
         {
             String Log_line;
@@ -141,8 +214,8 @@ namespace RPG_game
                 case Log_type.turn_order:
                     {
                         Log_line = "Текущий порядок ходов: ";
-                        for (int i = Cureent_turn; i < Turn_order.Count(); i++)
-                            if (i == Cureent_turn - 1)
+                        for (int i = Curent_turn; i < Turn_order.Count(); i++)
+                            if (i == Curent_turn - 1)
                                 Log_line += Turn_order[i].Name;
                             else
                                 Log_line += Turn_order[i].Name + " -> ";
@@ -151,7 +224,7 @@ namespace RPG_game
 
                 case Log_type.turn:
                     {
-                        Log_line = "Сейчас ходит " + Turn_order[Cureent_turn].Name;
+                        Log_line = "Сейчас ходит " + Turn_order[Curent_turn].Name;
                         break;
                     }
 
