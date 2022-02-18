@@ -48,10 +48,23 @@ namespace RPG_game
             _Stats[(int)Stat.defence] = 2;
             _Stats[(int)Stat.strength] = 10;
             _Stats[(int)Stat.speed] = 10;
+            _Body_part_multiplier[(int)Body_part.head] = 1.2;
+            _Body_part_multiplier[(int)Body_part.body] = 1;
+            _Body_part_multiplier[(int)Body_part.legs] = 0.8;
+            Playable_characters_list[(int)PlayableCharacters.hero] = new Player("Герой", _Stats, _Body_part_multiplier);
+
+            _Stats = new int[Constants.Stats_list_size];
+            _Stats[(int)Stat.hp] = 10000;
+            _Stats[(int)Stat.stamina] = 20;
+            _Stats[(int)Stat.exp] = 10;
+            _Stats[(int)Stat.lvl] = 1;
+            _Stats[(int)Stat.defence] = 10000;
+            _Stats[(int)Stat.strength] = 10;
+            _Stats[(int)Stat.speed] = 10;
             _Body_part_multiplier[(int)Body_part.head] = 1;
             _Body_part_multiplier[(int)Body_part.body] = 1;
             _Body_part_multiplier[(int)Body_part.legs] = 1;
-            Playable_characters_list[(int)PlayableCharacters.hero] = new Player("Герой", _Stats, _Body_part_multiplier);
+            Playable_characters_list[(int)PlayableCharacters.super_hero] = new Player("Босс качалки", _Stats, _Body_part_multiplier);
         }
     }
 }

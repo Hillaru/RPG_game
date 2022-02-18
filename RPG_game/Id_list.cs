@@ -9,8 +9,8 @@ namespace RPG_game
     public class Constants
     {
         public static int Stats_list_size = 15;
-        public static int Enemy_list_size = 10;
-        public static int Player_list_size = 5;
+        public static int Enemy_list_size = 200;
+        public static int Player_list_size = 150;
         public static int Max_player_squad_size = 3;
         public static int Body_parts_count = 3;
     }
@@ -68,6 +68,7 @@ namespace RPG_game
 
     public enum PlayableCharacters : int 
     {
-        hero = 1
+        hero = 0,
+        super_hero = 100
     }
 }

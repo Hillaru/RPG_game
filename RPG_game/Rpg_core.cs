@@ -9,7 +9,7 @@ namespace RPG_game
 {
     class Rpg_core
     {
-        Battle_controller BC;
+        public Battle_controller BC;
         List<Player> Player_squad;
 
         Random Rand = new Random();
@@ -17,13 +17,14 @@ namespace RPG_game
         public void Initialize_player_squad()
         {
             Players_db P_db = new Players_db();
-            Player_squad.Add((Player)P_db.Playable_characters_list[(int)PlayableCharacters.hero].Clone());
+            //Player_squad.Add((Player)P_db.Playable_characters_list[(int)PlayableCharacters.hero].Clone());
+            Player_squad.Add((Player)P_db.Playable_characters_list[(int)PlayableCharacters.super_hero].Clone());
         }
 
         public void Start_new_game()
         {
             Initialize_player_squad();
-            Game_loop();
+            Start_battle();
         }
 
         private List<Enemy> Generate_enemy_squad()
@@ -44,12 +45,9 @@ namespace RPG_game
             return (Enemy_squad);
         }
 
-        public void Game_loop()
+        public void Start_battle()
         {
-            
             BC = new Battle_controller(Player_squad, Generate_enemy_squad());
-
-            Game_loop();
         }
     }
 }

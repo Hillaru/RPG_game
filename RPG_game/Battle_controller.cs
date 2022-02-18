@@ -63,7 +63,7 @@ namespace RPG_game
             }
         }
 
-        public void Turn()
+        private void Turn()
         {
             if (Turn_order[Curent_turn].Is_playable)
                 return;
@@ -125,7 +125,7 @@ namespace RPG_game
                 Turn();
         }
 
-        public Battle_status Win_condition()
+        private Battle_status Win_condition()
         {
             int Enemy_count = 0, Players_count = 0;
 
@@ -153,7 +153,7 @@ namespace RPG_game
             return Battle_status.in_process;
         }
 
-        public void Physical_attack(Unit Attacker, Unit Defender, Body_part body_Part)
+        private void Physical_attack(Unit Attacker, Unit Defender, Body_part body_Part)
         {
             double Atk = Attacker.Current_stats[(int)Stat.strength];
             double Def = Defender.Current_stats[(int)Stat.defence];
@@ -164,6 +164,7 @@ namespace RPG_game
                 Def *= 2;
 
             Atk *= Defender.Body_part_multiplier[(int)body_Part];
+            if (Atk < 1) Atk = 1;
 
             Defender.Current_stats[(int)Stat.hp] -= (int)Math.Round(Atk);
             Logger(Log_type.attack, Attacker, Defender, body_Part, (int)Atk);
@@ -171,7 +172,7 @@ namespace RPG_game
             Alive_check(Defender);
         }
 
-        public void Alive_check(Unit unit)
+        private void Alive_check(Unit unit)
         {
             if (unit.Current_stats[(int)Stat.hp] <= 0 && !unit.Is_dead)
             {
@@ -182,7 +183,7 @@ namespace RPG_game
             }
         }
 
-        public void Update_turn_order()
+        private void Update_turn_order()
         {
             Turn_order = new List<Unit>();
             foreach (Player p in Player_squad)
@@ -206,7 +207,7 @@ namespace RPG_game
 
             return Logs;
         }
-        public void Logger(Log_type Type)
+        private void Logger(Log_type Type)
         {
             String Log_line;
             switch (Type)
@@ -258,7 +259,7 @@ namespace RPG_game
 
             New_log.Add(Log_line);
         }
-        public void Logger(Log_type Type, Battle_status status)
+        private void Logger(Log_type Type, Battle_status status)
         {
             if (Type == Log_type.end_of_battle)
                 switch (status)
@@ -274,14 +275,14 @@ namespace RPG_game
                     default: return;
                 }                  
         }
-        public void Logger(Log_type Type, Unit unit)
+        private void Logger(Log_type Type, Unit unit)
         {
             if (Type == Log_type.death)
             {
                 New_log.Add($"{unit.Name} погиб");
             }
         }
-        public void Logger(Log_type Type, Unit Attacker, Unit Defender, Body_part body_Part, int Dmg)
+        private void Logger(Log_type Type, Unit Attacker, Unit Defender, Body_part body_Part, int Dmg)
         {
             String Log_line;
             if (Type == Log_type.attack)
