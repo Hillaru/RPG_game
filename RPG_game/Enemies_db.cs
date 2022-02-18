@@ -24,6 +24,7 @@ namespace RPG_game
                 Current_stats[i] = _Stats[i];
                 Max_stats[i] = _Stats[i];
             }
+            Is_playable = false;
         }
         public object Clone()
         {

@@ -21,6 +21,9 @@ namespace RPG_game
         {
             Player_squad = _Player_squad;
             Enemy_squad = _Enemy_squad;
+            Logger(Log_type.battle_start);
+            Logger(Log_type.raund_number);
+            Update_turn_order();
         }
 
         private void Sort_by_speed()
@@ -54,6 +57,39 @@ namespace RPG_game
             }
         }
 
+        public void Turn()
+        {
+
+        }
+
+        public Battle_status Win_condition()
+        {
+            int Enemy_count = 0, Players_count = 0;
+
+            foreach (Player p in Player_squad)
+                if (!p.Is_dead)
+                    Players_count++;
+            foreach (Enemy e in Enemy_squad)
+                if (!e.Is_dead)
+                    Enemy_count++;
+
+            if (Players_count == 0)
+            {
+                Logger(Log_type.end_of_battle, Battle_status.enemies_win);
+
+                return Battle_status.enemies_win;
+            }
+
+            if (Enemy_count == 0)
+            {
+                Logger(Log_type.end_of_battle, Battle_status.player_win);
+
+                return Battle_status.player_win;
+            }
+
+            return Battle_status.in_process;
+        }
+
         public void Physical_attack(Unit Attacker, Unit Defender, Body_part body_Part)
         {
             double Atk = Attacker.Current_stats[(int)Stat.strength];
@@ -67,17 +103,34 @@ namespace RPG_game
             Atk *= Defender.Body_part_multiplier[(int)body_Part];
 
             Defender.Current_stats[(int)Stat.hp] -= (int)Math.Round(Atk);
+            Logger(Log_type.attack, Attacker, Defender, body_Part, (int)Atk);
+
+            Alive_check(Defender);
+        }
+
+        public void Alive_check(Unit unit)
+        {
+            if (unit.Current_stats[(int)Stat.hp] <= 0 && !unit.Is_dead)
+            {
+                Turn_order.Remove(unit);
+                unit.Is_dead = true;
+
+                Logger(Log_type.death, unit);
+            }
         }
 
         public void Update_turn_order()
         {
             Turn_order = new List<Unit>();
             foreach (Player p in Player_squad)
-                Turn_order.Add(p);
+                if (!p.Is_dead)
+                    Turn_order.Add(p);
             foreach (Enemy e in Enemy_squad)
-                Turn_order.Add(e);
+                if (!e.Is_dead)
+                    Turn_order.Add(e);
             Sort_by_speed();
 
+            Logger(Log_type.turn_order);
         }
 
         public void Logger(Log_type Type)
@@ -132,13 +185,21 @@ namespace RPG_game
 
             New_log.Add(Log_line);
         }
-        public void Logger(Log_type Type, bool Win)
+        public void Logger(Log_type Type, Battle_status status)
         {
             if (Type == Log_type.end_of_battle)
-                if (Win)
-                    New_log.Add("ПОБЕДА");
-                else
-                    New_log.Add("ПОРАЖЕНИЕ");
+                switch (status)
+                {
+                    case Battle_status.player_win:
+                        New_log.Add("ПОБЕДА");
+                        break;
+                    
+                    case Battle_status.enemies_win:
+                        New_log.Add("ПОРАЖЕНИЕ");
+                        break;
+
+                    default: return;
+                }                  
         }
         public void Logger(Log_type Type, Unit unit)
         {
@@ -156,6 +217,9 @@ namespace RPG_game
                     Log_line = $"{Attacker.Name} атакует {Defender.Name} и наносит {Dmg} урона (блок)";
                 else
                     Log_line = $"{Attacker.Name} атакует {Defender.Name} и наносит {Dmg} урона";
+
+                New_log.Add(Log_line);
+                New_log.Add($"У существа {Defender.Name} осталось {Defender.Current_stats[(int)Stat.hp]}");
             }
         }
     }

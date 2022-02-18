@@ -15,9 +15,16 @@ namespace RPG_game
         public static int Body_parts_count = 3;
     }
 
+    public enum Battle_status : int
+    {
+        in_process,
+        player_win,
+        enemies_win
+    }
+
     public enum Log_type : int
     {
-        battle_start = 0, //+
+        battle_start, //+
         turn_order, //+
         turn, //+
         attack, //++++
