@@ -34,10 +34,10 @@ namespace RPG_game
             atk_body_RadioButton.Checked = true;
             def_body_RadioButton.Checked = true;
 
-            atk_Button.Visible = false;
+            turn_panel.Visible = false;
             atk_panel.Visible = false;
             def_panel.Visible = false;
-            enemies_list.Visible = false;
+            
             continue_btn.Visible = true;
         }
 
@@ -103,10 +103,9 @@ namespace RPG_game
                 atk_body_RadioButton.Checked = true;
                 def_body_RadioButton.Checked = true;
 
-                atk_Button.Visible = false;
+                turn_panel.Visible = false;
                 atk_panel.Visible = false;
                 def_panel.Visible = false;
-                enemies_list.Visible = false;
                 continue_btn.Visible = true;
             }
 
@@ -116,10 +115,9 @@ namespace RPG_game
                 atk_body_RadioButton.Checked = true;
                 def_body_RadioButton.Checked = true;
 
-                atk_Button.Visible = false;
+                turn_panel.Visible = false;
                 atk_panel.Visible = false;
                 def_panel.Visible = false;
-                enemies_list.Visible = false;
                 continue_btn.Visible = true;
             }
         }
@@ -127,10 +125,9 @@ namespace RPG_game
         private void continue_btn_Click(object sender, EventArgs e)
         {
             Log_window.Clear();
-            atk_Button.Visible = true;
+            turn_panel.Visible = true;
             atk_panel.Visible = true;
             def_panel.Visible = true;
-            enemies_list.Visible = true;
             continue_btn.Visible = false;
 
             if (New_battle)
@@ -171,6 +168,12 @@ namespace RPG_game
                     break;
                 default: return;
             }
+        }
+
+        private void Log_window_TextChanged(object sender, EventArgs e)
+        {
+            Log_window.SelectionStart = Log_window.Text.Length;
+            Log_window.ScrollToCaret();
         }
     }
 }

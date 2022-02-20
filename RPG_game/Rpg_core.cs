@@ -12,7 +12,7 @@ namespace RPG_game
         public Battle_controller BC;
         List<Player> Player_squad = new List<Player>();
 
-        Random Rand = new Random(DateTime.Now.Millisecond);
+        Random Rand = new Random((int)DateTime.Now.Ticks);
 
         public void Initialize_player_squad()
         {

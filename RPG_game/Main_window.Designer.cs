@@ -34,17 +34,20 @@ namespace RPG_game
             this.atk_panel = new System.Windows.Forms.Panel();
             this.atk_legs_RadioButton = new System.Windows.Forms.RadioButton();
             this.atk_body_RadioButton = new System.Windows.Forms.RadioButton();
+            this.Atttack_lbl = new System.Windows.Forms.Label();
             this.atk_head_RadioButton = new System.Windows.Forms.RadioButton();
             this.def_panel = new System.Windows.Forms.Panel();
             this.def_legs_RadioButton = new System.Windows.Forms.RadioButton();
             this.def_body_RadioButton = new System.Windows.Forms.RadioButton();
             this.def_head_RadioButton = new System.Windows.Forms.RadioButton();
             this.Defence_lbl = new System.Windows.Forms.Label();
-            this.Atttack_lbl = new System.Windows.Forms.Label();
             this.continue_btn = new System.Windows.Forms.Button();
             this.enemies_list = new System.Windows.Forms.ListBox();
+            this.enemies_list_lbl = new System.Windows.Forms.Label();
+            this.turn_panel = new System.Windows.Forms.Panel();
             this.atk_panel.SuspendLayout();
             this.def_panel.SuspendLayout();
+            this.turn_panel.SuspendLayout();
             this.SuspendLayout();
             // 
             // Log_window
@@ -56,9 +59,11 @@ namespace RPG_game
             this.Log_window.Location = new System.Drawing.Point(12, 12);
             this.Log_window.Name = "Log_window";
             this.Log_window.ReadOnly = true;
+            this.Log_window.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.Log_window.Size = new System.Drawing.Size(776, 312);
             this.Log_window.TabIndex = 0;
             this.Log_window.Text = "";
+            this.Log_window.TextChanged += new System.EventHandler(this.Log_window_TextChanged);
             // 
             // atk_Button
             // 
@@ -66,11 +71,11 @@ namespace RPG_game
             this.atk_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.atk_Button.Font = new System.Drawing.Font("Arial Narrow", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.atk_Button.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.atk_Button.Location = new System.Drawing.Point(662, 347);
+            this.atk_Button.Location = new System.Drawing.Point(155, 8);
             this.atk_Button.Name = "atk_Button";
             this.atk_Button.Size = new System.Drawing.Size(126, 84);
             this.atk_Button.TabIndex = 2;
-            this.atk_Button.Text = "ATTACK";
+            this.atk_Button.Text = "Сделать ход";
             this.atk_Button.UseVisualStyleBackColor = false;
             this.atk_Button.Click += new System.EventHandler(this.atk_Button_Click);
             // 
@@ -80,9 +85,9 @@ namespace RPG_game
             this.atk_panel.Controls.Add(this.atk_body_RadioButton);
             this.atk_panel.Controls.Add(this.Atttack_lbl);
             this.atk_panel.Controls.Add(this.atk_head_RadioButton);
-            this.atk_panel.Location = new System.Drawing.Point(23, 335);
+            this.atk_panel.Location = new System.Drawing.Point(12, 335);
             this.atk_panel.Name = "atk_panel";
-            this.atk_panel.Size = new System.Drawing.Size(103, 97);
+            this.atk_panel.Size = new System.Drawing.Size(128, 97);
             this.atk_panel.TabIndex = 3;
             // 
             // atk_legs_RadioButton
@@ -90,10 +95,10 @@ namespace RPG_game
             this.atk_legs_RadioButton.AutoSize = true;
             this.atk_legs_RadioButton.Location = new System.Drawing.Point(3, 77);
             this.atk_legs_RadioButton.Name = "atk_legs_RadioButton";
-            this.atk_legs_RadioButton.Size = new System.Drawing.Size(46, 17);
+            this.atk_legs_RadioButton.Size = new System.Drawing.Size(98, 17);
             this.atk_legs_RadioButton.TabIndex = 0;
             this.atk_legs_RadioButton.TabStop = true;
-            this.atk_legs_RadioButton.Text = "legs";
+            this.atk_legs_RadioButton.Text = "нижняя часть";
             this.atk_legs_RadioButton.UseVisualStyleBackColor = true;
             this.atk_legs_RadioButton.CheckedChanged += new System.EventHandler(this.radioButton_CheckedChanged);
             // 
@@ -102,22 +107,32 @@ namespace RPG_game
             this.atk_body_RadioButton.AutoSize = true;
             this.atk_body_RadioButton.Location = new System.Drawing.Point(3, 54);
             this.atk_body_RadioButton.Name = "atk_body_RadioButton";
-            this.atk_body_RadioButton.Size = new System.Drawing.Size(52, 17);
+            this.atk_body_RadioButton.Size = new System.Drawing.Size(125, 17);
             this.atk_body_RadioButton.TabIndex = 0;
             this.atk_body_RadioButton.TabStop = true;
-            this.atk_body_RadioButton.Text = "body";
+            this.atk_body_RadioButton.Text = "центральная часть";
             this.atk_body_RadioButton.UseVisualStyleBackColor = true;
             this.atk_body_RadioButton.CheckedChanged += new System.EventHandler(this.radioButton_CheckedChanged);
+            // 
+            // Atttack_lbl
+            // 
+            this.Atttack_lbl.AutoSize = true;
+            this.Atttack_lbl.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Atttack_lbl.Location = new System.Drawing.Point(3, 7);
+            this.Atttack_lbl.Name = "Atttack_lbl";
+            this.Atttack_lbl.Size = new System.Drawing.Size(52, 21);
+            this.Atttack_lbl.TabIndex = 7;
+            this.Atttack_lbl.Text = "Атака";
             // 
             // atk_head_RadioButton
             // 
             this.atk_head_RadioButton.AutoSize = true;
             this.atk_head_RadioButton.Location = new System.Drawing.Point(3, 31);
             this.atk_head_RadioButton.Name = "atk_head_RadioButton";
-            this.atk_head_RadioButton.Size = new System.Drawing.Size(50, 17);
+            this.atk_head_RadioButton.Size = new System.Drawing.Size(100, 17);
             this.atk_head_RadioButton.TabIndex = 0;
             this.atk_head_RadioButton.TabStop = true;
-            this.atk_head_RadioButton.Text = "head";
+            this.atk_head_RadioButton.Text = "верхняя часть";
             this.atk_head_RadioButton.UseVisualStyleBackColor = true;
             this.atk_head_RadioButton.CheckedChanged += new System.EventHandler(this.radioButton_CheckedChanged);
             // 
@@ -127,9 +142,9 @@ namespace RPG_game
             this.def_panel.Controls.Add(this.def_body_RadioButton);
             this.def_panel.Controls.Add(this.def_head_RadioButton);
             this.def_panel.Controls.Add(this.Defence_lbl);
-            this.def_panel.Location = new System.Drawing.Point(149, 335);
+            this.def_panel.Location = new System.Drawing.Point(146, 335);
             this.def_panel.Name = "def_panel";
-            this.def_panel.Size = new System.Drawing.Size(103, 97);
+            this.def_panel.Size = new System.Drawing.Size(134, 97);
             this.def_panel.TabIndex = 5;
             // 
             // def_legs_RadioButton
@@ -137,10 +152,10 @@ namespace RPG_game
             this.def_legs_RadioButton.AutoSize = true;
             this.def_legs_RadioButton.Location = new System.Drawing.Point(3, 77);
             this.def_legs_RadioButton.Name = "def_legs_RadioButton";
-            this.def_legs_RadioButton.Size = new System.Drawing.Size(46, 17);
+            this.def_legs_RadioButton.Size = new System.Drawing.Size(98, 17);
             this.def_legs_RadioButton.TabIndex = 0;
             this.def_legs_RadioButton.TabStop = true;
-            this.def_legs_RadioButton.Text = "legs";
+            this.def_legs_RadioButton.Text = "нижняя часть";
             this.def_legs_RadioButton.UseVisualStyleBackColor = true;
             this.def_legs_RadioButton.CheckedChanged += new System.EventHandler(this.radioButton_CheckedChanged);
             // 
@@ -149,10 +164,10 @@ namespace RPG_game
             this.def_body_RadioButton.AutoSize = true;
             this.def_body_RadioButton.Location = new System.Drawing.Point(3, 54);
             this.def_body_RadioButton.Name = "def_body_RadioButton";
-            this.def_body_RadioButton.Size = new System.Drawing.Size(52, 17);
+            this.def_body_RadioButton.Size = new System.Drawing.Size(125, 17);
             this.def_body_RadioButton.TabIndex = 0;
             this.def_body_RadioButton.TabStop = true;
-            this.def_body_RadioButton.Text = "body";
+            this.def_body_RadioButton.Text = "центральная часть";
             this.def_body_RadioButton.UseVisualStyleBackColor = true;
             this.def_body_RadioButton.CheckedChanged += new System.EventHandler(this.radioButton_CheckedChanged);
             // 
@@ -161,10 +176,10 @@ namespace RPG_game
             this.def_head_RadioButton.AutoSize = true;
             this.def_head_RadioButton.Location = new System.Drawing.Point(3, 31);
             this.def_head_RadioButton.Name = "def_head_RadioButton";
-            this.def_head_RadioButton.Size = new System.Drawing.Size(50, 17);
+            this.def_head_RadioButton.Size = new System.Drawing.Size(100, 17);
             this.def_head_RadioButton.TabIndex = 0;
             this.def_head_RadioButton.TabStop = true;
-            this.def_head_RadioButton.Text = "head";
+            this.def_head_RadioButton.Text = "верхняя часть";
             this.def_head_RadioButton.UseVisualStyleBackColor = true;
             this.def_head_RadioButton.CheckedChanged += new System.EventHandler(this.radioButton_CheckedChanged);
             // 
@@ -174,19 +189,9 @@ namespace RPG_game
             this.Defence_lbl.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Defence_lbl.Location = new System.Drawing.Point(3, 7);
             this.Defence_lbl.Name = "Defence_lbl";
-            this.Defence_lbl.Size = new System.Drawing.Size(71, 21);
+            this.Defence_lbl.Size = new System.Drawing.Size(66, 21);
             this.Defence_lbl.TabIndex = 6;
-            this.Defence_lbl.Text = "Defence";
-            // 
-            // Atttack_lbl
-            // 
-            this.Atttack_lbl.AutoSize = true;
-            this.Atttack_lbl.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Atttack_lbl.Location = new System.Drawing.Point(3, 7);
-            this.Atttack_lbl.Name = "Atttack_lbl";
-            this.Atttack_lbl.Size = new System.Drawing.Size(57, 21);
-            this.Atttack_lbl.TabIndex = 7;
-            this.Atttack_lbl.Text = "Attack";
+            this.Defence_lbl.Text = "Защита";
             // 
             // continue_btn
             // 
@@ -198,7 +203,7 @@ namespace RPG_game
             this.continue_btn.Name = "continue_btn";
             this.continue_btn.Size = new System.Drawing.Size(203, 88);
             this.continue_btn.TabIndex = 8;
-            this.continue_btn.Text = "Продолжить";
+            this.continue_btn.Text = "Начать битву";
             this.continue_btn.UseVisualStyleBackColor = false;
             this.continue_btn.Visible = false;
             this.continue_btn.Click += new System.EventHandler(this.continue_btn_Click);
@@ -208,10 +213,30 @@ namespace RPG_game
             this.enemies_list.BackColor = System.Drawing.Color.Gray;
             this.enemies_list.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.enemies_list.FormattingEnabled = true;
-            this.enemies_list.Location = new System.Drawing.Point(495, 338);
+            this.enemies_list.Location = new System.Drawing.Point(2, 25);
             this.enemies_list.Name = "enemies_list";
-            this.enemies_list.Size = new System.Drawing.Size(147, 93);
+            this.enemies_list.Size = new System.Drawing.Size(147, 67);
             this.enemies_list.TabIndex = 9;
+            // 
+            // enemies_list_lbl
+            // 
+            this.enemies_list_lbl.AutoSize = true;
+            this.enemies_list_lbl.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.enemies_list_lbl.Location = new System.Drawing.Point(2, 1);
+            this.enemies_list_lbl.Name = "enemies_list_lbl";
+            this.enemies_list_lbl.Size = new System.Drawing.Size(103, 21);
+            this.enemies_list_lbl.TabIndex = 7;
+            this.enemies_list_lbl.Text = "Выбор цели";
+            // 
+            // turn_panel
+            // 
+            this.turn_panel.Controls.Add(this.enemies_list_lbl);
+            this.turn_panel.Controls.Add(this.enemies_list);
+            this.turn_panel.Controls.Add(this.atk_Button);
+            this.turn_panel.Location = new System.Drawing.Point(493, 339);
+            this.turn_panel.Name = "turn_panel";
+            this.turn_panel.Size = new System.Drawing.Size(295, 104);
+            this.turn_panel.TabIndex = 10;
             // 
             // Main_window
             // 
@@ -219,11 +244,10 @@ namespace RPG_game
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.MenuText;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.enemies_list);
+            this.Controls.Add(this.turn_panel);
             this.Controls.Add(this.continue_btn);
             this.Controls.Add(this.def_panel);
             this.Controls.Add(this.atk_panel);
-            this.Controls.Add(this.atk_Button);
             this.Controls.Add(this.Log_window);
             this.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.Name = "Main_window";
@@ -234,6 +258,8 @@ namespace RPG_game
             this.atk_panel.PerformLayout();
             this.def_panel.ResumeLayout(false);
             this.def_panel.PerformLayout();
+            this.turn_panel.ResumeLayout(false);
+            this.turn_panel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -254,6 +280,8 @@ namespace RPG_game
         private System.Windows.Forms.Label Atttack_lbl;
         private System.Windows.Forms.Button continue_btn;
         private System.Windows.Forms.ListBox enemies_list;
+        private System.Windows.Forms.Label enemies_list_lbl;
+        private System.Windows.Forms.Panel turn_panel;
     }
 }
 

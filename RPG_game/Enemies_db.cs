@@ -77,11 +77,11 @@ namespace RPG_game
             Enemies_list[(int)Enemies.rotting_zombie] = new Enemy("Гниющий зомби", _Stats, _Body_part_multiplier);
 
             _Stats = new int[Constants.Stats_list_size];
-            _Stats[(int)Stat.hp] = 24;
+            _Stats[(int)Stat.hp] = 18;
             _Stats[(int)Stat.stamina] = 20;
             _Stats[(int)Stat.lvl] = 1;
-            _Stats[(int)Stat.defence] = 10;
-            _Stats[(int)Stat.strength] = 7;
+            _Stats[(int)Stat.defence] = 8;
+            _Stats[(int)Stat.strength] = 6;
             _Stats[(int)Stat.speed] = 9;
             _Body_part_multiplier[(int)Body_part.head] = 1.2;
             _Body_part_multiplier[(int)Body_part.body] = 1;
