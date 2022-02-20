@@ -53,23 +53,23 @@ namespace RPG_game
             Enemies_list[(int)Enemies.small_slime] = new Enemy("Маленький слайм", _Stats, _Body_part_multiplier);
 
             _Stats = new int[Constants.Stats_list_size];
-            _Stats[(int)Stat.hp] = 20;
+            _Stats[(int)Stat.hp] = 16;
             _Stats[(int)Stat.stamina] = 20;
-            _Stats[(int)Stat.lvl] = 3;
-            _Stats[(int)Stat.defence] = 10;
-            _Stats[(int)Stat.strength] = 8;
-            _Stats[(int)Stat.speed] = 12;
+            _Stats[(int)Stat.lvl] = 1;
+            _Stats[(int)Stat.defence] = 6;
+            _Stats[(int)Stat.strength] = 6;
+            _Stats[(int)Stat.speed] = 10;
             _Body_part_multiplier[(int)Body_part.head] = 1.2;
             _Body_part_multiplier[(int)Body_part.body] = 1;
             _Body_part_multiplier[(int)Body_part.legs] = 0.8;
             Enemies_list[(int)Enemies.weak_skeleton] = new Enemy("Слабый скелет", _Stats, _Body_part_multiplier);
 
             _Stats = new int[Constants.Stats_list_size];
-            _Stats[(int)Stat.hp] = 35;
+            _Stats[(int)Stat.hp] = 28;
             _Stats[(int)Stat.stamina] = 20;
-            _Stats[(int)Stat.lvl] = 3;
+            _Stats[(int)Stat.lvl] = 1;
             _Stats[(int)Stat.defence] = 3;
-            _Stats[(int)Stat.strength] = 6;
+            _Stats[(int)Stat.strength] = 5;
             _Stats[(int)Stat.speed] = 4;
             _Body_part_multiplier[(int)Body_part.head] = 1.8;
             _Body_part_multiplier[(int)Body_part.body] = 1;
@@ -77,12 +77,12 @@ namespace RPG_game
             Enemies_list[(int)Enemies.rotting_zombie] = new Enemy("Гниющий зомби", _Stats, _Body_part_multiplier);
 
             _Stats = new int[Constants.Stats_list_size];
-            _Stats[(int)Stat.hp] = 30;
+            _Stats[(int)Stat.hp] = 24;
             _Stats[(int)Stat.stamina] = 20;
-            _Stats[(int)Stat.lvl] = 5;
-            _Stats[(int)Stat.defence] = 20;
-            _Stats[(int)Stat.strength] = 13;
-            _Stats[(int)Stat.speed] = 14;
+            _Stats[(int)Stat.lvl] = 1;
+            _Stats[(int)Stat.defence] = 10;
+            _Stats[(int)Stat.strength] = 7;
+            _Stats[(int)Stat.speed] = 9;
             _Body_part_multiplier[(int)Body_part.head] = 1.2;
             _Body_part_multiplier[(int)Body_part.body] = 1;
             _Body_part_multiplier[(int)Body_part.legs] = 0.7;

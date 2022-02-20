@@ -59,7 +59,7 @@ namespace RPG_game
             _Stats[(int)Stat.exp] = 10;
             _Stats[(int)Stat.lvl] = 1;
             _Stats[(int)Stat.defence] = 10000;
-            _Stats[(int)Stat.strength] = 10;
+            _Stats[(int)Stat.strength] = 20;
             _Stats[(int)Stat.speed] = 10;
             _Body_part_multiplier[(int)Body_part.head] = 1;
             _Body_part_multiplier[(int)Body_part.body] = 1;

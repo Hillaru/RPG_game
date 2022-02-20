@@ -26,7 +26,6 @@ namespace RPG_game
             Logger(Log_type.battle_start);
             Logger(Log_type.raund_number);
             Update_turn_order();
-            Logger(Log_type.turn_order);
 
             if (!Turn_order[Curent_turn].Is_playable)
                 Turn();
@@ -67,7 +66,6 @@ namespace RPG_game
         {
             if (Turn_order[Curent_turn].Is_playable)
                 return;
-            Logger(Log_type.turn);
 
             Enemy Attacker = (Enemy)Turn_order[Curent_turn];
             Body_part Defended_part = (Body_part)rand.Next(0, 2);
@@ -82,7 +80,10 @@ namespace RPG_game
                 return;
 
             if (Curent_turn < Turn_order.Count() - 1)
+            {
                 Curent_turn++;
+                Logger(Log_type.turn);
+            }
             else
             {
                 Logger(Log_type.end_of_raund);
@@ -90,7 +91,6 @@ namespace RPG_game
                 Curent_turn = 0;
                 Logger(Log_type.raund_number);
                 Update_turn_order();
-                Logger(Log_type.turn_order);
             }
             if (!Turn_order[Curent_turn].Is_playable)
                 Turn();
@@ -99,7 +99,6 @@ namespace RPG_game
         {
             if (!Turn_order[Curent_turn].Is_playable)
                 return;
-            Logger(Log_type.turn);
 
             Player Attacker = (Player)Turn_order[Curent_turn];
 
@@ -111,7 +110,10 @@ namespace RPG_game
                 return;
 
             if (Curent_turn < Turn_order.Count() - 1)
+            {
                 Curent_turn++;
+                Logger(Log_type.turn);
+            }    
             else
             {
                 Logger(Log_type.end_of_raund);
@@ -119,8 +121,8 @@ namespace RPG_game
                 Curent_turn = 0;
                 Logger(Log_type.raund_number);
                 Update_turn_order();
-                Logger(Log_type.turn_order);
             }
+
             if (!Turn_order[Curent_turn].Is_playable)
                 Turn();
         }
@@ -158,15 +160,16 @@ namespace RPG_game
             double Atk = Attacker.Current_stats[(int)Stat.strength];
             double Def = Defender.Current_stats[(int)Stat.defence];
 
-            Atk -= Def;
-
             if (Defender.Defended_state[(int)body_Part] == true)
                 Def *= 2;
 
-            Atk *= Defender.Body_part_multiplier[(int)body_Part];
+            Atk = Atk * Defender.Body_part_multiplier[(int)body_Part];
+            Atk = Math.Round(Atk);
+            Atk -= Def;
+
             if (Atk < 1) Atk = 1;
 
-            Defender.Current_stats[(int)Stat.hp] -= (int)Math.Round(Atk);
+            Defender.Current_stats[(int)Stat.hp] -= (int)Atk;
             Logger(Log_type.attack, Attacker, Defender, body_Part, (int)Atk);
 
             Alive_check(Defender);
@@ -195,6 +198,7 @@ namespace RPG_game
             Sort_by_speed();
 
             Logger(Log_type.turn_order);
+            Logger(Log_type.turn);
         }
 
         public List<String> Logger()
@@ -216,7 +220,7 @@ namespace RPG_game
                     {
                         Log_line = "Текущий порядок ходов: ";
                         for (int i = Curent_turn; i < Turn_order.Count(); i++)
-                            if (i == Curent_turn - 1)
+                            if (i == Turn_order.Count() - 1)
                                 Log_line += Turn_order[i].Name;
                             else
                                 Log_line += Turn_order[i].Name + " -> ";
@@ -293,7 +297,7 @@ namespace RPG_game
                     Log_line = $"{Attacker.Name} атакует {Defender.Name} и наносит {Dmg} урона";
 
                 New_log.Add(Log_line);
-                New_log.Add($"У существа {Defender.Name} осталось {Defender.Current_stats[(int)Stat.hp]}");
+                New_log.Add($"У существа {Defender.Name} осталось {Defender.Current_stats[(int)Stat.hp]} здоровья");
             }
         }
     }

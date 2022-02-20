@@ -60,10 +60,10 @@ namespace RPG_game
 
     public enum Enemies : int
     {
-        small_slime = 1,
-        weak_skeleton = 2,
-        rotting_zombie = 3,
-        armored_skeleton = 4
+        small_slime = 0,
+        weak_skeleton = 1,
+        rotting_zombie = 2,
+        armored_skeleton = 3
     }
 
     public enum PlayableCharacters : int 
