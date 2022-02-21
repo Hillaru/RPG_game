@@ -31,14 +31,17 @@ namespace RPG_game
 
         public void Lvl_adjust(int lvl)
         {
+            if (lvl == 1)
+                return;
+
             Enemies_db E_db = new Enemies_db();
             Enemy Basic_variant = (Enemy)E_db.Enemies_list[(int)Enemy_type].Clone();
             double Stats_multiplier = 0.08;
 
             for (int i = 4; i < 30; i++)
             {
-                Current_stats[i] = (int)Math.Round((double)Current_stats[i] + (Basic_variant.Max_stats[i] * Stats_multiplier * lvl));
-                Max_stats[i] = Current_stats[i];
+                Max_stats[i] = (int)Math.Round(Max_stats[i] + (Basic_variant.Max_stats[i] * Stats_multiplier * lvl));
+                Current_stats[i] = Max_stats[i];
             }
         }
 
@@ -57,7 +60,7 @@ namespace RPG_game
         public Enemies_db()
         {
             _Stats = new int[Constants.Stats_list_size];
-            _Stats[(int)Stat.exp_gain] = 2;
+            _Stats[(int)Stat.exp_gain] = 5;
             _Stats[(int)Stat.hp] = 10;
             _Stats[(int)Stat.stamina] = 20;
             _Stats[(int)Stat.lvl] = 1;
@@ -70,42 +73,42 @@ namespace RPG_game
             Enemies_list[(int)Enemies.small_slime] = new Enemy("Маленький слайм", _Stats, _Body_part_multiplier, Enemies.small_slime);
 
             _Stats = new int[Constants.Stats_list_size];
-            _Stats[(int)Stat.exp_gain] = 10;
-            _Stats[(int)Stat.hp] = 16;
+            _Stats[(int)Stat.exp_gain] = 20;
+            _Stats[(int)Stat.hp] = 15;
             _Stats[(int)Stat.stamina] = 20;
             _Stats[(int)Stat.lvl] = 1;
             _Stats[(int)Stat.defence] = 6;
             _Stats[(int)Stat.strength] = 6;
             _Stats[(int)Stat.initiative] = 10;
-            _Body_part_multiplier[(int)Body_part.head] = 1.2;
+            _Body_part_multiplier[(int)Body_part.head] = 1.3;
             _Body_part_multiplier[(int)Body_part.body] = 1;
             _Body_part_multiplier[(int)Body_part.legs] = 0.8;
             Enemies_list[(int)Enemies.weak_skeleton] = new Enemy("Слабый скелет", _Stats, _Body_part_multiplier, Enemies.weak_skeleton);
 
             _Stats = new int[Constants.Stats_list_size];
-            _Stats[(int)Stat.exp_gain] = 5;
+            _Stats[(int)Stat.exp_gain] = 15;
             _Stats[(int)Stat.hp] = 28;
             _Stats[(int)Stat.stamina] = 20;
             _Stats[(int)Stat.lvl] = 1;
             _Stats[(int)Stat.defence] = 3;
             _Stats[(int)Stat.strength] = 5;
             _Stats[(int)Stat.initiative] = 4;
-            _Body_part_multiplier[(int)Body_part.head] = 1.8;
+            _Body_part_multiplier[(int)Body_part.head] = 1.6;
             _Body_part_multiplier[(int)Body_part.body] = 1;
             _Body_part_multiplier[(int)Body_part.legs] = 0.5;
             Enemies_list[(int)Enemies.rotting_zombie] = new Enemy("Гниющий зомби", _Stats, _Body_part_multiplier, Enemies.rotting_zombie);
 
             _Stats = new int[Constants.Stats_list_size];
-            _Stats[(int)Stat.exp_gain] = 20;
+            _Stats[(int)Stat.exp_gain] = 30;
             _Stats[(int)Stat.hp] = 18;
             _Stats[(int)Stat.stamina] = 20;
             _Stats[(int)Stat.lvl] = 1;
             _Stats[(int)Stat.defence] = 8;
             _Stats[(int)Stat.strength] = 6;
             _Stats[(int)Stat.initiative] = 9;
-            _Body_part_multiplier[(int)Body_part.head] = 1.2;
+            _Body_part_multiplier[(int)Body_part.head] = 1.3;
             _Body_part_multiplier[(int)Body_part.body] = 1;
-            _Body_part_multiplier[(int)Body_part.legs] = 0.7;
+            _Body_part_multiplier[(int)Body_part.legs] = 0.8;
             Enemies_list[(int)Enemies.armored_skeleton] = new Enemy("Бронированный скелет", _Stats, _Body_part_multiplier, Enemies.armored_skeleton);
         }
     }

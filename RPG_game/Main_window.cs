@@ -55,6 +55,7 @@ namespace RPG_game
             }
 
             Core.BC.Turn(Def_part, Atk_part, Target);
+            Configure_enemy_data_source();
             Update_log();
         }
 
@@ -67,14 +68,20 @@ namespace RPG_game
         {
             Enemy_ds.Clear();
             enemies_list.Items.Clear();
+            int j = 0;
 
             for (int i = 0; i < Core.BC.Enemy_squad.Count; i++)
             {
-                Enemy_ds.Add(Core.BC.Enemy_squad[i]);
-                enemies_list.Items.Insert(i, Core.BC.Enemy_squad[i].Name);
+                if (!Core.BC.Enemy_squad[i].Is_dead)
+                {
+                    Enemy_ds.Add(Core.BC.Enemy_squad[i]);
+                    enemies_list.Items.Insert(j, Core.BC.Enemy_squad[i].Name);
+                    j++;
+                }
             }
 
-            enemies_list.SetSelected(0, true);
+            if (enemies_list.Items.Count != 0)
+                enemies_list.SetSelected(0, true);
         }
 
         private void Log_error(ErrorType err)

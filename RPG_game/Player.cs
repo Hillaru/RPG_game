@@ -7,10 +7,13 @@ using System.Threading.Tasks;
 namespace RPG_game
 {
     public class Player : Unit
-    { 
-        public Player(string _Name, int[] _Stats, double[] _Body_part_multiplier)
+    {
+        public PlayableCharacters Player_type;
+
+        public Player(string _Name, int[] _Stats, double[] _Body_part_multiplier, PlayableCharacters type)
         {
             Name = _Name;
+            Player_type = type;
 
             for (int i = 0; i < Constants.Body_parts_count; i++)
                 Body_part_multiplier[i] = _Body_part_multiplier[i];
@@ -34,19 +37,37 @@ namespace RPG_game
             {
                 lvl_ups++;
                 Current_stats[(int)Stat.lvl]++;
-                exp -= (Current_stats[(int)Stat.exp] - Max_stats[(int)Stat.exp]);
+                exp -= (Max_stats[(int)Stat.exp] - Current_stats[(int)Stat.exp]);
+
                 Current_stats[(int)Stat.exp] = 0;
+
                 lvl_ups += Lvl_up(exp);
             }
             else
                 Current_stats[(int)Stat.exp] += exp;
 
+            Max_stats[(int)Stat.lvl] += lvl_ups;
+            Current_stats[(int)Stat.lvl] = Max_stats[(int)Stat.lvl];
+            Passive_stats_gain(lvl_ups);
             return lvl_ups;
+        }
+
+        private void Passive_stats_gain(int lvl)
+        {
+            Players_db P_db = new Players_db();
+            Player Basic_variant = (Player)P_db.Playable_characters_list[(int)Player_type].Clone();
+            double Stats_multiplier = 0.1;
+
+            for (int i = 4; i < 30; i++)
+            {
+                Max_stats[i] = (int)Math.Round(Max_stats[i] + (Basic_variant.Max_stats[i] * Stats_multiplier * lvl));
+                Current_stats[i] = Max_stats[i];
+            }
         }
 
         public object Clone()
         {
-            return new Player(Name, Max_stats, Body_part_multiplier);
+            return new Player(Name, Max_stats, Body_part_multiplier, Player_type);
         }
     }
 
@@ -69,7 +90,7 @@ namespace RPG_game
             _Body_part_multiplier[(int)Body_part.head] = 1.2;
             _Body_part_multiplier[(int)Body_part.body] = 1;
             _Body_part_multiplier[(int)Body_part.legs] = 0.8;
-            Playable_characters_list[(int)PlayableCharacters.hero] = new Player("Герой", _Stats, _Body_part_multiplier);
+            Playable_characters_list[(int)PlayableCharacters.hero] = new Player("Герой", _Stats, _Body_part_multiplier, PlayableCharacters.hero);
 
             _Stats = new int[Constants.Stats_list_size];
             _Stats[(int)Stat.hp] = 10000;
@@ -82,7 +103,7 @@ namespace RPG_game
             _Body_part_multiplier[(int)Body_part.head] = 1;
             _Body_part_multiplier[(int)Body_part.body] = 1;
             _Body_part_multiplier[(int)Body_part.legs] = 1;
-            Playable_characters_list[(int)PlayableCharacters.super_hero] = new Player("Босс качалки", _Stats, _Body_part_multiplier);
+            Playable_characters_list[(int)PlayableCharacters.super_hero] = new Player("Босс качалки", _Stats, _Body_part_multiplier, PlayableCharacters.super_hero);
         }
     }
 }

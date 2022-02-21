@@ -149,6 +149,13 @@ namespace RPG_game
             {
                 Logger(Log_type.end_of_battle, Battle_status.player_win);
 
+                int Total_exp = 0;
+                foreach (Enemy e in Enemy_squad)
+                    Total_exp += e.Current_stats[(int)Stat.exp_gain];
+
+                foreach (Player p in Player_squad)
+                    p.Lvl_up(Total_exp);
+
                 return Battle_status.player_win;
             }
 
