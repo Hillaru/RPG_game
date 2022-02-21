@@ -73,6 +73,8 @@ namespace RPG_game
                 Enemy_ds.Add(Core.BC.Enemy_squad[i]);
                 enemies_list.Items.Insert(i, Core.BC.Enemy_squad[i].Name);
             }
+
+            enemies_list.SetSelected(0, true);
         }
 
         private void Log_error(ErrorType err)

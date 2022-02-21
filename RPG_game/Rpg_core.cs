@@ -42,9 +42,10 @@ namespace RPG_game
             {
                 enemy_id = Rand.Next(0, 4);
                 New_enemy = (Enemy)E_db.Enemies_list[enemy_id].Clone();
-                New_enemy.Current_stats[(int)Stat.lvl] = Rand.Next(Average_lvl - 2, Average_lvl + 1);
-                if (New_enemy.Current_stats[(int)Stat.lvl] <= 0)
-                    New_enemy.Current_stats[(int)Stat.lvl] = 1;
+                int Enemy_lvl = Rand.Next(Average_lvl - 2, Average_lvl + 1);
+                if (Enemy_lvl <= 0) 
+                    Enemy_lvl = 1;
+                New_enemy.Lvl_adjust(Enemy_lvl);
 
                 Enemy_squad.Add(New_enemy);
             }

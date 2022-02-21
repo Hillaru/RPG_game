@@ -26,6 +26,24 @@ namespace RPG_game
             Is_playable = true;
         }
 
+        public int Lvl_up(int exp)
+        {
+            int lvl_ups = 0;
+
+            if (Current_stats[(int)Stat.exp] + exp >= Max_stats[(int)Stat.exp])
+            {
+                lvl_ups++;
+                Current_stats[(int)Stat.lvl]++;
+                exp -= (Current_stats[(int)Stat.exp] - Max_stats[(int)Stat.exp]);
+                Current_stats[(int)Stat.exp] = 0;
+                lvl_ups += Lvl_up(exp);
+            }
+            else
+                Current_stats[(int)Stat.exp] += exp;
+
+            return lvl_ups;
+        }
+
         public object Clone()
         {
             return new Player(Name, Max_stats, Body_part_multiplier);
@@ -47,7 +65,7 @@ namespace RPG_game
             _Stats[(int)Stat.lvl] = 1;
             _Stats[(int)Stat.defence] = 2;
             _Stats[(int)Stat.strength] = 10;
-            _Stats[(int)Stat.speed] = 10;
+            _Stats[(int)Stat.initiative] = 10;
             _Body_part_multiplier[(int)Body_part.head] = 1.2;
             _Body_part_multiplier[(int)Body_part.body] = 1;
             _Body_part_multiplier[(int)Body_part.legs] = 0.8;
@@ -60,7 +78,7 @@ namespace RPG_game
             _Stats[(int)Stat.lvl] = 1;
             _Stats[(int)Stat.defence] = 10000;
             _Stats[(int)Stat.strength] = 20;
-            _Stats[(int)Stat.speed] = 10;
+            _Stats[(int)Stat.initiative] = 10;
             _Body_part_multiplier[(int)Body_part.head] = 1;
             _Body_part_multiplier[(int)Body_part.body] = 1;
             _Body_part_multiplier[(int)Body_part.legs] = 1;

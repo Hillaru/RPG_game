@@ -56,11 +56,11 @@ namespace RPG_game
             this.Log_window.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.Log_window.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Log_window.ForeColor = System.Drawing.SystemColors.Window;
-            this.Log_window.Location = new System.Drawing.Point(12, 12);
+            this.Log_window.Location = new System.Drawing.Point(291, 12);
             this.Log_window.Name = "Log_window";
             this.Log_window.ReadOnly = true;
             this.Log_window.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.Log_window.Size = new System.Drawing.Size(776, 312);
+            this.Log_window.Size = new System.Drawing.Size(608, 520);
             this.Log_window.TabIndex = 0;
             this.Log_window.Text = "";
             this.Log_window.TextChanged += new System.EventHandler(this.Log_window_TextChanged);
@@ -73,7 +73,7 @@ namespace RPG_game
             this.atk_Button.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.atk_Button.Location = new System.Drawing.Point(155, 8);
             this.atk_Button.Name = "atk_Button";
-            this.atk_Button.Size = new System.Drawing.Size(126, 84);
+            this.atk_Button.Size = new System.Drawing.Size(137, 86);
             this.atk_Button.TabIndex = 2;
             this.atk_Button.Text = "Сделать ход";
             this.atk_Button.UseVisualStyleBackColor = false;
@@ -81,11 +81,12 @@ namespace RPG_game
             // 
             // atk_panel
             // 
+            this.atk_panel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.atk_panel.Controls.Add(this.atk_legs_RadioButton);
             this.atk_panel.Controls.Add(this.atk_body_RadioButton);
             this.atk_panel.Controls.Add(this.Atttack_lbl);
             this.atk_panel.Controls.Add(this.atk_head_RadioButton);
-            this.atk_panel.Location = new System.Drawing.Point(12, 335);
+            this.atk_panel.Location = new System.Drawing.Point(12, 553);
             this.atk_panel.Name = "atk_panel";
             this.atk_panel.Size = new System.Drawing.Size(128, 97);
             this.atk_panel.TabIndex = 3;
@@ -138,11 +139,12 @@ namespace RPG_game
             // 
             // def_panel
             // 
+            this.def_panel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.def_panel.Controls.Add(this.def_legs_RadioButton);
             this.def_panel.Controls.Add(this.def_body_RadioButton);
             this.def_panel.Controls.Add(this.def_head_RadioButton);
             this.def_panel.Controls.Add(this.Defence_lbl);
-            this.def_panel.Location = new System.Drawing.Point(146, 335);
+            this.def_panel.Location = new System.Drawing.Point(146, 553);
             this.def_panel.Name = "def_panel";
             this.def_panel.Size = new System.Drawing.Size(134, 97);
             this.def_panel.TabIndex = 5;
@@ -195,11 +197,12 @@ namespace RPG_game
             // 
             // continue_btn
             // 
+            this.continue_btn.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.continue_btn.BackColor = System.Drawing.Color.Gray;
             this.continue_btn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.continue_btn.Font = new System.Drawing.Font("Arial Narrow", 20F, System.Drawing.FontStyle.Bold);
             this.continue_btn.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.continue_btn.Location = new System.Drawing.Point(286, 343);
+            this.continue_btn.Location = new System.Drawing.Point(493, 553);
             this.continue_btn.Name = "continue_btn";
             this.continue_btn.Size = new System.Drawing.Size(203, 88);
             this.continue_btn.TabIndex = 8;
@@ -230,10 +233,11 @@ namespace RPG_game
             // 
             // turn_panel
             // 
+            this.turn_panel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.turn_panel.Controls.Add(this.enemies_list_lbl);
             this.turn_panel.Controls.Add(this.enemies_list);
             this.turn_panel.Controls.Add(this.atk_Button);
-            this.turn_panel.Location = new System.Drawing.Point(493, 339);
+            this.turn_panel.Location = new System.Drawing.Point(863, 553);
             this.turn_panel.Name = "turn_panel";
             this.turn_panel.Size = new System.Drawing.Size(295, 104);
             this.turn_panel.TabIndex = 10;
@@ -243,7 +247,7 @@ namespace RPG_game
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.MenuText;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1170, 669);
             this.Controls.Add(this.turn_panel);
             this.Controls.Add(this.continue_btn);
             this.Controls.Add(this.def_panel);

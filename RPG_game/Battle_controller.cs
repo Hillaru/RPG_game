@@ -41,7 +41,7 @@ namespace RPG_game
             {
                 for (j = size - 1; j > i; j--)
                 {
-                    if (Turn_order[j - 1].Current_stats[(int)Stat.speed] < Turn_order[j].Current_stats[(int)Stat.speed])
+                    if (Turn_order[j - 1].Current_stats[(int)Stat.initiative] < Turn_order[j].Current_stats[(int)Stat.initiative])
                     {
                         x = Turn_order[j - 1];
                         Turn_order[j - 1] = Turn_order[j];
