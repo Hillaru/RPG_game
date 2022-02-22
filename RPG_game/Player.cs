@@ -40,6 +40,7 @@ namespace RPG_game
                 exp -= (Max_stats[(int)Stat.exp] - Current_stats[(int)Stat.exp]);
 
                 Current_stats[(int)Stat.exp] = 0;
+                Max_stats[(int)Stat.exp] = (int)Math.Round(Max_stats[(int)Stat.exp] * 1.1);
 
                 lvl_ups += Lvl_up(exp);
             }
@@ -48,6 +49,7 @@ namespace RPG_game
 
             Max_stats[(int)Stat.lvl] += lvl_ups;
             Current_stats[(int)Stat.lvl] = Max_stats[(int)Stat.lvl];
+
             Passive_stats_gain(lvl_ups);
             return lvl_ups;
         }
