@@ -10,7 +10,7 @@ namespace RPG_game
     class Rpg_core
     {
         public Battle_controller BC;
-        List<Player> Player_squad = new List<Player>();
+        public List<Player> Player_squad = new List<Player>();
 
         Random Rand = new Random((int)DateTime.Now.Ticks);
 
