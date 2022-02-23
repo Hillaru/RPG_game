@@ -31,7 +31,7 @@ namespace RPG_game
                 Turn();
         }
 
-        private void Sort_by_speed()
+        private void Sort_by_initiative()
         {
             int i, j;
             Unit x;
@@ -202,7 +202,7 @@ namespace RPG_game
             foreach (Enemy e in Enemy_squad)
                 if (!e.Is_dead)
                     Turn_order.Add(e);
-            Sort_by_speed();
+            Sort_by_initiative();
 
             Logger(Log_type.turn_order);
             Logger(Log_type.turn);

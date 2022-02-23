@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
+using static RPG_game.Converter;
 
 namespace RPG_game
 {
@@ -18,6 +19,9 @@ namespace RPG_game
         Body_part Def_part = Body_part.body;
         bool New_battle = true;
         List<Enemy> Enemy_ds = new List<Enemy>();
+        Panel lvl_up_panel;
+        int[] Stats_to_add;
+        int Stat_points = 0;
 
         enum ErrorType : int
         {
@@ -44,28 +48,14 @@ namespace RPG_game
             continue_btn.Visible = true;
         }
 
-        private string Stat_to_string(Stat stat)
-        {
-            switch (stat)
-            {
-                case Stat.hp:
-                    return "Здоровье";
-                case Stat.defence:
-                    return "Защита";
-                case Stat.strength:
-                    return "Сила";
-                case Stat.stamina:
-                    return "Выносливость";
-                case Stat.mana:
-                    return "Мана";
-                default:
-                    return "-";
-            }
-        }
-
         private void Show_lvlup_panel()
         {
-            Panel lvl_up_panel = new Panel();
+            Player player = Core.Player_squad[0];
+
+            Stats_to_add = new int[Constants.Stats_list_size];
+            Stat_points = player.Current_stats[(int)Stat.stat_points];
+
+            lvl_up_panel = new Panel();
             lvl_up_panel.Font = new Font("Segoe UI Semibold", 20, FontStyle.Bold);
             lvl_up_panel.ForeColor = Color.Black;
             lvl_up_panel.Name = "lvlup_panel";
@@ -80,7 +70,7 @@ namespace RPG_game
             lvl_points_lbl.ForeColor = Color.White;
             lvl_points_lbl.Location = new Point(28, 405);
             lvl_points_lbl.AutoSize = true;
-            lvl_points_lbl.Text = $"Осталось очков характеристик: ";
+            lvl_points_lbl.Text = $"Осталось очков характеристик: {Stat_points}";
             lvl_up_panel.Controls.Add(lvl_points_lbl);
 
             Button cncl_btn = new Button();
@@ -91,6 +81,7 @@ namespace RPG_game
             cncl_btn.Location = new Point(35, 445);
             cncl_btn.FlatStyle = FlatStyle.Popup;
             cncl_btn.Text = "Отменить";
+            cncl_btn.Click += new EventHandler(lvlup_panel_Button_Click);
             lvl_up_panel.Controls.Add(cncl_btn);
 
             Button accept_btn = new Button();
@@ -101,6 +92,7 @@ namespace RPG_game
             accept_btn.Location = new Point(336, 445);
             accept_btn.FlatStyle = FlatStyle.Popup;
             accept_btn.Text = "Подтвердить";
+            accept_btn.Click += new EventHandler(lvlup_panel_Button_Click);
             lvl_up_panel.Controls.Add(accept_btn);
 
             for (int i = 0; i < Constants.Stats_list_size; i++)
@@ -123,6 +115,7 @@ namespace RPG_game
                 l_button.Location = new Point(13, 3);
                 l_button.FlatStyle = FlatStyle.Popup;
                 l_button.Text = "<";
+                l_button.Click += new EventHandler(lvlup_panel_Button_Click);
                 stat_panel.Controls.Add(l_button);
 
                 Button r_button = new Button();
@@ -133,6 +126,7 @@ namespace RPG_game
                 r_button.Location = new Point(461, 3);
                 r_button.FlatStyle = FlatStyle.Popup;
                 r_button.Text = ">";
+                r_button.Click += new EventHandler(lvlup_panel_Button_Click);
                 stat_panel.Controls.Add(r_button);
 
                 Label stat_label = new Label();
@@ -140,12 +134,49 @@ namespace RPG_game
                 stat_label.ForeColor = Color.White;
                 stat_label.Location = new Point(75, 15);
                 stat_label.AutoSize = true;
-                stat_label.Text = Name + $": {Core.Player_squad[0].Max_stats[i]}";
+                stat_label.Text = Name + $": {player.Max_stats[i]}";
                 stat_panel.Controls.Add(stat_label);
             }
 
             Controls.Add(lvl_up_panel);
             lvl_up_panel.BringToFront();
+        }
+
+        private void lvlup_panel_Button_Click(object sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+            String Name = button.Name;
+            Player player = Core.Player_squad[0];
+
+            if (Name == "cncl_btn")
+            {
+                lvl_up_panel.Dispose();
+                return;
+            }
+
+            if (Name == "accept_btn")
+            {
+                player.Active_stats_gain(Stats_to_add, Stat_points);
+                lvl_up_panel.Dispose();
+                return;
+            }
+
+            string[] words = Name.Split(new char[] { '_' });
+            Stat stat = String_to_stat(words[0]);
+
+            if (Stat_points != 0 && words[1] == "rbtn")
+            {
+                Stats_to_add[(int)stat]++;
+                Stat_points--;
+            }
+            else if (Stats_to_add[(int)stat] != 0 && words[1] == "lbtn")
+            {
+                Stats_to_add[(int)stat]--;
+                Stat_points++;
+            }
+
+            lvl_up_panel.Controls.Find("lvl_points_lbl", true)[0].Text = $"Осталось очков характеристик: {Stat_points}";
+            lvl_up_panel.Controls.Find(words[0] + "_lbl", true)[0].Text = $"{words[0]}: {player.Max_stats[(int)stat] + Stats_to_add[(int)stat]}";
         }
 
         private void atk_Button_Click(object sender, EventArgs e)
@@ -253,10 +284,12 @@ namespace RPG_game
             {
                 New_battle = false;
                 Core.Start_new_game();
-                Show_lvlup_panel();
             }
             else
                 Core.Start_battle();
+
+            if (Core.Player_squad[0].Current_stats[(int)Stat.stat_points] != 0)
+                Show_lvlup_panel();
 
             Configure_enemy_data_source();
             Update_log();

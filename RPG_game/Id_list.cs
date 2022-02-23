@@ -15,6 +15,51 @@ namespace RPG_game
         public static int Body_parts_count = 3;
     }
 
+    public static class Converter
+    {
+        public static string Stat_to_string(Stat stat)
+        {
+            switch (stat)
+            {
+                case Stat.hp:
+                    return "Здоровье";
+                case Stat.strength:
+                    return "Сила";
+                case Stat.stamina:
+                    return "Выносливость";
+                case Stat.mana:
+                    return "Мана";
+                case Stat.initiative:
+                    return "Инициатива";
+                case Stat.speed:
+                    return "Скорость";
+                default:
+                    return "-";
+            }
+        }
+
+        public static Stat String_to_stat(string stat)
+        {
+            switch (stat)
+            {
+                case "Здоровье":                
+                    return Stat.hp;
+                case "Сила":
+                    return Stat.strength;
+                case "Выносливость":
+                    return Stat.stamina;
+                case "Мана":
+                    return Stat.mana;
+                case "Инициатива":
+                    return Stat.initiative;
+                case "Скорость":
+                    return Stat.speed;
+                default:
+                    throw new Exception("wrong stat");
+            }
+        }
+    }
+
     public enum Battle_status : int
     {
         in_process,
@@ -51,8 +96,10 @@ namespace RPG_game
         defence = 7,
         strength = 8,
         initiative = 9,
+        speed = 10,
 
-        exp_gain = 30
+        exp_gain = 30,
+        stat_points = 31
     }
 
     public enum Loot : int

@@ -73,7 +73,7 @@ namespace RPG_game
             Enemies_list[(int)Enemies.small_slime] = new Enemy("Маленький слайм", _Stats, _Body_part_multiplier, Enemies.small_slime);
 
             _Stats = new int[Constants.Stats_list_size];
-            _Stats[(int)Stat.exp_gain] = 20;
+            _Stats[(int)Stat.exp_gain] = 10;
             _Stats[(int)Stat.hp] = 15;
             _Stats[(int)Stat.stamina] = 20;
             _Stats[(int)Stat.lvl] = 1;
@@ -86,7 +86,7 @@ namespace RPG_game
             Enemies_list[(int)Enemies.weak_skeleton] = new Enemy("Слабый скелет", _Stats, _Body_part_multiplier, Enemies.weak_skeleton);
 
             _Stats = new int[Constants.Stats_list_size];
-            _Stats[(int)Stat.exp_gain] = 15;
+            _Stats[(int)Stat.exp_gain] = 10;
             _Stats[(int)Stat.hp] = 28;
             _Stats[(int)Stat.stamina] = 20;
             _Stats[(int)Stat.lvl] = 1;
@@ -99,7 +99,7 @@ namespace RPG_game
             Enemies_list[(int)Enemies.rotting_zombie] = new Enemy("Гниющий зомби", _Stats, _Body_part_multiplier, Enemies.rotting_zombie);
 
             _Stats = new int[Constants.Stats_list_size];
-            _Stats[(int)Stat.exp_gain] = 30;
+            _Stats[(int)Stat.exp_gain] = 15;
             _Stats[(int)Stat.hp] = 18;
             _Stats[(int)Stat.stamina] = 20;
             _Stats[(int)Stat.lvl] = 1;
