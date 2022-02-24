@@ -51,6 +51,10 @@ namespace RPG_game
             {
                 int enemy_id = Rand.Next(0, 4);
                 New_enemy = (Enemy)E_db.Enemies_list[enemy_id].Clone();
+                
+                if (Average_lvl == 1) //чтобы в начле не спавнились очень сильные враги
+                    Average_lvl = 0;
+
                 int Enemy_lvl = Rand.Next(Average_lvl - 2, Average_lvl + 2);
                 if (Enemy_lvl <= 0) 
                     Enemy_lvl = 1;

@@ -62,6 +62,7 @@ namespace RPG_game
             Stat_points = player.Current_stats[(int)Stat.stat_points];
 
             lvl_up_panel = new Panel();
+            lvl_up_panel.Anchor = (AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom);
             lvl_up_panel.Font = new Font("Segoe UI Semibold", 20, FontStyle.Bold);
             lvl_up_panel.ForeColor = Color.Black;
             lvl_up_panel.Name = "lvlup_panel";
@@ -72,6 +73,7 @@ namespace RPG_game
             int num = 0;
 
             Label lvl_points_lbl = new Label();
+            lvl_points_lbl.Anchor = (AnchorStyles.Bottom);
             lvl_points_lbl.Name = "lvl_points_lbl";
             lvl_points_lbl.ForeColor = Color.White;
             lvl_points_lbl.Location = new Point(28, 405);
@@ -80,6 +82,7 @@ namespace RPG_game
             lvl_up_panel.Controls.Add(lvl_points_lbl);
 
             Button cncl_btn = new Button();
+            cncl_btn.Anchor = (AnchorStyles.Left | AnchorStyles.Bottom);
             cncl_btn.Name = "cncl_btn";
             cncl_btn.Font = new Font("Arial Narrow", 20, FontStyle.Bold);
             cncl_btn.BackColor = Color.Gray;
@@ -91,6 +94,7 @@ namespace RPG_game
             lvl_up_panel.Controls.Add(cncl_btn);
 
             Button accept_btn = new Button();
+            accept_btn.Anchor = (AnchorStyles.Right | AnchorStyles.Bottom);
             accept_btn.Name = "accept_btn";
             accept_btn.Font = new Font("Arial Narrow", 20, FontStyle.Bold);
             accept_btn.BackColor = Color.Gray;
@@ -108,12 +112,14 @@ namespace RPG_game
                     continue;
 
                 Panel stat_panel = new Panel();
+                stat_panel.Anchor = (AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top);
                 stat_panel.Size = new Size(530, 58);
                 stat_panel.Location = new Point(35, 11 + 64 * num);
                 num++;
                 lvl_up_panel.Controls.Add(stat_panel);
 
                 Button l_button = new Button();
+                l_button.Anchor = (AnchorStyles.Left);
                 l_button.Name = Name + "_lbtn";
                 l_button.Font = new Font("Arial Narrow", 20, FontStyle.Bold);
                 l_button.BackColor = Color.Gray;
@@ -125,6 +131,7 @@ namespace RPG_game
                 stat_panel.Controls.Add(l_button);
 
                 Button r_button = new Button();
+                r_button.Anchor = (AnchorStyles.Right);
                 r_button.Name = Name + "_rbtn";
                 r_button.Font = new Font("Arial Narrow", 20, FontStyle.Bold);
                 r_button.BackColor = Color.Gray;
@@ -136,6 +143,7 @@ namespace RPG_game
                 stat_panel.Controls.Add(r_button);
 
                 Label stat_label = new Label();
+                stat_label.Anchor = (AnchorStyles.Left | AnchorStyles.Right);
                 stat_label.Name = Name + "_lbl";
                 stat_label.ForeColor = Color.White;
                 stat_label.Location = new Point(75, 15);
@@ -157,7 +165,7 @@ namespace RPG_game
 
             if (Name == "cncl_btn")
             {
-                Change_controls_properties("battle_form", true);
+                continue_btn.Visible = true;
                 lvl_up_panel.Dispose();
                 return;
             }
@@ -165,7 +173,7 @@ namespace RPG_game
             if (Name == "accept_btn")
             {
                 player.Active_stats_gain(Stats_to_add, Stat_points);
-                Change_controls_properties("battle_form", true);
+                continue_btn.Visible = true;
                 Show_stats(player);
                 lvl_up_panel.Dispose();
                 return;
@@ -263,7 +271,11 @@ namespace RPG_game
                 def_body_RadioButton.Checked = true;
 
                 Change_controls_properties("battle_form", false);
-                continue_btn.Visible = true;
+
+                if (Core.Player_squad[0].Current_stats[(int)Stat.stat_points] != 0)
+                    Show_lvlup_panel();
+                else
+                    continue_btn.Visible = true;
             }
 
             if (Core.BC.Status == Battle_status.enemies_win)
@@ -343,9 +355,6 @@ namespace RPG_game
             }
             else
                 Core.Start_battle();
-
-            if (Core.Player_squad[0].Current_stats[(int)Stat.stat_points] != 0)
-                Show_lvlup_panel();
 
             Configure_enemy_data_source();
             Update_interface();
