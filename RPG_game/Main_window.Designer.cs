@@ -241,6 +241,7 @@ namespace RPG_game
             this.enemies_list.Name = "enemies_list";
             this.enemies_list.Size = new System.Drawing.Size(208, 104);
             this.enemies_list.TabIndex = 9;
+            this.enemies_list.SelectedIndexChanged += new System.EventHandler(this.enemies_list_SelectedIndexChanged);
             // 
             // enemies_list_lbl
             // 

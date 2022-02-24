@@ -36,9 +36,12 @@ namespace RPG_game
 
             Enemies_db E_db = new Enemies_db();
             Enemy Basic_variant = (Enemy)E_db.Enemies_list[(int)Enemy_type].Clone();
-            double Stats_multiplier = 0.08;
+            double Stats_multiplier = 0.25;
 
-            for (int i = 4; i < 30; i++)
+            Max_stats[(int)Stat.lvl] = lvl;
+            Current_stats[(int)Stat.lvl] = lvl;
+
+            for (int i = 4; i <= 30; i++)
             {
                 Max_stats[i] = (int)Math.Round(Max_stats[i] + (Basic_variant.Max_stats[i] * Stats_multiplier * lvl));
                 Current_stats[i] = Max_stats[i];

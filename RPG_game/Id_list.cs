@@ -28,21 +28,12 @@ namespace RPG_game
         public static int Max_player_squad_size = 3;
         public static int Body_parts_count = 3;
 
-        public static int[] Showable_stats =
-        {
-            (int)Stat.spirit,
-            (int)Stat.strength,
-            (int)Stat.vitality,
-            (int)Stat.agility,
-            (int)Stat.magic
-        };
-
         public static List<Stat_gain>Stats_gain_per_showable = new List<Stat_gain>
         {
             new Stat_gain(Stat.strength, new Stat[]{Stat.hp, Stat.stamina, Stat.physical_strength}, new int[]{1, 1, 3}),
             new Stat_gain(Stat.vitality, new Stat[]{Stat.hp, Stat.defence, Stat.resistance}, new int[]{2, 3, 3}),
             new Stat_gain(Stat.magic, new Stat[]{Stat.magical_strength, Stat.mana}, new int[]{3, 1}),
-            new Stat_gain(Stat.agility, new Stat[]{Stat.accuracy, Stat.evasion}, new int[]{1, 1}),
+            new Stat_gain(Stat.agility, new Stat[]{Stat.accuracy, Stat.evasion, Stat.initiative}, new int[]{1, 1, 1}),
             new Stat_gain(Stat.spirit, new Stat[]{Stat.hp, Stat.stamina, Stat.mana}, new int[]{2, 3, 3}),
         };
     }
@@ -170,8 +161,8 @@ namespace RPG_game
 
     public enum Stat : int
     {
-        exp = 1,
-        lvl = 2,
+        lvl = 1,
+        exp = 2,     
 
         hp = 4,
         stamina = 5,
@@ -188,7 +179,8 @@ namespace RPG_game
         exp_gain = 30,
         stat_points = 31,
 
-        strength = 40,
+        //showed stats
+        strength = 40,  
         vitality = 41,
         magic = 42,
         agility = 43,

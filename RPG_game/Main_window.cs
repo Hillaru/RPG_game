@@ -58,7 +58,7 @@ namespace RPG_game
         {
             Player player = Core.Player_squad[0];
 
-            Stats_to_add = new int[Showable_stats.Length];
+            Stats_to_add = new int[Stats_list_size];
             Stat_points = player.Current_stats[(int)Stat.stat_points];
 
             lvl_up_panel = new Panel();
@@ -101,10 +101,11 @@ namespace RPG_game
             accept_btn.Click += new EventHandler(lvlup_panel_Button_Click);
             lvl_up_panel.Controls.Add(accept_btn);
 
-            for (int j = 0; j < Showable_stats.Length; j++)
+            for (int stat_id = 40; stat_id < 50; stat_id++)
             {
-                int stat_id = Showable_stats[j];
                 String Name = Stat_to_string((Stat)stat_id);
+                if (Name == "-")
+                    continue;
 
                 Panel stat_panel = new Panel();
                 stat_panel.Size = new Size(530, 58);
@@ -144,6 +145,7 @@ namespace RPG_game
             }
 
             Controls.Add(lvl_up_panel);
+            Change_controls_properties("battle_form", false); ;
             lvl_up_panel.BringToFront();
         }
 
@@ -155,6 +157,7 @@ namespace RPG_game
 
             if (Name == "cncl_btn")
             {
+                Change_controls_properties("battle_form", true);
                 lvl_up_panel.Dispose();
                 return;
             }
@@ -162,6 +165,8 @@ namespace RPG_game
             if (Name == "accept_btn")
             {
                 player.Active_stats_gain(Stats_to_add, Stat_points);
+                Change_controls_properties("battle_form", true);
+                Show_stats(player);
                 lvl_up_panel.Dispose();
                 return;
             }
@@ -169,10 +174,7 @@ namespace RPG_game
             string[] words = Name.Split(new char[] { '_' });
             Label lbl = (Label)lvl_up_panel.Controls.Find(words[0] + "_lbl", true)[0];
             Stat stat = String_to_stat(words[0]);
-            int stat_index;
-            for (stat_index = 0; stat_index < Showable_stats.Length; stat_index++)
-                if ((Stat)Showable_stats[stat_index] == stat)
-                    break;
+            int stat_index = (int)stat;
 
             if (Stat_points != 0 && words[1] == "rbtn")
             {
@@ -284,11 +286,31 @@ namespace RPG_game
             enemy_stats.Items.Clear();
             int j = 0;
 
-            for (int i = 0; i < unit.Current_stats.Length; i++)
+            for (int i = 1; i < 30; i++)
             {
+                if (unit.Max_stats[i] != 0)
                 {
-                    String line = $"";
+                    String line = $"{Stat_to_string((Stat)i)}: {unit.Current_stats[i]}";
+                    if (unit.Current_stats[i] != unit.Max_stats[i])
+                        line += $" / {unit.Max_stats[i]}";
                     enemy_stats.Items.Insert(j, line);
+                    j++;
+                }
+            }
+        }
+        private void Show_stats(Player unit)
+        {
+            player_stats.Items.Clear();
+            int j = 0;
+
+            for (int i = 1; i < 30; i++)
+            {
+                if (unit.Max_stats[i] != 0)
+                {
+                    String line = $"{Stat_to_string((Stat)i)}: {unit.Current_stats[i]}";
+                    if (unit.Current_stats[i] != unit.Max_stats[i])
+                        line += $" / {unit.Max_stats[i]}";
+                    player_stats.Items.Insert(j, line);
                     j++;
                 }
             }
@@ -305,6 +327,7 @@ namespace RPG_game
         {
             Update_log();
             Update_battle_status();
+            Show_stats(Core.Player_squad[0]);
         }
 
         private void continue_btn_Click(object sender, EventArgs e)
@@ -360,6 +383,11 @@ namespace RPG_game
         {
             log_window.SelectionStart = log_window.Text.Length;
             log_window.ScrollToCaret();
+        }
+
+        private void enemies_list_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Show_stats(Enemy_ds[enemies_list.SelectedIndex]);
         }
     }
 }

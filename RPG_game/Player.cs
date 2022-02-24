@@ -41,7 +41,7 @@ namespace RPG_game
                 exp -= (Max_stats[(int)Stat.exp] - Current_stats[(int)Stat.exp]);
 
                 Current_stats[(int)Stat.exp] = 0;
-                Max_stats[(int)Stat.exp] = (int)Math.Round(Max_stats[(int)Stat.exp] * 1.2);
+                Max_stats[(int)Stat.exp] = (int)Math.Round(Max_stats[(int)Stat.exp] * 1.35);
 
                 lvl_ups += Gain_exp(exp);
             }
@@ -65,8 +65,8 @@ namespace RPG_game
             Current_stats[(int)Stat.lvl] = Max_stats[(int)Stat.lvl];
 
             //Passive_stats_gain(lvl_ups);
-            Max_stats[(int)Stat.stat_points] += lvl_ups * 3;
-            Current_stats[(int)Stat.stat_points] += lvl_ups * 3;
+            Max_stats[(int)Stat.stat_points] += lvl_ups * 2;
+            Current_stats[(int)Stat.stat_points] += lvl_ups * 2;
         }
         
         /*
@@ -87,15 +87,15 @@ namespace RPG_game
 
         public void Active_stats_gain(int[] Stats_to_add, int Left_stat_points)
         {
-            for (int showable_index = 0; showable_index < Stats_to_add.Length; showable_index++)
+            for (int showable_index = 40; showable_index < 50; showable_index++)
             {
                 if (Stats_to_add[showable_index] == 0)
                     continue;
                 
-                for (int stat_index = 0; stat_index < Stats_gain_per_showable[showable_index].Gain_stats.Length; stat_index++)
+                for (int stat_index = 0; stat_index < Stats_gain_per_showable[showable_index - 40].Gain_stats.Length; stat_index++)
                 {
-                    int stat_id = (int)Stats_gain_per_showable[showable_index].Gain_stats[stat_index];
-                    Max_stats[stat_id] += Stats_to_add[showable_index] * Stats_gain_per_showable[showable_index].multiplier[stat_index];
+                    int stat_id = (int)Stats_gain_per_showable[showable_index - 40].Gain_stats[stat_index];
+                    Max_stats[stat_id] += Stats_to_add[showable_index] * Stats_gain_per_showable[showable_index - 40].multiplier[stat_index];
                     Current_stats[stat_id] = Max_stats[stat_id];
                 }
             }

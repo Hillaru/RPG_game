@@ -37,8 +37,13 @@ namespace RPG_game
         {
             Enemies_db E_db = new Enemies_db();
             int Average_lvl = Player_squad[0].Current_stats[(int)Stat.lvl];
-            int Max_squad_size = 2 + Average_lvl / 10;
+            int Max_squad_size = 2 + Average_lvl / 6;
             int Actual_squad_size = Rand.Next(1, Max_squad_size);
+            if (Actual_squad_size > 5)
+            {
+                Average_lvl += Actual_squad_size - 5;
+                Actual_squad_size = 5;
+            }
             Enemy New_enemy;
 
             List<Enemy> Enemy_squad = new List<Enemy>();
@@ -46,7 +51,7 @@ namespace RPG_game
             {
                 int enemy_id = Rand.Next(0, 4);
                 New_enemy = (Enemy)E_db.Enemies_list[enemy_id].Clone();
-                int Enemy_lvl = Rand.Next(Average_lvl - 1, Average_lvl + 1);
+                int Enemy_lvl = Rand.Next(Average_lvl - 2, Average_lvl + 2);
                 if (Enemy_lvl <= 0) 
                     Enemy_lvl = 1;
                 New_enemy.Lvl_adjust(Enemy_lvl);
