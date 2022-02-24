@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Windows.Forms;
 using static RPG_game.Converter;
+using static RPG_game.Constants;
 
 namespace RPG_game
 {
@@ -33,17 +34,22 @@ namespace RPG_game
             InitializeComponent();
         }
 
+        public void Change_controls_properties(string tag, bool visible, bool enabled = true)
+        {
+            for (int i = 0; i < Controls.Count; i++)
+                if ((string)Controls[i].Tag == tag)
+                {
+                    Controls[i].Visible = visible;
+                    Controls[i].Enabled = enabled;
+                }
+        }
+
         private void Main_window_Load(object sender, EventArgs e)
         {
             atk_body_RadioButton.Checked = true;
             def_body_RadioButton.Checked = true;
 
-            turn_panel.Visible = false;
-            atk_panel.Visible = false;
-            def_panel.Visible = false;
-            enemy_stats_group.Visible = false;
-            player_stats_group.Visible = false;
-            log_window.Visible = false;
+            Change_controls_properties("battle_form", false);
 
             continue_btn.Visible = true;
         }
@@ -52,7 +58,7 @@ namespace RPG_game
         {
             Player player = Core.Player_squad[0];
 
-            Stats_to_add = new int[Constants.Stats_list_size];
+            Stats_to_add = new int[Showable_stats.Length];
             Stat_points = player.Current_stats[(int)Stat.stat_points];
 
             lvl_up_panel = new Panel();
@@ -95,11 +101,10 @@ namespace RPG_game
             accept_btn.Click += new EventHandler(lvlup_panel_Button_Click);
             lvl_up_panel.Controls.Add(accept_btn);
 
-            for (int i = 0; i < Constants.Stats_list_size; i++)
+            for (int j = 0; j < Showable_stats.Length; j++)
             {
-                if (Stat_to_string((Stat)i) == "-")
-                    continue;
-                String Name = Stat_to_string((Stat)i);
+                int stat_id = Showable_stats[j];
+                String Name = Stat_to_string((Stat)stat_id);
 
                 Panel stat_panel = new Panel();
                 stat_panel.Size = new Size(530, 58);
@@ -134,7 +139,7 @@ namespace RPG_game
                 stat_label.ForeColor = Color.White;
                 stat_label.Location = new Point(75, 15);
                 stat_label.AutoSize = true;
-                stat_label.Text = Name + $": {player.Max_stats[i]}";
+                stat_label.Text = Name + $": {player.Max_stats[stat_id]}";
                 stat_panel.Controls.Add(stat_label);
             }
 
@@ -146,7 +151,7 @@ namespace RPG_game
         {
             Button button = (Button)sender;
             String Name = button.Name;
-            Player player = Core.Player_squad[0];
+            Player player = Core.Player_squad[0];           
 
             if (Name == "cncl_btn")
             {
@@ -162,21 +167,30 @@ namespace RPG_game
             }
 
             string[] words = Name.Split(new char[] { '_' });
+            Label lbl = (Label)lvl_up_panel.Controls.Find(words[0] + "_lbl", true)[0];
             Stat stat = String_to_stat(words[0]);
+            int stat_index;
+            for (stat_index = 0; stat_index < Showable_stats.Length; stat_index++)
+                if ((Stat)Showable_stats[stat_index] == stat)
+                    break;
 
             if (Stat_points != 0 && words[1] == "rbtn")
             {
-                Stats_to_add[(int)stat]++;
+                Stats_to_add[stat_index]++;
                 Stat_points--;
+                if (lbl.ForeColor != Color.Green)
+                    lbl.ForeColor = Color.Green;
             }
-            else if (Stats_to_add[(int)stat] != 0 && words[1] == "lbtn")
+            else if (Stats_to_add[stat_index] != 0 && words[1] == "lbtn")
             {
-                Stats_to_add[(int)stat]--;
+                Stats_to_add[stat_index]--;
                 Stat_points++;
+                if (lbl.ForeColor == Color.Green && Stats_to_add[stat_index] == 0)
+                    lbl.ForeColor = Color.White;
             }
 
             lvl_up_panel.Controls.Find("lvl_points_lbl", true)[0].Text = $"Осталось очков характеристик: {Stat_points}";
-            lvl_up_panel.Controls.Find(words[0] + "_lbl", true)[0].Text = $"{words[0]}: {player.Max_stats[(int)stat] + Stats_to_add[(int)stat]}";
+            lbl.Text = $"{words[0]}: {player.Max_stats[stat_index] + Stats_to_add[stat_index]}";
         }
 
         private void atk_Button_Click(object sender, EventArgs e)
@@ -194,7 +208,7 @@ namespace RPG_game
 
             Core.BC.Turn(Def_part, Atk_part, Target);
             Configure_enemy_data_source();
-            Update_log();
+            Update_interface();
         }
 
         private void Main_window_FormClosed(object sender, FormClosedEventArgs e)
@@ -239,20 +253,14 @@ namespace RPG_game
             }
         }
 
-        private void Update_log()
+        private void Update_battle_status()
         {
-            List<String> Logs = Core.BC.Logger();
-            foreach (String s in Logs)
-                log_window.Text += s + "\n";
-
             if (Core.BC.Status == Battle_status.player_win)
             {
                 atk_body_RadioButton.Checked = true;
                 def_body_RadioButton.Checked = true;
 
-                turn_panel.Visible = false;
-                atk_panel.Visible = false;
-                def_panel.Visible = false;
+                Change_controls_properties("battle_form", false);
                 continue_btn.Visible = true;
             }
 
@@ -262,23 +270,48 @@ namespace RPG_game
                 atk_body_RadioButton.Checked = true;
                 def_body_RadioButton.Checked = true;
 
-                turn_panel.Visible = false;
-                atk_panel.Visible = false;
-                def_panel.Visible = false;
+                Change_controls_properties("battle_form", false);
                 continue_btn.Visible = true;
             }
+        }
+
+        private void Show_stats()
+        {
+            enemy_stats.Items.Clear();
+        }
+        private void Show_stats(Enemy unit)
+        {
+            enemy_stats.Items.Clear();
+            int j = 0;
+
+            for (int i = 0; i < unit.Current_stats.Length; i++)
+            {
+                {
+                    String line = $"";
+                    enemy_stats.Items.Insert(j, line);
+                    j++;
+                }
+            }
+        }
+
+        private void Update_log()
+        {
+            List<String> Logs = Core.BC.Logger();
+            foreach (String s in Logs)
+                log_window.Text += s + "\n";
+        }
+
+        private void Update_interface()
+        {
+            Update_log();
+            Update_battle_status();
         }
 
         private void continue_btn_Click(object sender, EventArgs e)
         {
             log_window.Clear();
-            turn_panel.Visible = true;
-            atk_panel.Visible = true;
-            def_panel.Visible = true;
+            Change_controls_properties("battle_form", true);
             continue_btn.Visible = false;
-            enemy_stats_group.Visible = true;
-            player_stats_group.Visible = true;
-            log_window.Visible = true;
 
             if (New_battle)
             {
@@ -292,7 +325,7 @@ namespace RPG_game
                 Show_lvlup_panel();
 
             Configure_enemy_data_source();
-            Update_log();
+            Update_interface();
         }
 
         private void radioButton_CheckedChanged(object sender, EventArgs e)

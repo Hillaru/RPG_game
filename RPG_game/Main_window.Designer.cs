@@ -71,6 +71,7 @@ namespace RPG_game
             this.log_window.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.log_window.Size = new System.Drawing.Size(638, 441);
             this.log_window.TabIndex = 0;
+            this.log_window.Tag = "";
             this.log_window.Text = "";
             this.log_window.TextChanged += new System.EventHandler(this.Log_window_TextChanged);
             // 
@@ -99,6 +100,7 @@ namespace RPG_game
             this.atk_panel.Name = "atk_panel";
             this.atk_panel.Size = new System.Drawing.Size(164, 129);
             this.atk_panel.TabIndex = 3;
+            this.atk_panel.Tag = "battle_form";
             // 
             // atk_legs_RadioButton
             // 
@@ -160,6 +162,7 @@ namespace RPG_game
             this.def_panel.Name = "def_panel";
             this.def_panel.Size = new System.Drawing.Size(176, 129);
             this.def_panel.TabIndex = 5;
+            this.def_panel.Tag = "battle_form";
             // 
             // def_legs_RadioButton
             // 
@@ -221,6 +224,7 @@ namespace RPG_game
             this.continue_btn.Name = "continue_btn";
             this.continue_btn.Size = new System.Drawing.Size(325, 124);
             this.continue_btn.TabIndex = 8;
+            this.continue_btn.Tag = "";
             this.continue_btn.Text = "Начать битву";
             this.continue_btn.UseVisualStyleBackColor = false;
             this.continue_btn.Visible = false;
@@ -258,6 +262,7 @@ namespace RPG_game
             this.turn_panel.Name = "turn_panel";
             this.turn_panel.Size = new System.Drawing.Size(365, 146);
             this.turn_panel.TabIndex = 10;
+            this.turn_panel.Tag = "battle_form";
             // 
             // enemy_stats_group
             // 
@@ -271,6 +276,7 @@ namespace RPG_game
             this.enemy_stats_group.Size = new System.Drawing.Size(248, 439);
             this.enemy_stats_group.TabIndex = 11;
             this.enemy_stats_group.TabStop = false;
+            this.enemy_stats_group.Tag = "battle_form";
             this.enemy_stats_group.Text = "Характеристики врага";
             // 
             // enemy_stats
@@ -307,6 +313,7 @@ namespace RPG_game
             this.player_stats_group.Size = new System.Drawing.Size(259, 440);
             this.player_stats_group.TabIndex = 12;
             this.player_stats_group.TabStop = false;
+            this.player_stats_group.Tag = "battle_form";
             this.player_stats_group.Text = "Характеристики игрока";
             // 
             // player_stats

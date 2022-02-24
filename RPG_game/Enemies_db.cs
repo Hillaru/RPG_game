@@ -65,7 +65,7 @@ namespace RPG_game
             _Stats[(int)Stat.stamina] = 20;
             _Stats[(int)Stat.lvl] = 1;
             _Stats[(int)Stat.defence] = 5;
-            _Stats[(int)Stat.strength] = 4;
+            _Stats[(int)Stat.physical_strength] = 4;
             _Stats[(int)Stat.initiative] = 5;
             _Body_part_multiplier[(int)Body_part.head] = 1;
             _Body_part_multiplier[(int)Body_part.body] = 1;
@@ -78,7 +78,7 @@ namespace RPG_game
             _Stats[(int)Stat.stamina] = 20;
             _Stats[(int)Stat.lvl] = 1;
             _Stats[(int)Stat.defence] = 6;
-            _Stats[(int)Stat.strength] = 6;
+            _Stats[(int)Stat.physical_strength] = 6;
             _Stats[(int)Stat.initiative] = 10;
             _Body_part_multiplier[(int)Body_part.head] = 1.3;
             _Body_part_multiplier[(int)Body_part.body] = 1;
@@ -91,7 +91,7 @@ namespace RPG_game
             _Stats[(int)Stat.stamina] = 20;
             _Stats[(int)Stat.lvl] = 1;
             _Stats[(int)Stat.defence] = 3;
-            _Stats[(int)Stat.strength] = 5;
+            _Stats[(int)Stat.physical_strength] = 5;
             _Stats[(int)Stat.initiative] = 4;
             _Body_part_multiplier[(int)Body_part.head] = 1.6;
             _Body_part_multiplier[(int)Body_part.body] = 1;
@@ -104,7 +104,7 @@ namespace RPG_game
             _Stats[(int)Stat.stamina] = 20;
             _Stats[(int)Stat.lvl] = 1;
             _Stats[(int)Stat.defence] = 8;
-            _Stats[(int)Stat.strength] = 6;
+            _Stats[(int)Stat.physical_strength] = 6;
             _Stats[(int)Stat.initiative] = 9;
             _Body_part_multiplier[(int)Body_part.head] = 1.3;
             _Body_part_multiplier[(int)Body_part.body] = 1;

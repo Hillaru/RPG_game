@@ -164,7 +164,7 @@ namespace RPG_game
 
         private void Physical_attack(Unit Attacker, Unit Defender, Body_part body_Part)
         {
-            double Atk = Attacker.Current_stats[(int)Stat.strength];
+            double Atk = Attacker.Current_stats[(int)Stat.physical_strength];
             double Def = Defender.Current_stats[(int)Stat.defence];
 
             if (Defender.Defended_state[(int)body_Part] == true)

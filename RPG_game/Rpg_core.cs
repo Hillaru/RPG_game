@@ -14,6 +14,11 @@ namespace RPG_game
 
         Random Rand = new Random((int)DateTime.Now.Ticks);
 
+        public Rpg_core()
+        {
+                          
+        }
+
         public void Initialize_player_squad()
         {
             Players_db P_db = new Players_db();
