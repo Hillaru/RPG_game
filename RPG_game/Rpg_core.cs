@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using static RPG_game.Constants;
 
 namespace RPG_game
 {
@@ -47,12 +48,17 @@ namespace RPG_game
             Enemy New_enemy;
 
             List<Enemy> Enemy_squad = new List<Enemy>();
+            int[] Enemy_count_by_type = new int[Enemy_list_size];
+
             for (int i = 0; i < Actual_squad_size; i++)
             {
                 int enemy_id = Rand.Next(0, 4);
                 New_enemy = (Enemy)E_db.Enemies_list[enemy_id].Clone();
-                
-                if (Average_lvl == 1) //чтобы в начле не спавнились очень сильные враги
+                if (Enemy_count_by_type[enemy_id] != 0)
+                    New_enemy.Name += $"{Enemy_count_by_type[enemy_id]}";   //Добавление цифр к имени врагов
+                Enemy_count_by_type[enemy_id]++;
+
+                if (Average_lvl == 1) //чтобы в начале не спавнились очень сильные враги
                     Average_lvl = 0;
 
                 int Enemy_lvl = Rand.Next(Average_lvl - 2, Average_lvl + 2);

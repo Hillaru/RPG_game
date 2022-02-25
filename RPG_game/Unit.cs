@@ -8,7 +8,7 @@ namespace RPG_game
 {
     public class Unit 
     {
-        public bool Is_playable, Is_dead = false;
+        public bool Is_playable, Is_dead = false, Can_block = true, Can_dodge = true;
         public string Name;
         public int[] Max_stats;
         public int[] Current_stats;

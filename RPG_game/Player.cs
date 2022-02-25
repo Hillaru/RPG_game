@@ -65,8 +65,8 @@ namespace RPG_game
             Current_stats[(int)Stat.lvl] = Max_stats[(int)Stat.lvl];
 
             //Passive_stats_gain(lvl_ups);
-            Max_stats[(int)Stat.stat_points] += lvl_ups * 2;
-            Current_stats[(int)Stat.stat_points] += lvl_ups * 2;
+            Max_stats[(int)Stat.stat_points] += lvl_ups * 3;
+            Current_stats[(int)Stat.stat_points] += lvl_ups * 3;
         }
         
         /*
@@ -124,6 +124,11 @@ namespace RPG_game
             _Stats[(int)Stat.defence] = 2;
             _Stats[(int)Stat.physical_strength] = 10;
             _Stats[(int)Stat.initiative] = 10;
+            _Stats[(int)Stat.speed] = 30;
+            _Stats[(int)Stat.accuracy] = 5;
+            _Stats[(int)Stat.evasion] = 6;
+            _Stats[(int)Stat.resistance] = 2;
+            _Stats[(int)Stat.magical_strength] = 10;
             _Body_part_multiplier[(int)Body_part.head] = 1.2;
             _Body_part_multiplier[(int)Body_part.body] = 1;
             _Body_part_multiplier[(int)Body_part.legs] = 0.8;
@@ -137,6 +142,11 @@ namespace RPG_game
             _Stats[(int)Stat.defence] = 10000;
             _Stats[(int)Stat.physical_strength] = 20;
             _Stats[(int)Stat.initiative] = 10;
+            _Stats[(int)Stat.speed] = 30;
+            _Stats[(int)Stat.accuracy] = 5;
+            _Stats[(int)Stat.evasion] = 5;
+            _Stats[(int)Stat.resistance] = 2;
+            _Stats[(int)Stat.magical_strength] = 10;
             _Body_part_multiplier[(int)Body_part.head] = 1;
             _Body_part_multiplier[(int)Body_part.body] = 1;
             _Body_part_multiplier[(int)Body_part.legs] = 1;

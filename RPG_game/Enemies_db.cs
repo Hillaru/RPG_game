@@ -11,7 +11,7 @@ namespace RPG_game
         //public List<Loot> Drop_list;
         public Enemies Enemy_type;
 
-        public Enemy(string _Name, int[] _Stats, double[] _Body_part_multiplier, Enemies type)
+        public Enemy(string _Name, int[] _Stats, double[] _Body_part_multiplier, Enemies type, bool _can_block = true, bool _can_dodge = true)
         {
             Name = _Name;
             Enemy_type = type;
@@ -70,10 +70,13 @@ namespace RPG_game
             _Stats[(int)Stat.defence] = 5;
             _Stats[(int)Stat.physical_strength] = 4;
             _Stats[(int)Stat.initiative] = 5;
+            _Stats[(int)Stat.accuracy] = 5;
+            _Stats[(int)Stat.evasion] = 6;
+            _Stats[(int)Stat.resistance] = 9;
             _Body_part_multiplier[(int)Body_part.head] = 1;
             _Body_part_multiplier[(int)Body_part.body] = 1;
             _Body_part_multiplier[(int)Body_part.legs] = 1;
-            Enemies_list[(int)Enemies.small_slime] = new Enemy("Маленький слайм", _Stats, _Body_part_multiplier, Enemies.small_slime);
+            Enemies_list[(int)Enemies.small_slime] = new Enemy("Маленький слайм", _Stats, _Body_part_multiplier, Enemies.small_slime, false);
 
             _Stats = new int[Constants.Stats_list_size];
             _Stats[(int)Stat.exp_gain] = 10;
@@ -82,7 +85,10 @@ namespace RPG_game
             _Stats[(int)Stat.lvl] = 1;
             _Stats[(int)Stat.defence] = 6;
             _Stats[(int)Stat.physical_strength] = 6;
+            _Stats[(int)Stat.accuracy] = 4;
             _Stats[(int)Stat.initiative] = 10;
+            _Stats[(int)Stat.evasion] = 4;
+            _Stats[(int)Stat.resistance] = 2;
             _Body_part_multiplier[(int)Body_part.head] = 1.3;
             _Body_part_multiplier[(int)Body_part.body] = 1;
             _Body_part_multiplier[(int)Body_part.legs] = 0.8;
@@ -96,8 +102,11 @@ namespace RPG_game
             _Stats[(int)Stat.defence] = 3;
             _Stats[(int)Stat.physical_strength] = 5;
             _Stats[(int)Stat.initiative] = 4;
+            _Stats[(int)Stat.accuracy] = 3;
+            _Stats[(int)Stat.evasion] = 1;
+            _Stats[(int)Stat.resistance] = 1;
             _Body_part_multiplier[(int)Body_part.head] = 1.6;
-            _Body_part_multiplier[(int)Body_part.body] = 1;
+            _Body_part_multiplier[(int)Body_part.body] = 0.7;
             _Body_part_multiplier[(int)Body_part.legs] = 0.5;
             Enemies_list[(int)Enemies.rotting_zombie] = new Enemy("Гниющий зомби", _Stats, _Body_part_multiplier, Enemies.rotting_zombie);
 
@@ -109,6 +118,9 @@ namespace RPG_game
             _Stats[(int)Stat.defence] = 8;
             _Stats[(int)Stat.physical_strength] = 6;
             _Stats[(int)Stat.initiative] = 9;
+            _Stats[(int)Stat.accuracy] = 5;
+            _Stats[(int)Stat.evasion] = 3;
+            _Stats[(int)Stat.resistance] = 8;
             _Body_part_multiplier[(int)Body_part.head] = 1.3;
             _Body_part_multiplier[(int)Body_part.body] = 1;
             _Body_part_multiplier[(int)Body_part.legs] = 0.8;

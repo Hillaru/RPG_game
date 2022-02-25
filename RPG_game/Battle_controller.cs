@@ -16,7 +16,7 @@ namespace RPG_game
         int Curent_turn = 0, Raund_num = 1;
         List<String> Old_log = new List<string>();
         List<String> New_log = new List<string>();
-        Random rand = new Random();
+        Random rand = new Random((int)DateTime.Now.Ticks);
         public Battle_status Status = Battle_status.in_process;
 
         public Battle_controller(List<Player> _Player_squad, List<Enemy> _Enemy_squad)
@@ -72,7 +72,8 @@ namespace RPG_game
             Body_part Part_to_attack = (Body_part)rand.Next(0, 2);
             Unit Target = Player_squad[rand.Next(0, Player_squad.Count - 1)];
 
-            Set_defended_state(Attacker, Defended_part);
+            if (Attacker.Can_block)
+                Set_defended_state(Attacker, Defended_part);
             Physical_attack(Attacker, Target, Part_to_attack);
 
             Status = Win_condition();
@@ -166,8 +167,19 @@ namespace RPG_game
         {
             double Atk = Attacker.Current_stats[(int)Stat.physical_strength];
             double Def = Defender.Current_stats[(int)Stat.defence];
+            double Eva = Defender.Current_stats[(int)Stat.evasion];
+            double Acc = Attacker.Current_stats[(int)Stat.accuracy];
+            int A_lvl = Attacker.Current_stats[(int)Stat.lvl];
+            int D_lvl = Defender.Current_stats[(int)Stat.lvl];
 
-            if (Defender.Defended_state[(int)body_Part] == true)
+            double Dodge_chance = 1 - ((A_lvl * Acc) / (Eva * D_lvl));
+            if (Dodge_chance > 0 && rand.NextDouble() < Dodge_chance)
+            {
+                Logger(Log_type.attack, Attacker, Defender, body_Part, true);
+                return;
+            }
+
+            if (Defender.Defended_state[(int)body_Part])
                 Def *= 2;
 
             Atk = Atk * Defender.Body_part_multiplier[(int)body_Part];
@@ -177,7 +189,7 @@ namespace RPG_game
             if (Atk < 1) Atk = 1;
 
             Defender.Current_stats[(int)Stat.hp] -= (int)Atk;
-            Logger(Log_type.attack, Attacker, Defender, body_Part, (int)Atk);
+            Logger(Log_type.attack, Attacker, Defender, body_Part, false, (int)Atk);
 
             Alive_check(Defender);
         }
@@ -293,18 +305,21 @@ namespace RPG_game
                 New_log.Add($"{unit.Name} погиб");
             }
         }
-        private void Logger(Log_type Type, Unit Attacker, Unit Defender, Body_part body_Part, int Dmg)
+        private void Logger(Log_type Type, Unit Attacker, Unit Defender, Body_part body_Part, bool Dodge = false, int Dmg = 0)
         {
             String Log_line;
             if (Type == Log_type.attack)
             {
+                if (Dodge == true)
+                    Log_line = $"{Attacker.Name} атакует {Defender.Name} и промахивается";
+                else
                 if (Defender.Defended_state[(int)body_Part] == true)
                     Log_line = $"{Attacker.Name} атакует {Defender.Name} и наносит {Dmg} урона (блок)";
                 else
                     Log_line = $"{Attacker.Name} атакует {Defender.Name} и наносит {Dmg} урона";
 
                 New_log.Add(Log_line);
-                New_log.Add($"У существа {Defender.Name} осталось {Defender.Current_stats[(int)Stat.hp]} здоровья");
+                //New_log.Add($"У существа {Defender.Name} осталось {Defender.Current_stats[(int)Stat.hp]} здоровья");
             }
         }
     }
