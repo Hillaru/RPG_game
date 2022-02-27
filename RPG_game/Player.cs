@@ -11,10 +11,11 @@ namespace RPG_game
     {
         public PlayableCharacters Player_type;
 
-        public Player(string _Name, int[] _Stats, double[] _Body_part_multiplier, PlayableCharacters type)
+        public Player(string _Name, int[] _Stats, double[] _Body_part_multiplier, PlayableCharacters type, int[] _Skills)
         {
             Name = _Name;
             Player_type = type;
+            Skills = _Skills;
 
             for (int i = 0; i < Body_parts_count; i++)
                 Body_part_multiplier[i] = _Body_part_multiplier[i];
@@ -104,7 +105,7 @@ namespace RPG_game
 
         public object Clone()
         {
-            return new Player(Name, Max_stats, Body_part_multiplier, Player_type);
+            return new Player(Name, Max_stats, Body_part_multiplier, Player_type, Skills);
         }
     }
 
@@ -113,6 +114,7 @@ namespace RPG_game
         public Player[] Playable_characters_list = new Player[Player_list_size];
         int[] _Stats;
         double[] _Body_part_multiplier = new double[Body_parts_count];
+        int[] _Skills;
 
         public Players_db()
         {
@@ -132,7 +134,8 @@ namespace RPG_game
             _Body_part_multiplier[(int)Body_part.head] = 1.2;
             _Body_part_multiplier[(int)Body_part.body] = 1;
             _Body_part_multiplier[(int)Body_part.legs] = 0.8;
-            Playable_characters_list[(int)PlayableCharacters.hero] = new Player("Герой", _Stats, _Body_part_multiplier, PlayableCharacters.hero);
+            _Skills = new int[] { (int)Skills.medium_atk };
+            Playable_characters_list[(int)PlayableCharacters.hero] = new Player("Герой", _Stats, _Body_part_multiplier, PlayableCharacters.hero, _Skills);
 
             _Stats = new int[Stats_list_size];
             _Stats[(int)Stat.hp] = 10000;
@@ -150,7 +153,8 @@ namespace RPG_game
             _Body_part_multiplier[(int)Body_part.head] = 1;
             _Body_part_multiplier[(int)Body_part.body] = 1;
             _Body_part_multiplier[(int)Body_part.legs] = 1;
-            Playable_characters_list[(int)PlayableCharacters.super_hero] = new Player("Босс качалки", _Stats, _Body_part_multiplier, PlayableCharacters.super_hero);
+            _Skills = new int[] { (int)Skills.medium_atk };
+            Playable_characters_list[(int)PlayableCharacters.super_hero] = new Player("Босс качалки", _Stats, _Body_part_multiplier, PlayableCharacters.super_hero, _Skills);
         }
     }
 }

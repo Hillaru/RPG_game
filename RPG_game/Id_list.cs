@@ -27,14 +27,15 @@ namespace RPG_game
         public static int Player_list_size = 60;
         public static int Max_player_squad_size = 3;
         public static int Body_parts_count = 3;
+        public static int Skills_count = 150;
 
         public static List<Stat_gain>Stats_gain_per_showable = new List<Stat_gain>
         {
             new Stat_gain(Stat.strength, new Stat[]{Stat.hp, Stat.stamina, Stat.physical_strength}, new int[]{1, 1, 3}),
             new Stat_gain(Stat.vitality, new Stat[]{Stat.hp, Stat.defence, Stat.resistance}, new int[]{2, 3, 3}),
             new Stat_gain(Stat.magic, new Stat[]{Stat.magical_strength, Stat.mana}, new int[]{3, 1}),
-            new Stat_gain(Stat.agility, new Stat[]{Stat.accuracy, Stat.evasion, Stat.initiative}, new int[]{2, 2, 2}),
-            new Stat_gain(Stat.spirit, new Stat[]{Stat.hp, Stat.stamina, Stat.mana}, new int[]{2, 3, 3}),
+            new Stat_gain(Stat.agility, new Stat[]{Stat.accuracy, Stat.evasion, Stat.speed}, new int[]{2, 2, 2}),
+            new Stat_gain(Stat.spirit, new Stat[]{Stat.hp, Stat.stamina, Stat.mana, Stat.initiative}, new int[]{1, 3, 3, 2}),
         };
     }
 
@@ -157,6 +158,18 @@ namespace RPG_game
         head = 0,
         body = 1,
         legs = 2
+    }
+
+    public enum Skills : int
+    {
+        //обычные атаки оружием
+        light_atk = 0,
+        medium_atk,
+        heavy_atk,
+        super_heavy_atk
+
+        //физические скиллы
+
     }
 
     public enum Stat : int

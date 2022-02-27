@@ -18,6 +18,7 @@ namespace RPG_game
         List<String> New_log = new List<string>();
         Random rand = new Random((int)DateTime.Now.Ticks);
         public Battle_status Status = Battle_status.in_process;
+        private Skills_db skills_db = new Skills_db();
 
         public Battle_controller(List<Player> _Player_squad, List<Enemy> _Enemy_squad)
         {
@@ -108,6 +109,12 @@ namespace RPG_game
                 Player_squad[i].Max_stats[(int)Stat.action_points] = Player_squad[i].Current_stats[(int)Stat.speed] / 10;
                 Player_squad[i].Current_stats[(int)Stat.action_points] = Player_squad[i].Max_stats[(int)Stat.action_points];
             }
+
+            for (int i = 0; i < Enemy_squad.Count; i++)
+            {
+                Enemy_squad[i].Max_stats[(int)Stat.action_points] = Enemy_squad[i].Current_stats[(int)Stat.speed] / 10;
+                Enemy_squad[i].Current_stats[(int)Stat.action_points] = Enemy_squad[i].Max_stats[(int)Stat.action_points];
+            }
         }
 
         private void Turn()
@@ -119,14 +126,27 @@ namespace RPG_game
             Body_part Defended_part = (Body_part)rand.Next(0, 2);
             Body_part Part_to_attack = (Body_part)rand.Next(0, 2);
             Unit Target = Player_squad[rand.Next(0, Player_squad.Count - 1)];
+            List<Skill> Available_skills = new List<Skill>();
+
+            for (int i = 0; i < Attacker.Skills.Length; i++)
+            {
+                int Skill_id = Attacker.Skills[i];
+                Skill skill = skills_db.Skills_list[Skill_id];
+                if ((int)skill.Parameters[1] <= Attacker.Current_stats[(int)Stat.action_points])  //если стоимость скилла меньше оставшихся экшн поинтов то добавляем в доступные для каста
+                    Available_skills.Add(skill);
+            }         
 
             if (Attacker.Can_block)
                 Set_defended_state(Attacker, Defended_part);
-            Physical_attack(Attacker, Target, Part_to_attack);
 
-            Status = Win_condition();
-            if (Status != Battle_status.in_process)
-                return;
+            if (Available_skills.Count != 0)
+            {
+                Physical_attack(Attacker, Target, Part_to_attack);      //Добавить метод расшифровки скилла и применения нужных методов атаки (физ, маг) либо баффов, хилов и тд
+
+                Status = Win_condition();
+                if (Status != Battle_status.in_process)
+                    return;
+            }
 
             if (Curent_turn < Turn_order.Count() - 1)
             {
@@ -152,7 +172,7 @@ namespace RPG_game
             Player Attacker = (Player)Turn_order[Curent_turn];
 
             Set_defended_state(Attacker, Defended_part);
-            Physical_attack(Attacker, Target, Part_to_attack);
+            Physical_attack(Attacker, Target, Part_to_attack);           //Добавить атаку скиллом, добавить использование экшн поинтов
 
             Status = Win_condition();
             if (Status != Battle_status.in_process)
@@ -188,7 +208,7 @@ namespace RPG_game
             }
         }
 
-        private void Physical_attack(Unit Attacker, Unit Defender, Body_part body_Part)
+        private void Physical_attack(Unit Attacker, Unit Defender, Body_part body_Part)    //Переработать для скиллов, также изменить сообщения логгера
         {
             double Atk = Attacker.Current_stats[(int)Stat.physical_strength];
             double Def = Defender.Current_stats[(int)Stat.defence];
@@ -197,14 +217,17 @@ namespace RPG_game
             int A_lvl = Attacker.Current_stats[(int)Stat.lvl];
             int D_lvl = Defender.Current_stats[(int)Stat.lvl];
 
-            double Dodge_chance = 1 - ((A_lvl * Acc) / (Eva * D_lvl));
-            if (Dodge_chance > 0 && rand.NextDouble() < Dodge_chance)
+            if (Defender.Can_dodge)
             {
-                Logger(Log_type.attack, Attacker, Defender, body_Part, true);
-                return;
+                double Dodge_chance = 1 - ((A_lvl * Acc) / (Eva * D_lvl));
+                if (Dodge_chance > 0 && rand.NextDouble() < Dodge_chance)
+                {
+                    Logger(Log_type.attack, Attacker, Defender, body_Part, true);
+                    return;
+                }
             }
 
-            if (Defender.Defended_state[(int)body_Part])
+            if (Defender.Defended_state[(int)body_Part] && Defender.Can_block)
                 Def *= 2;
 
             Atk = Atk * Defender.Body_part_multiplier[(int)body_Part];
@@ -326,7 +349,7 @@ namespace RPG_game
                 if (Dodge == true)
                     Log_line = $"{Attacker.Name} атакует {Defender.Name} и промахивается";
                 else
-                if (Defender.Defended_state[(int)body_Part] == true)
+                if (Defender.Defended_state[(int)body_Part] == true && Defender.Can_block)
                     Log_line = $"{Attacker.Name} атакует {Defender.Name} и наносит {Dmg} урона (блок)";
                 else
                     Log_line = $"{Attacker.Name} атакует {Defender.Name} и наносит {Dmg} урона";
