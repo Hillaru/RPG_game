@@ -178,6 +178,7 @@ namespace RPG_game
 
         exp_gain = 30,
         stat_points = 31,
+        action_points = 32,
 
         //showed stats
         strength = 40,  

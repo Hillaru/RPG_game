@@ -24,26 +24,6 @@ namespace RPG_game
         int[] Stats_to_add;
         int Stat_points = 0;
 
-        enum ErrorType : int
-        {
-            no_target = 0
-        }
-
-        public Main_window()
-        {
-            InitializeComponent();
-        }
-
-        public void Change_controls_properties(string tag, bool visible, bool enabled = true)
-        {
-            for (int i = 0; i < Controls.Count; i++)
-                if ((string)Controls[i].Tag == tag)
-                {
-                    Controls[i].Visible = visible;
-                    Controls[i].Enabled = enabled;
-                }
-        }
-
         private void Main_window_Load(object sender, EventArgs e)
         {
             atk_body_RadioButton.Checked = true;
@@ -51,9 +31,98 @@ namespace RPG_game
 
             Change_controls_properties("battle_form", false);
 
-            continue_btn.Visible = true;
+            Start_battle_button_initializer(true);
         }
 
+        #region Log_actions
+        enum ErrorType : int
+        {
+            no_target = 0
+        }
+
+        private void Log_error(ErrorType err)
+        {
+            String error_definition;
+
+            switch (err)
+            {
+                case ErrorType.no_target:
+                    error_definition = "Не выбрана цель для атаки\n";
+                    log_window.Text += error_definition;
+                    break;
+                default:
+                    error_definition = "Возникла неизвестная ошибка\n";
+                    log_window.Text += error_definition;
+                    return;
+            }
+        }
+
+        public Main_window()
+        {
+            InitializeComponent();
+        }
+
+        private void Show_stats()
+        {
+            enemy_stats.Items.Clear();
+        }
+        private void Show_stats(Enemy unit)
+        {
+            enemy_stats.Items.Clear();
+            int j = 0;
+
+            for (int i = 1; i < 30; i++)
+            {
+                if (unit.Max_stats[i] != 0)
+                {
+                    String line = $"{Stat_to_string((Stat)i)}: {unit.Current_stats[i]}";
+                    if (unit.Current_stats[i] != unit.Max_stats[i])
+                        line += $" / {unit.Max_stats[i]}";
+                    enemy_stats.Items.Insert(j, line);
+                    j++;
+                }
+            }
+        }
+        private void Show_stats(Player unit)
+        {
+            player_stats.Items.Clear();
+            int j = 0;
+
+            for (int i = 1; i < 30; i++)
+            {
+                if (unit.Max_stats[i] != 0)
+                {
+                    String line = $"{Stat_to_string((Stat)i)}: {unit.Current_stats[i]}";
+                    if (unit.Current_stats[i] != unit.Max_stats[i])
+                        line += $" / {unit.Max_stats[i]}";
+                    player_stats.Items.Insert(j, line);
+                    j++;
+                }
+            }
+        }
+
+        private void Update_log()
+        {
+            List<String> Logs = Core.BC.Logger();
+            foreach (String s in Logs)
+                log_window.Text += s + "\n";
+        }
+
+        private void Update_interface()
+        {
+            Update_log();
+            Update_battle_status();
+            Show_stats(Core.Player_squad[0]);
+        }
+
+        private void Log_window_TextChanged(object sender, EventArgs e)
+        {
+            log_window.SelectionStart = log_window.Text.Length;
+            log_window.ScrollToCaret();
+        }
+        #endregion
+
+        #region Lvl_up_panel
         private void Show_lvlup_panel()
         {
             Player player = Core.Player_squad[0];
@@ -161,11 +230,11 @@ namespace RPG_game
         {
             Button button = (Button)sender;
             String Name = button.Name;
-            Player player = Core.Player_squad[0];           
+            Player player = Core.Player_squad[0];
 
             if (Name == "cncl_btn")
             {
-                continue_btn.Visible = true;
+                Start_battle_button_initializer(true);
                 lvl_up_panel.Dispose();
                 return;
             }
@@ -173,7 +242,7 @@ namespace RPG_game
             if (Name == "accept_btn")
             {
                 player.Active_stats_gain(Stats_to_add, Stat_points);
-                continue_btn.Visible = true;
+                Start_battle_button_initializer(true);
                 Show_stats(player);
                 lvl_up_panel.Dispose();
                 return;
@@ -201,6 +270,40 @@ namespace RPG_game
 
             lvl_up_panel.Controls.Find("lvl_points_lbl", true)[0].Text = $"Осталось очков характеристик: {Stat_points}";
             lbl.Text = $"{words[0]}: {player.Max_stats[stat_index] + Stats_to_add[stat_index]}";
+        }
+        #endregion
+
+        public void Change_controls_properties(string tag, bool visible, bool enabled = true)
+        {
+            for (int i = 0; i < Controls.Count; i++)
+                if ((string)Controls[i].Tag == tag)
+                {
+                    Controls[i].Visible = visible;
+                    Controls[i].Enabled = enabled;
+                }
+        }
+
+        public void Start_battle_button_initializer(bool Show)
+        {
+            if (Show)
+            {
+                Button start_btn = new Button();
+                start_btn.Anchor = (AnchorStyles.Bottom);
+                start_btn.Name = "start_btn";
+                start_btn.Font = new Font("Arial Narrow", 20, FontStyle.Bold);
+                start_btn.BackColor = Color.Gray;
+                start_btn.ForeColor = Color.Black;
+                start_btn.Size = new Size(325, 124);
+                start_btn.Location = new Point(476, 540);
+                start_btn.FlatStyle = FlatStyle.Popup;
+                start_btn.Text = "Начать битву";
+                start_btn.Click += new EventHandler(start_battle_btn_Click);
+                Controls.Add(start_btn);
+            }
+            else
+            {
+                Controls.Find("start_btn", true)[0].Dispose();
+            }
         }
 
         private void atk_Button_Click(object sender, EventArgs e)
@@ -246,23 +349,6 @@ namespace RPG_game
                 enemies_list.SetSelected(0, true);
         }
 
-        private void Log_error(ErrorType err)
-        {
-            String error_definition;
-
-            switch (err)
-            {
-                case ErrorType.no_target:
-                    error_definition = "Не выбрана цель для атаки\n";
-                    log_window.Text += error_definition;
-                    break;
-                default:
-                    error_definition = "Возникла неизвестная ошибка\n";
-                    log_window.Text += error_definition;
-                    return;
-            }
-        }
-
         private void Update_battle_status()
         {
             if (Core.BC.Status == Battle_status.player_win)
@@ -275,7 +361,7 @@ namespace RPG_game
                 if (Core.Player_squad[0].Current_stats[(int)Stat.stat_points] != 0)
                     Show_lvlup_panel();
                 else
-                    continue_btn.Visible = true;
+                    Start_battle_button_initializer(true);
             }
 
             if (Core.BC.Status == Battle_status.enemies_win)
@@ -285,68 +371,14 @@ namespace RPG_game
                 def_body_RadioButton.Checked = true;
 
                 Change_controls_properties("battle_form", false);
-                continue_btn.Visible = true;
+                Start_battle_button_initializer(true);
             }
         }
 
-        private void Show_stats()
-        {
-            enemy_stats.Items.Clear();
-        }
-        private void Show_stats(Enemy unit)
-        {
-            enemy_stats.Items.Clear();
-            int j = 0;
-
-            for (int i = 1; i < 30; i++)
-            {
-                if (unit.Max_stats[i] != 0)
-                {
-                    String line = $"{Stat_to_string((Stat)i)}: {unit.Current_stats[i]}";
-                    if (unit.Current_stats[i] != unit.Max_stats[i])
-                        line += $" / {unit.Max_stats[i]}";
-                    enemy_stats.Items.Insert(j, line);
-                    j++;
-                }
-            }
-        }
-        private void Show_stats(Player unit)
-        {
-            player_stats.Items.Clear();
-            int j = 0;
-
-            for (int i = 1; i < 30; i++)
-            {
-                if (unit.Max_stats[i] != 0)
-                {
-                    String line = $"{Stat_to_string((Stat)i)}: {unit.Current_stats[i]}";
-                    if (unit.Current_stats[i] != unit.Max_stats[i])
-                        line += $" / {unit.Max_stats[i]}";
-                    player_stats.Items.Insert(j, line);
-                    j++;
-                }
-            }
-        }
-
-        private void Update_log()
-        {
-            List<String> Logs = Core.BC.Logger();
-            foreach (String s in Logs)
-                log_window.Text += s + "\n";
-        }
-
-        private void Update_interface()
-        {
-            Update_log();
-            Update_battle_status();
-            Show_stats(Core.Player_squad[0]);
-        }
-
-        private void continue_btn_Click(object sender, EventArgs e)
+        private void start_battle_btn_Click(object sender, EventArgs e)
         {
             log_window.Clear();
             Change_controls_properties("battle_form", true);
-            continue_btn.Visible = false;
 
             if (New_battle)
             {
@@ -358,6 +390,7 @@ namespace RPG_game
 
             Configure_enemy_data_source();
             Update_interface();
+            Start_battle_button_initializer(false);
         }
 
         private void radioButton_CheckedChanged(object sender, EventArgs e)
@@ -386,12 +419,6 @@ namespace RPG_game
                     break;
                 default: return;
             }
-        }
-
-        private void Log_window_TextChanged(object sender, EventArgs e)
-        {
-            log_window.SelectionStart = log_window.Text.Length;
-            log_window.ScrollToCaret();
         }
 
         private void enemies_list_SelectedIndexChanged(object sender, EventArgs e)

@@ -31,6 +31,21 @@ namespace RPG_game
                 Turn();
         }
 
+        private void Update_turn_order()
+        {
+            Turn_order = new List<Unit>();
+            foreach (Player p in Player_squad)
+                if (!p.Is_dead)
+                    Turn_order.Add(p);
+            foreach (Enemy e in Enemy_squad)
+                if (!e.Is_dead)
+                    Turn_order.Add(e);
+            Sort_by_initiative();
+
+            Logger(Log_type.turn_order);
+            Logger(Log_type.turn);
+        }
+
         private void Sort_by_initiative()
         {
             int i, j;
@@ -51,14 +66,47 @@ namespace RPG_game
             }
         }
 
-        public void Set_defended_state(Unit unit, Body_part body_Part)
+        private Battle_status Win_condition()
         {
-            for (int i = 0; i < Constants.Body_parts_count; i++)
+            int Enemy_count = 0, Players_count = 0;
+
+            foreach (Player p in Player_squad)
+                if (!p.Is_dead)
+                    Players_count++;
+            foreach (Enemy e in Enemy_squad)
+                if (!e.Is_dead)
+                    Enemy_count++;
+
+            if (Players_count == 0)
             {
-                if ((Body_part)i == body_Part)
-                    unit.Defended_state[i] = true;
-                else
-                    unit.Defended_state[i] = false;
+                Logger(Log_type.end_of_battle, Battle_status.enemies_win);
+
+                return Battle_status.enemies_win;
+            }
+
+            if (Enemy_count == 0)
+            {
+                Logger(Log_type.end_of_battle, Battle_status.player_win);
+
+                int Total_exp = 0;
+                foreach (Enemy e in Enemy_squad)
+                    Total_exp += e.Current_stats[(int)Stat.exp_gain];
+
+                foreach (Player p in Player_squad)
+                    p.Lvl_up(Total_exp);
+
+                return Battle_status.player_win;
+            }
+
+            return Battle_status.in_process;
+        }
+
+        public void Reset_action_points()
+        {
+            for (int i = 0; i < Player_squad.Count; i++)
+            {
+                Player_squad[i].Max_stats[(int)Stat.action_points] = Player_squad[i].Current_stats[(int)Stat.speed] / 10;
+                Player_squad[i].Current_stats[(int)Stat.action_points] = Player_squad[i].Max_stats[(int)Stat.action_points];
             }
         }
 
@@ -127,40 +175,17 @@ namespace RPG_game
             if (!Turn_order[Curent_turn].Is_playable)
                 Turn();
         }
-
-        private Battle_status Win_condition()
+        
+        #region Attack_and_defence
+        public void Set_defended_state(Unit unit, Body_part body_Part)
         {
-            int Enemy_count = 0, Players_count = 0;
-
-            foreach (Player p in Player_squad)
-                if (!p.Is_dead)
-                    Players_count++;
-            foreach (Enemy e in Enemy_squad)
-                if (!e.Is_dead)
-                    Enemy_count++;
-
-            if (Players_count == 0)
+            for (int i = 0; i < Constants.Body_parts_count; i++)
             {
-                Logger(Log_type.end_of_battle, Battle_status.enemies_win);
-
-                return Battle_status.enemies_win;
+                if ((Body_part)i == body_Part)
+                    unit.Defended_state[i] = true;
+                else
+                    unit.Defended_state[i] = false;
             }
-
-            if (Enemy_count == 0)
-            {
-                Logger(Log_type.end_of_battle, Battle_status.player_win);
-
-                int Total_exp = 0;
-                foreach (Enemy e in Enemy_squad)
-                    Total_exp += e.Current_stats[(int)Stat.exp_gain];
-
-                foreach (Player p in Player_squad)
-                    p.Lvl_up(Total_exp);
-
-                return Battle_status.player_win;
-            }
-
-            return Battle_status.in_process;
         }
 
         private void Physical_attack(Unit Attacker, Unit Defender, Body_part body_Part)
@@ -205,21 +230,9 @@ namespace RPG_game
             }
         }
 
-        private void Update_turn_order()
-        {
-            Turn_order = new List<Unit>();
-            foreach (Player p in Player_squad)
-                if (!p.Is_dead)
-                    Turn_order.Add(p);
-            foreach (Enemy e in Enemy_squad)
-                if (!e.Is_dead)
-                    Turn_order.Add(e);
-            Sort_by_initiative();
+        #endregion
 
-            Logger(Log_type.turn_order);
-            Logger(Log_type.turn);
-        }
-
+        #region Logger
         public List<String> Logger()
         {
             List<String> Logs = new List<string>();
@@ -290,13 +303,13 @@ namespace RPG_game
                     case Battle_status.player_win:
                         New_log.Add("ПОБЕДА");
                         break;
-                    
+
                     case Battle_status.enemies_win:
                         New_log.Add("ПОРАЖЕНИЕ");
                         break;
 
                     default: return;
-                }                  
+                }
         }
         private void Logger(Log_type Type, Unit unit)
         {
@@ -321,6 +334,7 @@ namespace RPG_game
                 New_log.Add(Log_line);
                 //New_log.Add($"У существа {Defender.Name} осталось {Defender.Current_stats[(int)Stat.hp]} здоровья");
             }
-        }
+        } 
+        #endregion
     }
 }
