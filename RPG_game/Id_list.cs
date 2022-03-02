@@ -158,7 +158,6 @@ namespace RPG_game
         enemy,
         friend,
 
-        aoe,
         st,
         all,
         random

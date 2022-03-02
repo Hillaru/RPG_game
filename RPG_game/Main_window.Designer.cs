@@ -334,7 +334,7 @@ namespace RPG_game
             // 
             this.player_squad_lbl.AutoSize = true;
             this.player_squad_lbl.Font = new System.Drawing.Font("Segoe UI Semibold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.player_squad_lbl.Location = new System.Drawing.Point(1087, 418);
+            this.player_squad_lbl.Location = new System.Drawing.Point(1084, 418);
             this.player_squad_lbl.Name = "player_squad_lbl";
             this.player_squad_lbl.Size = new System.Drawing.Size(105, 25);
             this.player_squad_lbl.TabIndex = 12;

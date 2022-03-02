@@ -117,16 +117,92 @@ namespace RPG_game
             }
         }
 
-        public bool Can_cast(Skill skill, int skill_index, Unit caster)
+        public bool Can_cast(int skill_index, Unit caster)
         {
             if (caster.Skills[skill_index].cd != 0)
                 return false;
+
+            Skill skill = skills_db.Skills_list[caster.Skills[skill_index].skill_id];
 
             foreach (Resource_use r in skill.resources)
                 if (caster.Current_stats[(int)r.resource] < r.amount)
                     return false;
 
             return true;
+        }
+
+        public void Skill_caster(int skill_index, Unit caster, Unit target, Body_part body_Part)
+        {
+            Skill skill = skills_db.Skills_list[caster.Skills[skill_index].skill_id];
+
+            foreach (Skill_component comp in skill.components)
+            {
+                int Atk = 0;
+                for (int ind = 0; ind < comp.scales.Count; ind++)
+                    Atk += (int)Math.Round(caster.Current_stats[(int)comp.scales[ind].stat] * comp.scales[ind].scale);
+
+                List<Unit> Targets = new List<Unit>();
+                List<Unit> Enemies_squad = new List<Unit>();
+                List<Unit> Friend_squad = new List<Unit>();
+
+                if (caster.Is_playable)
+                {
+                    Friend_squad.AddRange(Player_squad);
+                    Enemies_squad.AddRange(Enemy_squad);
+                }
+                else
+                {
+                    Enemies_squad.AddRange(Player_squad);
+                    Friend_squad.AddRange(Enemy_squad);
+                }
+
+                if (comp.target_type == Skill_tag.friend && comp.targeting_style == Skill_tag.all)
+                    Targets = Friend_squad;
+                else
+                if (comp.target_type == Skill_tag.enemy && comp.targeting_style == Skill_tag.all)
+                    Targets = Enemies_squad;
+                else
+                    for (int ind = 0; ind < comp.number_of_targets; ind++)
+                    {
+                        switch (comp.target_type)
+                        {
+                            case Skill_tag.self:
+                                Targets.Add(caster);
+                                break;
+
+                            case Skill_tag.friend:
+                                if (comp.targeting_style == Skill_tag.st)
+                                    Targets.Add(target);
+                                if (comp.targeting_style == Skill_tag.random)
+                                    Targets.Add(Friend_squad[rand.Next(0, Friend_squad.Count)]);
+                                break;
+
+                            case Skill_tag.enemy:
+                                if (comp.targeting_style == Skill_tag.st)
+                                    Targets.Add(target);
+                                if (comp.targeting_style == Skill_tag.random)
+                                    Targets.Add(Enemies_squad[rand.Next(0, Enemies_squad.Count)]);
+                                break;
+
+                            default: break;
+                        }
+                    }
+
+                switch (comp.dmg_type)
+                {
+                    case Skill_tag.physical:
+                        for (int ind = 0; ind < Targets.Count; ind++)
+                            Physical_attack(caster, Targets[ind], body_Part, Atk);
+                        break;
+
+                    case Skill_tag.magical:
+                        for (int ind = 0; ind < Targets.Count; ind++)
+                            Magical_attack(caster, Targets[ind], body_Part, Atk);
+                        break;
+
+                    default: break;
+                }
+            }
         }
 
         private void Turn()
@@ -145,7 +221,7 @@ namespace RPG_game
                 int Skill_id = Attacker.Skills[i].skill_id;
                 Skill skill = skills_db.Skills_list[Skill_id];
 
-                if (Can_cast(skill, i, Attacker)) 
+                if (Can_cast(i, Attacker)) 
                     Available_skills.Add(skill);
             }  
 
@@ -222,9 +298,45 @@ namespace RPG_game
             }
         }
 
-        private void Physical_attack(Unit Attacker, Unit Defender, Body_part body_Part, int Atk)    //Переработать для скиллов, также изменить сообщения логгера
+        private void Physical_attack(Unit Attacker, Unit Defender, Body_part body_Part, int Atk)   
         {
             int Def = Defender.Current_stats[(int)Stat.defence];
+            int Eva = Defender.Current_stats[(int)Stat.evasion];
+            int Acc = Attacker.Current_stats[(int)Stat.accuracy];
+            int A_lvl = Attacker.Current_stats[(int)Stat.lvl];
+            int D_lvl = Defender.Current_stats[(int)Stat.lvl];
+            bool block = false;
+
+            if (Defender.Can_dodge)
+            {
+                double Dodge_chance = 1 - ((A_lvl * Acc) / (Eva * D_lvl));
+                if (Dodge_chance > 0 && rand.NextDouble() < Dodge_chance)
+                {
+                    Logger(Log_type.attack, Defender, true);
+                    return;
+                }
+            }
+
+            if (Defender.Defended_state[(int)body_Part] && Defender.Can_block)
+            {
+                Def *= 2;
+                block = true;
+            }
+
+            Atk = (int)Math.Round(Atk * Defender.Body_part_multiplier[(int)body_Part]);
+            Atk -= Def;
+
+            if (Atk < 1) Atk = 1;
+
+            Defender.Current_stats[(int)Stat.hp] -= Atk;
+            Logger(Log_type.attack, Defender, false, block, Atk);
+
+            Alive_check(Defender);
+        }
+
+        private void Magical_attack(Unit Attacker, Unit Defender, Body_part body_Part, int Atk)
+        {
+            int Def = Defender.Current_stats[(int)Stat.resistance];
             int Eva = Defender.Current_stats[(int)Stat.evasion];
             int Acc = Attacker.Current_stats[(int)Stat.accuracy];
             int A_lvl = Attacker.Current_stats[(int)Stat.lvl];
