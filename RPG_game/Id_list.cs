@@ -134,6 +134,35 @@ namespace RPG_game
         }
     }
 
+    public enum Skill_interface_type : int
+    {
+        Select_enemy,
+        Select_player,
+        Select_both,
+        Select_none
+    }
+
+    public enum Skill_tag : int
+    {
+        resource = -100000,
+        cost,
+        cd,
+
+        physical,
+        magical,
+        buff,
+        debuff,
+        heal,
+
+        self,
+        enemy,
+        friend,
+
+        aoe,
+        st,
+        all,
+        random
+    }
     public enum Battle_status : int
     {
         in_process,
@@ -164,9 +193,9 @@ namespace RPG_game
     {
         //обычные атаки оружием
         light_atk = 0,
-        medium_atk,
-        heavy_atk,
-        super_heavy_atk
+        medium_atk = 1,
+        heavy_atk = 2,
+        super_heavy_atk = 3
 
         //физические скиллы
 

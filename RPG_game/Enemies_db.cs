@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RPG_game
 {
-    public class Enemy : Unit 
+    public class Enemy : Unit
     {
         //public List<Loot> Drop_list;
         public Enemies Enemy_type;
@@ -15,6 +15,12 @@ namespace RPG_game
         {
             Name = _Name;
             Enemy_type = type;
+            Skills = new Skill_with_cd[_Skills.Length];
+            for (int i = 0; i < _Skills.Length; i++)
+            {
+                Skills[i].skill_id = _Skills[i];
+                Skills[i].cd = 0;
+            }
 
             for (int i = 0; i < Constants.Body_parts_count; i++)
                 Body_part_multiplier[i] = _Body_part_multiplier[i];
@@ -53,7 +59,11 @@ namespace RPG_game
 
         public object Clone()
         {
-            return new Enemy(Name, Max_stats, Body_part_multiplier, Enemy_type, Skills);
+            int[] _Skills = new int[Skills.Length];
+            for (int i = 0; i < _Skills.Length; i++)
+                _Skills[i] = Skills[i].skill_id;
+
+            return new Enemy(Name, Max_stats, Body_part_multiplier, Enemy_type, _Skills);
         }
     }
 

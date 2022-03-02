@@ -15,7 +15,12 @@ namespace RPG_game
         {
             Name = _Name;
             Player_type = type;
-            Skills = _Skills;
+            Skills = new Skill_with_cd[_Skills.Length];
+            for (int i = 0; i < _Skills.Length; i++)
+            {
+                Skills[i].skill_id = _Skills[i];
+                Skills[i].cd = 0;
+            }
 
             for (int i = 0; i < Body_parts_count; i++)
                 Body_part_multiplier[i] = _Body_part_multiplier[i];
@@ -65,26 +70,9 @@ namespace RPG_game
             Max_stats[(int)Stat.lvl] += lvl_ups;
             Current_stats[(int)Stat.lvl] = Max_stats[(int)Stat.lvl];
 
-            //Passive_stats_gain(lvl_ups);
             Max_stats[(int)Stat.stat_points] += lvl_ups * 3;
             Current_stats[(int)Stat.stat_points] += lvl_ups * 3;
-        }
-        
-        /*
-        private void Passive_stats_gain(int lvl)
-        {
-            Players_db P_db = new Players_db();
-            Player Basic_variant = (Player)P_db.Playable_characters_list[(int)Player_type].Clone();
-            double Stats_multiplier = 0.05;
-
-            for (int i = 4; i < 30; i++)
-            {
-                int Stat_gain = (int)Math.Round(Basic_variant.Max_stats[i] * Stats_multiplier * lvl);
-                
-                Max_stats[i] += Stat_gain;
-                Current_stats[i] = Max_stats[i];
-            }
-        }*/
+        }      
 
         public void Active_stats_gain(int[] Stats_to_add, int Left_stat_points)
         {
@@ -105,7 +93,11 @@ namespace RPG_game
 
         public object Clone()
         {
-            return new Player(Name, Max_stats, Body_part_multiplier, Player_type, Skills);
+            int[] _Skills = new int[Skills.Length];
+            for (int i = 0; i < _Skills.Length; i++)
+                _Skills[i] = Skills[i].skill_id;
+
+            return new Player(Name, Max_stats, Body_part_multiplier, Player_type, _Skills);
         }
     }
 

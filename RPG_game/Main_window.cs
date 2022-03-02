@@ -135,8 +135,8 @@ namespace RPG_game
             lvl_up_panel.Font = new Font("Segoe UI Semibold", 20, FontStyle.Bold);
             lvl_up_panel.ForeColor = Color.Black;
             lvl_up_panel.Name = "lvlup_panel";
-            lvl_up_panel.Size = new Size(613, 517);
-            lvl_up_panel.Location = new Point(303, 23);
+            lvl_up_panel.Size = new Size(515, 666);
+            lvl_up_panel.Location = new Point(12, 3);
             lvl_up_panel.BackColor = Color.FromArgb(20, 20, 20);
             lvl_up_panel.BorderStyle = BorderStyle.FixedSingle;
             int num = 0;
@@ -293,8 +293,8 @@ namespace RPG_game
                 start_btn.Font = new Font("Arial Narrow", 20, FontStyle.Bold);
                 start_btn.BackColor = Color.Gray;
                 start_btn.ForeColor = Color.Black;
-                start_btn.Size = new Size(325, 124);
-                start_btn.Location = new Point(476, 540);
+                start_btn.Size = new Size(248, 110);
+                start_btn.Location = new Point(1008, 556);
                 start_btn.FlatStyle = FlatStyle.Popup;
                 start_btn.Text = "Начать битву";
                 start_btn.Click += new EventHandler(start_battle_btn_Click);

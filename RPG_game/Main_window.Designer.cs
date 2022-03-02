@@ -42,17 +42,24 @@ namespace RPG_game
             this.def_head_RadioButton = new System.Windows.Forms.RadioButton();
             this.Defence_lbl = new System.Windows.Forms.Label();
             this.enemies_list = new System.Windows.Forms.ListBox();
-            this.enemies_list_lbl = new System.Windows.Forms.Label();
+            this.enemy_squad_lbl = new System.Windows.Forms.Label();
             this.turn_panel = new System.Windows.Forms.Panel();
+            this.skill_description = new System.Windows.Forms.RichTextBox();
+            this.use_skill_btn = new System.Windows.Forms.Button();
             this.enemy_stats_group = new System.Windows.Forms.GroupBox();
             this.enemy_stats = new System.Windows.Forms.ListBox();
+            this.player_squad_lbl = new System.Windows.Forms.Label();
+            this.players_list = new System.Windows.Forms.ListBox();
             this.player_stats_group = new System.Windows.Forms.GroupBox();
             this.player_stats = new System.Windows.Forms.ListBox();
+            this.skill_panel = new System.Windows.Forms.GroupBox();
+            this.skills_list = new System.Windows.Forms.ListBox();
             this.atk_panel.SuspendLayout();
             this.def_panel.SuspendLayout();
             this.turn_panel.SuspendLayout();
             this.enemy_stats_group.SuspendLayout();
             this.player_stats_group.SuspendLayout();
+            this.skill_panel.SuspendLayout();
             this.SuspendLayout();
             // 
             // log_window
@@ -61,14 +68,13 @@ namespace RPG_game
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.log_window.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.log_window.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.log_window.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.log_window.ForeColor = System.Drawing.SystemColors.Window;
-            this.log_window.Location = new System.Drawing.Point(291, 12);
+            this.log_window.Location = new System.Drawing.Point(533, 16);
             this.log_window.Name = "log_window";
             this.log_window.ReadOnly = true;
             this.log_window.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.log_window.Size = new System.Drawing.Size(694, 418);
+            this.log_window.Size = new System.Drawing.Size(466, 650);
             this.log_window.TabIndex = 0;
             this.log_window.Tag = "";
             this.log_window.Text = "";
@@ -80,10 +86,11 @@ namespace RPG_game
             this.end_turn_Button.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.end_turn_Button.Font = new System.Drawing.Font("Arial Narrow", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.end_turn_Button.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.end_turn_Button.Location = new System.Drawing.Point(216, 17);
+            this.end_turn_Button.Location = new System.Drawing.Point(1008, 556);
             this.end_turn_Button.Name = "end_turn_Button";
-            this.end_turn_Button.Size = new System.Drawing.Size(146, 124);
+            this.end_turn_Button.Size = new System.Drawing.Size(248, 110);
             this.end_turn_Button.TabIndex = 2;
+            this.end_turn_Button.Tag = "battle_form";
             this.end_turn_Button.Text = "Закончить ход";
             this.end_turn_Button.UseVisualStyleBackColor = false;
             this.end_turn_Button.Click += new System.EventHandler(this.atk_Button_Click);
@@ -91,13 +98,14 @@ namespace RPG_game
             // atk_panel
             // 
             this.atk_panel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.atk_panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.atk_panel.Controls.Add(this.atk_legs_RadioButton);
             this.atk_panel.Controls.Add(this.atk_body_RadioButton);
             this.atk_panel.Controls.Add(this.Atttack_lbl);
             this.atk_panel.Controls.Add(this.atk_head_RadioButton);
-            this.atk_panel.Location = new System.Drawing.Point(14, 540);
+            this.atk_panel.Location = new System.Drawing.Point(12, 549);
             this.atk_panel.Name = "atk_panel";
-            this.atk_panel.Size = new System.Drawing.Size(164, 129);
+            this.atk_panel.Size = new System.Drawing.Size(246, 114);
             this.atk_panel.TabIndex = 3;
             this.atk_panel.Tag = "battle_form";
             // 
@@ -131,7 +139,7 @@ namespace RPG_game
             // 
             this.Atttack_lbl.AutoSize = true;
             this.Atttack_lbl.Font = new System.Drawing.Font("Segoe UI Semibold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Atttack_lbl.Location = new System.Drawing.Point(3, 7);
+            this.Atttack_lbl.Location = new System.Drawing.Point(88, 10);
             this.Atttack_lbl.Name = "Atttack_lbl";
             this.Atttack_lbl.Size = new System.Drawing.Size(63, 25);
             this.Atttack_lbl.TabIndex = 7;
@@ -153,13 +161,14 @@ namespace RPG_game
             // def_panel
             // 
             this.def_panel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.def_panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.def_panel.Controls.Add(this.def_legs_RadioButton);
             this.def_panel.Controls.Add(this.def_body_RadioButton);
             this.def_panel.Controls.Add(this.def_head_RadioButton);
             this.def_panel.Controls.Add(this.Defence_lbl);
-            this.def_panel.Location = new System.Drawing.Point(184, 540);
+            this.def_panel.Location = new System.Drawing.Point(264, 549);
             this.def_panel.Name = "def_panel";
-            this.def_panel.Size = new System.Drawing.Size(176, 129);
+            this.def_panel.Size = new System.Drawing.Size(248, 114);
             this.def_panel.TabIndex = 5;
             this.def_panel.Tag = "battle_form";
             // 
@@ -206,7 +215,7 @@ namespace RPG_game
             // 
             this.Defence_lbl.AutoSize = true;
             this.Defence_lbl.Font = new System.Drawing.Font("Segoe UI Semibold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.Defence_lbl.Location = new System.Drawing.Point(3, 7);
+            this.Defence_lbl.Location = new System.Drawing.Point(74, 10);
             this.Defence_lbl.Name = "Defence_lbl";
             this.Defence_lbl.Size = new System.Drawing.Size(77, 25);
             this.Defence_lbl.TabIndex = 6;
@@ -214,38 +223,75 @@ namespace RPG_game
             // 
             // enemies_list
             // 
-            this.enemies_list.BackColor = System.Drawing.Color.Gray;
+            this.enemies_list.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.enemies_list.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.enemies_list.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.enemies_list.ForeColor = System.Drawing.SystemColors.Window;
             this.enemies_list.FormattingEnabled = true;
             this.enemies_list.ItemHeight = 17;
-            this.enemies_list.Location = new System.Drawing.Point(2, 37);
+            this.enemies_list.Location = new System.Drawing.Point(264, 440);
             this.enemies_list.Name = "enemies_list";
-            this.enemies_list.Size = new System.Drawing.Size(208, 104);
+            this.enemies_list.Size = new System.Drawing.Size(242, 104);
             this.enemies_list.TabIndex = 9;
             this.enemies_list.SelectedIndexChanged += new System.EventHandler(this.enemies_list_SelectedIndexChanged);
             // 
-            // enemies_list_lbl
+            // enemy_squad_lbl
             // 
-            this.enemies_list_lbl.AutoSize = true;
-            this.enemies_list_lbl.Font = new System.Drawing.Font("Segoe UI Semibold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.enemies_list_lbl.Location = new System.Drawing.Point(3, 9);
-            this.enemies_list_lbl.Name = "enemies_list_lbl";
-            this.enemies_list_lbl.Size = new System.Drawing.Size(119, 25);
-            this.enemies_list_lbl.TabIndex = 7;
-            this.enemies_list_lbl.Text = "Выбор цели";
+            this.enemy_squad_lbl.AutoSize = true;
+            this.enemy_squad_lbl.Font = new System.Drawing.Font("Segoe UI Semibold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.enemy_squad_lbl.Location = new System.Drawing.Point(315, 415);
+            this.enemy_squad_lbl.Name = "enemy_squad_lbl";
+            this.enemy_squad_lbl.Size = new System.Drawing.Size(120, 25);
+            this.enemy_squad_lbl.TabIndex = 7;
+            this.enemy_squad_lbl.Text = "Отряд врага";
             // 
             // turn_panel
             // 
             this.turn_panel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.turn_panel.Controls.Add(this.enemies_list_lbl);
+            this.turn_panel.Controls.Add(this.skill_description);
+            this.turn_panel.Controls.Add(this.def_panel);
+            this.turn_panel.Controls.Add(this.use_skill_btn);
+            this.turn_panel.Controls.Add(this.enemy_squad_lbl);
+            this.turn_panel.Controls.Add(this.enemy_stats_group);
+            this.turn_panel.Controls.Add(this.atk_panel);
             this.turn_panel.Controls.Add(this.enemies_list);
-            this.turn_panel.Controls.Add(this.end_turn_Button);
-            this.turn_panel.Location = new System.Drawing.Point(880, 523);
+            this.turn_panel.Location = new System.Drawing.Point(12, 3);
             this.turn_panel.Name = "turn_panel";
-            this.turn_panel.Size = new System.Drawing.Size(365, 146);
+            this.turn_panel.Size = new System.Drawing.Size(515, 666);
             this.turn_panel.TabIndex = 10;
             this.turn_panel.Tag = "battle_form";
+            // 
+            // skill_description
+            // 
+            this.skill_description.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.skill_description.BackColor = System.Drawing.Color.Black;
+            this.skill_description.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.skill_description.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.skill_description.ForeColor = System.Drawing.SystemColors.Window;
+            this.skill_description.Location = new System.Drawing.Point(3, 306);
+            this.skill_description.Name = "skill_description";
+            this.skill_description.ReadOnly = true;
+            this.skill_description.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+            this.skill_description.Size = new System.Drawing.Size(255, 128);
+            this.skill_description.TabIndex = 14;
+            this.skill_description.Tag = "";
+            this.skill_description.Text = "";
+            // 
+            // use_skill_btn
+            // 
+            this.use_skill_btn.BackColor = System.Drawing.Color.Gray;
+            this.use_skill_btn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.use_skill_btn.Font = new System.Drawing.Font("Arial Narrow", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.use_skill_btn.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.use_skill_btn.Location = new System.Drawing.Point(3, 440);
+            this.use_skill_btn.Name = "use_skill_btn";
+            this.use_skill_btn.Size = new System.Drawing.Size(255, 104);
+            this.use_skill_btn.TabIndex = 12;
+            this.use_skill_btn.Tag = "battle_form";
+            this.use_skill_btn.Text = "Использовать способность";
+            this.use_skill_btn.UseVisualStyleBackColor = false;
             // 
             // enemy_stats_group
             // 
@@ -254,9 +300,9 @@ namespace RPG_game
             this.enemy_stats_group.Controls.Add(this.enemy_stats);
             this.enemy_stats_group.Font = new System.Drawing.Font("Segoe UI Semibold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.enemy_stats_group.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.enemy_stats_group.Location = new System.Drawing.Point(1003, 14);
+            this.enemy_stats_group.Location = new System.Drawing.Point(264, 0);
             this.enemy_stats_group.Name = "enemy_stats_group";
-            this.enemy_stats_group.Size = new System.Drawing.Size(248, 416);
+            this.enemy_stats_group.Size = new System.Drawing.Size(242, 409);
             this.enemy_stats_group.TabIndex = 11;
             this.enemy_stats_group.TabStop = false;
             this.enemy_stats_group.Tag = "battle_form";
@@ -281,8 +327,31 @@ namespace RPG_game
             this.enemy_stats.MultiColumn = true;
             this.enemy_stats.Name = "enemy_stats";
             this.enemy_stats.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.enemy_stats.Size = new System.Drawing.Size(235, 374);
+            this.enemy_stats.Size = new System.Drawing.Size(229, 323);
             this.enemy_stats.TabIndex = 0;
+            // 
+            // player_squad_lbl
+            // 
+            this.player_squad_lbl.AutoSize = true;
+            this.player_squad_lbl.Font = new System.Drawing.Font("Segoe UI Semibold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.player_squad_lbl.Location = new System.Drawing.Point(1087, 418);
+            this.player_squad_lbl.Name = "player_squad_lbl";
+            this.player_squad_lbl.Size = new System.Drawing.Size(105, 25);
+            this.player_squad_lbl.TabIndex = 12;
+            this.player_squad_lbl.Text = "Ваш отряд";
+            // 
+            // players_list
+            // 
+            this.players_list.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.players_list.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.players_list.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.players_list.ForeColor = System.Drawing.SystemColors.Window;
+            this.players_list.FormattingEnabled = true;
+            this.players_list.ItemHeight = 17;
+            this.players_list.Location = new System.Drawing.Point(1008, 446);
+            this.players_list.Name = "players_list";
+            this.players_list.Size = new System.Drawing.Size(248, 104);
+            this.players_list.TabIndex = 13;
             // 
             // player_stats_group
             // 
@@ -291,12 +360,12 @@ namespace RPG_game
             this.player_stats_group.Controls.Add(this.player_stats);
             this.player_stats_group.Font = new System.Drawing.Font("Segoe UI Semibold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.player_stats_group.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.player_stats_group.Location = new System.Drawing.Point(14, 13);
+            this.player_stats_group.Location = new System.Drawing.Point(1008, 6);
             this.player_stats_group.Name = "player_stats_group";
-            this.player_stats_group.Size = new System.Drawing.Size(259, 417);
+            this.player_stats_group.Size = new System.Drawing.Size(248, 409);
             this.player_stats_group.TabIndex = 12;
             this.player_stats_group.TabStop = false;
-            this.player_stats_group.Tag = "battle_form";
+            this.player_stats_group.Tag = "";
             this.player_stats_group.Text = "Характеристики игрока";
             // 
             // player_stats
@@ -318,8 +387,45 @@ namespace RPG_game
             this.player_stats.MultiColumn = true;
             this.player_stats.Name = "player_stats";
             this.player_stats.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.player_stats.Size = new System.Drawing.Size(247, 374);
+            this.player_stats.Size = new System.Drawing.Size(236, 357);
             this.player_stats.TabIndex = 13;
+            // 
+            // skill_panel
+            // 
+            this.skill_panel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.skill_panel.Controls.Add(this.skills_list);
+            this.skill_panel.Font = new System.Drawing.Font("Segoe UI Semibold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.skill_panel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.skill_panel.Location = new System.Drawing.Point(15, 3);
+            this.skill_panel.Name = "skill_panel";
+            this.skill_panel.Size = new System.Drawing.Size(255, 300);
+            this.skill_panel.TabIndex = 12;
+            this.skill_panel.TabStop = false;
+            this.skill_panel.Tag = "battle_form";
+            this.skill_panel.Text = "Выбор способностей";
+            // 
+            // skills_list
+            // 
+            this.skills_list.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.skills_list.BackColor = System.Drawing.SystemColors.MenuText;
+            this.skills_list.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.skills_list.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.skills_list.ForeColor = System.Drawing.SystemColors.Window;
+            this.skills_list.FormattingEnabled = true;
+            this.skills_list.ItemHeight = 17;
+            this.skills_list.Items.AddRange(new object[] {
+            "asd",
+            "asd",
+            "asd"});
+            this.skills_list.Location = new System.Drawing.Point(7, 22);
+            this.skills_list.MultiColumn = true;
+            this.skills_list.Name = "skills_list";
+            this.skills_list.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.skills_list.Size = new System.Drawing.Size(242, 272);
+            this.skills_list.TabIndex = 0;
             // 
             // Main_window
             // 
@@ -327,12 +433,13 @@ namespace RPG_game
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.MenuText;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.skill_panel);
+            this.Controls.Add(this.player_squad_lbl);
             this.Controls.Add(this.player_stats_group);
-            this.Controls.Add(this.enemy_stats_group);
+            this.Controls.Add(this.players_list);
             this.Controls.Add(this.turn_panel);
-            this.Controls.Add(this.def_panel);
-            this.Controls.Add(this.atk_panel);
             this.Controls.Add(this.log_window);
+            this.Controls.Add(this.end_turn_Button);
             this.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.Name = "Main_window";
             this.Text = "RPG game";
@@ -346,7 +453,9 @@ namespace RPG_game
             this.turn_panel.PerformLayout();
             this.enemy_stats_group.ResumeLayout(false);
             this.player_stats_group.ResumeLayout(false);
+            this.skill_panel.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -365,12 +474,18 @@ namespace RPG_game
         private System.Windows.Forms.Label Defence_lbl;
         private System.Windows.Forms.Label Atttack_lbl;
         private System.Windows.Forms.ListBox enemies_list;
-        private System.Windows.Forms.Label enemies_list_lbl;
+        private System.Windows.Forms.Label enemy_squad_lbl;
         private System.Windows.Forms.Panel turn_panel;
         private System.Windows.Forms.GroupBox enemy_stats_group;
         private System.Windows.Forms.GroupBox player_stats_group;
         private System.Windows.Forms.ListBox enemy_stats;
         private System.Windows.Forms.ListBox player_stats;
+        private System.Windows.Forms.Label player_squad_lbl;
+        private System.Windows.Forms.ListBox players_list;
+        private System.Windows.Forms.Button use_skill_btn;
+        private System.Windows.Forms.GroupBox skill_panel;
+        private System.Windows.Forms.ListBox skills_list;
+        private System.Windows.Forms.RichTextBox skill_description;
     }
 }
 

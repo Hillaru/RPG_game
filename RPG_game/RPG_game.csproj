@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Battle_controller.cs" />
+    <Compile Include="Buff.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Enemies_db.cs" />
     <Compile Include="Id_list.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rpg_core.cs" />
     <Compile Include="Skill.cs" />
+    <Compile Include="Special_effect.cs" />
     <Compile Include="Unit.cs" />
     <EmbeddedResource Include="Main_window.resx">
       <DependentUpon>Main_window.cs</DependentUpon>
