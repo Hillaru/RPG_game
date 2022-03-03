@@ -12,8 +12,8 @@ namespace RPG_game
     {
         public List<Player> Player_squad;
         public List<Enemy> Enemy_squad;
-        List<Unit> Turn_order = new List<Unit>();
-        int Curent_turn = 0, Raund_num = 1;
+        public List<Unit> Turn_order = new List<Unit>();
+        public int Curent_turn = 0, Raund_num = 1;
         List<String> Old_log = new List<string>();
         List<String> New_log = new List<string>();
         Random rand = new Random((int)DateTime.Now.Ticks);
@@ -26,6 +26,8 @@ namespace RPG_game
             Enemy_squad = _Enemy_squad;
             Logger(Log_type.battle_start);
             Logger(Log_type.raund_number);
+            Reset_action_points();
+            Cooldowns_decrese();
             Update_turn_order();
 
             if (!Turn_order[Curent_turn].Is_playable)
@@ -117,6 +119,17 @@ namespace RPG_game
             }
         }
 
+        public void Cooldowns_decrese()
+        {
+            for (int i = 0; i < Player_squad.Count; i++)
+                for (int j = 0; j < Player_squad[i].Skills.Length; j++)
+                    Player_squad[i].Skills[j].cd = Player_squad[i].Skills[j].cd != 0 ? Player_squad[i].Skills[j].cd - 1 : 0;
+
+            for (int i = 0; i < Enemy_squad.Count; i++)
+                for (int j = 0; j < Enemy_squad[i].Skills.Length; j++)
+                    Enemy_squad[i].Skills[j].cd = Enemy_squad[i].Skills[j].cd != 0 ? Enemy_squad[i].Skills[j].cd - 1 : 0;
+        }
+
         public bool Can_cast(int skill_index, Unit caster)
         {
             if (caster.Skills[skill_index].cd != 0)
@@ -134,6 +147,11 @@ namespace RPG_game
         public void Skill_caster(int skill_index, Unit caster, Unit target, Body_part body_Part)
         {
             Skill skill = skills_db.Skills_list[caster.Skills[skill_index].skill_id];
+
+            caster.Skills[skill_index].cd = skill.Cd;
+
+            foreach (Resource_use r in skill.resources)
+                caster.Current_stats[(int)r.resource] -= r.amount;
 
             foreach (Skill_component comp in skill.components)
             {
@@ -211,10 +229,13 @@ namespace RPG_game
                 return;
 
             Enemy Attacker = (Enemy)Turn_order[Curent_turn];
+
             Body_part Defended_part = (Body_part)rand.Next(0, 2);
-            Body_part Part_to_attack = (Body_part)rand.Next(0, 2);
-            Unit Target = Player_squad[rand.Next(0, Player_squad.Count - 1)];
-            List<Skill> Available_skills = new List<Skill>();
+            List<Skill> Available_skills;
+            Body_part Part_to_attack;
+
+            Part_to_attack = (Body_part)rand.Next(0, 2);
+            Available_skills = new List<Skill>();
 
             for (int i = 0; i < Attacker.Skills.Length; i++)
             {
@@ -228,43 +249,65 @@ namespace RPG_game
             if (Attacker.Can_block)
                 Set_defended_state(Attacker, Defended_part);
 
-            if (Available_skills.Count != 0)
+            if (Available_skills.Count != 0 && Status == Battle_status.in_process)
             {
+                int Skill_index = rand.Next(0, Available_skills.Count - 1);
 
-                //Physical_attack(Attacker, Target, Part_to_attack);      
+                int Skill_id = Attacker.Skills[Skill_index].skill_id;
+                Skill skill = skills_db.Skills_list[Skill_id];
+                Unit target = null;
 
-                Status = Win_condition();
-                if (Status != Battle_status.in_process)
-                    return;
-            }
+                switch (skill.Interface_Type)
+                {
+                    case Skill_interface_type.Select_enemy:
+                        target = Player_squad[rand.Next(0, Player_squad.Count - 1)];
+                        break;
 
-            if (Curent_turn < Turn_order.Count() - 1)
-            {
-                Curent_turn++;
-                Logger(Log_type.turn);
+                    case Skill_interface_type.Select_player:
+                        target = Enemy_squad[rand.Next(0, Enemy_squad.Count - 1)];
+                        break;
+
+                    case Skill_interface_type.Select_both:
+                        int rand_index = rand.Next(0, Enemy_squad.Count + Player_squad.Count - 1);
+                        if (rand_index >= Enemy_squad.Count)
+                            target = Player_squad[rand_index - Enemy_squad.Count];
+                        else
+                            target = Enemy_squad[rand_index];
+                        break;
+
+                    case Skill_interface_type.Select_none:
+                        break;
+                }
+
+                Skill_caster(Skill_index, Attacker, target, Part_to_attack);
             }
             else
-            {
-                Logger(Log_type.end_of_raund);
-                Raund_num++;
-                Curent_turn = 0;
-                Logger(Log_type.raund_number);
-                Update_turn_order();
-            }
-            if (!Turn_order[Curent_turn].Is_playable)
-                Turn();
+                Next_turn();
+
+            Turn();
         }
-        public void Turn(Body_part Defended_part, Body_part Part_to_attack, Unit Target)
-        {
+        public void Turn(Body_part Defended_part, Body_part Part_to_attack, Unit Target, int Skill_index)
+        {          
             if (!Turn_order[Curent_turn].Is_playable)
                 return;
 
             Player Attacker = (Player)Turn_order[Curent_turn];
 
-            Set_defended_state(Attacker, Defended_part);
-            //Physical_attack(Attacker, Target, Part_to_attack);           //Добавить атаку скиллом, добавить использование экшн поинтов
+            if (Attacker.Can_block)
+                Set_defended_state(Attacker, Defended_part);
 
-            Status = Win_condition();
+            int Skill_id = Attacker.Skills[Skill_index].skill_id;
+            Skill skill = skills_db.Skills_list[Skill_id];
+
+            if (Can_cast(Skill_index, Attacker))
+                Skill_caster(Skill_index, Attacker, Target, Part_to_attack);
+
+            if (Status != Battle_status.in_process)
+                Next_turn();
+        }
+
+        public void Next_turn()
+        {
             if (Status != Battle_status.in_process)
                 return;
 
@@ -272,11 +315,13 @@ namespace RPG_game
             {
                 Curent_turn++;
                 Logger(Log_type.turn);
-            }    
+            }
             else
             {
                 Logger(Log_type.end_of_raund);
                 Raund_num++;
+                Reset_action_points();
+                Cooldowns_decrese();
                 Curent_turn = 0;
                 Logger(Log_type.raund_number);
                 Update_turn_order();
@@ -307,24 +352,28 @@ namespace RPG_game
             int D_lvl = Defender.Current_stats[(int)Stat.lvl];
             bool block = false;
 
+            int def_mod = 0;
+
             if (Defender.Can_dodge)
             {
-                double Dodge_chance = 1 - ((A_lvl * Acc) / (Eva * D_lvl));
+                double Hit_chance = A_lvl * Acc / ((double)Eva * D_lvl);
+                double Dodge_chance = 1 - Hit_chance;
                 if (Dodge_chance > 0 && rand.NextDouble() < Dodge_chance)
                 {
-                    Logger(Log_type.attack, Defender, true);
+                    Logger(Log_type.attack, Defender, true, false, (int)(Dodge_chance * 100));
                     return;
                 }
             }
 
             if (Defender.Defended_state[(int)body_Part] && Defender.Can_block)
             {
+                def_mod = 3;
                 Def *= 2;
                 block = true;
             }
 
             Atk = (int)Math.Round(Atk * Defender.Body_part_multiplier[(int)body_Part]);
-            Atk -= Def;
+            Atk -= (int)(Atk * (D_lvl * (Def * 0.1) / ((4 - def_mod + Def * 0.1) * A_lvl)));
 
             if (Atk < 1) Atk = 1;
 
@@ -379,6 +428,8 @@ namespace RPG_game
 
                 Logger(Log_type.death, unit);
             }
+
+            Status = Win_condition();
         }
 
         #endregion
@@ -475,7 +526,7 @@ namespace RPG_game
             if (Type == Log_type.attack)
             {
                 if (Dodge == true)
-                    Log_line = $"- {Defender.Name} уворачивается";
+                    Log_line = $"- {Defender.Name} уворачивается (шанс {Dmg}%)";
                 else
                 if (Block == true)
                     Log_line = $"- {Defender.Name} блокирует и получает {Dmg} урона";

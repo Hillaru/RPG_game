@@ -155,7 +155,7 @@ namespace RPG_game
             cncl_btn.Name = "cncl_btn";
             cncl_btn.Font = new Font("Arial Narrow", 20, FontStyle.Bold);
             cncl_btn.BackColor = Color.Gray;
-            cncl_btn.Size = new Size(237, 51);
+            cncl_btn.Size = new Size(180, 51);
             cncl_btn.Location = new Point(35, 445);
             cncl_btn.FlatStyle = FlatStyle.Popup;
             cncl_btn.Text = "Отменить";
@@ -167,8 +167,8 @@ namespace RPG_game
             accept_btn.Name = "accept_btn";
             accept_btn.Font = new Font("Arial Narrow", 20, FontStyle.Bold);
             accept_btn.BackColor = Color.Gray;
-            accept_btn.Size = new Size(237, 51);
-            accept_btn.Location = new Point(336, 445);
+            accept_btn.Size = new Size(180, 51);
+            accept_btn.Location = new Point(266, 445);
             accept_btn.FlatStyle = FlatStyle.Popup;
             accept_btn.Text = "Подтвердить";
             accept_btn.Click += new EventHandler(lvlup_panel_Button_Click);
@@ -205,7 +205,7 @@ namespace RPG_game
                 r_button.Font = new Font("Arial Narrow", 20, FontStyle.Bold);
                 r_button.BackColor = Color.Gray;
                 r_button.Size = new Size(56, 51);
-                r_button.Location = new Point(461, 3);
+                r_button.Location = new Point(371, 3);
                 r_button.FlatStyle = FlatStyle.Popup;
                 r_button.Text = ">";
                 r_button.Click += new EventHandler(lvlup_panel_Button_Click);
@@ -306,7 +306,7 @@ namespace RPG_game
             }
         }
 
-        private void atk_Button_Click(object sender, EventArgs e)
+        private void use_skill_btn_Click(object sender, EventArgs e)
         {
             Enemy Target;
             try
@@ -319,9 +319,19 @@ namespace RPG_game
                 return;
             }
 
-            Core.BC.Turn(Def_part, Atk_part, Target);
+            Core.BC.Turn(Def_part, Atk_part, Target, 0);
             Configure_enemy_data_source();
             Update_interface();
+        }
+
+        private void end_turn_Button_Click(object sender, EventArgs e)
+        {
+            if (Core.BC.Turn_order[Core.BC.Curent_turn].Is_playable)
+            {
+                Core.BC.Next_turn();
+                Configure_enemy_data_source();
+                Update_interface();
+            }
         }
 
         private void Main_window_FormClosed(object sender, FormClosedEventArgs e)

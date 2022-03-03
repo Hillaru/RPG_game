@@ -93,7 +93,7 @@ namespace RPG_game
             this.end_turn_Button.Tag = "battle_form";
             this.end_turn_Button.Text = "Закончить ход";
             this.end_turn_Button.UseVisualStyleBackColor = false;
-            this.end_turn_Button.Click += new System.EventHandler(this.atk_Button_Click);
+            this.end_turn_Button.Click += new System.EventHandler(this.end_turn_Button_Click);
             // 
             // atk_panel
             // 
@@ -103,9 +103,9 @@ namespace RPG_game
             this.atk_panel.Controls.Add(this.atk_body_RadioButton);
             this.atk_panel.Controls.Add(this.Atttack_lbl);
             this.atk_panel.Controls.Add(this.atk_head_RadioButton);
-            this.atk_panel.Location = new System.Drawing.Point(12, 549);
+            this.atk_panel.Location = new System.Drawing.Point(3, 549);
             this.atk_panel.Name = "atk_panel";
-            this.atk_panel.Size = new System.Drawing.Size(246, 114);
+            this.atk_panel.Size = new System.Drawing.Size(255, 114);
             this.atk_panel.TabIndex = 3;
             this.atk_panel.Tag = "battle_form";
             // 
@@ -168,7 +168,7 @@ namespace RPG_game
             this.def_panel.Controls.Add(this.Defence_lbl);
             this.def_panel.Location = new System.Drawing.Point(264, 549);
             this.def_panel.Name = "def_panel";
-            this.def_panel.Size = new System.Drawing.Size(248, 114);
+            this.def_panel.Size = new System.Drawing.Size(242, 114);
             this.def_panel.TabIndex = 5;
             this.def_panel.Tag = "battle_form";
             // 
@@ -292,6 +292,7 @@ namespace RPG_game
             this.use_skill_btn.Tag = "battle_form";
             this.use_skill_btn.Text = "Использовать способность";
             this.use_skill_btn.UseVisualStyleBackColor = false;
+            this.use_skill_btn.Click += new System.EventHandler(this.use_skill_btn_Click);
             // 
             // enemy_stats_group
             // 

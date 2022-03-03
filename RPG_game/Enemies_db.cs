@@ -15,6 +15,9 @@ namespace RPG_game
         {
             Name = _Name;
             Enemy_type = type;
+            Can_block = _can_block;
+            Can_dodge = _can_dodge;
+
             Skills = new Skill_with_cd[_Skills.Length];
             for (int i = 0; i < _Skills.Length; i++)
             {
@@ -63,7 +66,7 @@ namespace RPG_game
             for (int i = 0; i < _Skills.Length; i++)
                 _Skills[i] = Skills[i].skill_id;
 
-            return new Enemy(Name, Max_stats, Body_part_multiplier, Enemy_type, _Skills);
+            return new Enemy(Name, Max_stats, Body_part_multiplier, Enemy_type, _Skills, Can_block, Can_dodge);
         }
     }
 
