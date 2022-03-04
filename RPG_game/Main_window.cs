@@ -20,9 +20,15 @@ namespace RPG_game
         Body_part Def_part = Body_part.body;
         bool New_battle = true;
         List<Enemy> Enemy_ds = new List<Enemy>();
+        List<Player> Player_ds = new List<Player>();
         Panel lvl_up_panel;
         int[] Stats_to_add;
         int Stat_points = 0;
+
+        public Main_window()
+        {
+            InitializeComponent();
+        }
 
         private void Main_window_Load(object sender, EventArgs e)
         {
@@ -55,11 +61,6 @@ namespace RPG_game
                     log_window.Text += error_definition;
                     return;
             }
-        }
-
-        public Main_window()
-        {
-            InitializeComponent();
         }
 
         private void Show_stats()
@@ -103,6 +104,9 @@ namespace RPG_game
 
         private void Update_log()
         {
+            if (Core.BC == null)
+                return;
+
             List<String> Logs = Core.BC.Logger();
             foreach (String s in Logs)
                 log_window.Text += s + "\n";
@@ -112,7 +116,37 @@ namespace RPG_game
         {
             Update_log();
             Update_battle_status();
+            Configure_player_data_source();
             Show_stats(Core.Player_squad[0]);
+        }
+
+        private void Update_battle_status()
+        {
+            if (Core.BC == null)
+                return;
+
+            if (Core.BC.Status == Battle_status.player_win)
+            {
+                atk_body_RadioButton.Checked = true;
+                def_body_RadioButton.Checked = true;
+
+                Change_controls_properties("battle_form", false);
+
+                if (Core.Player_squad[0].Current_stats[(int)Stat.stat_points] != 0)
+                    Show_lvlup_panel();
+                else
+                    Start_battle_button_initializer(true);
+            }
+
+            if (Core.BC.Status == Battle_status.enemies_win)
+            {
+                New_battle = true;
+                atk_body_RadioButton.Checked = true;
+                def_body_RadioButton.Checked = true;
+
+                Change_controls_properties("battle_form", false);
+                Start_battle_button_initializer(true);
+            }
         }
 
         private void Log_window_TextChanged(object sender, EventArgs e)
@@ -330,6 +364,7 @@ namespace RPG_game
             {
                 Core.BC.Next_turn();
                 Configure_enemy_data_source();
+                Configure_player_data_source();
                 Update_interface();
             }
         }
@@ -337,52 +372,6 @@ namespace RPG_game
         private void Main_window_FormClosed(object sender, FormClosedEventArgs e)
         {
             
-        }
-
-        private void Configure_enemy_data_source()
-        {
-            Enemy_ds.Clear();
-            enemies_list.Items.Clear();
-            int j = 0;
-
-            for (int i = 0; i < Core.BC.Enemy_squad.Count; i++)
-            {
-                if (!Core.BC.Enemy_squad[i].Is_dead)
-                {
-                    Enemy_ds.Add(Core.BC.Enemy_squad[i]);
-                    enemies_list.Items.Insert(j, Core.BC.Enemy_squad[i].Name);
-                    j++;
-                }
-            }
-
-            if (enemies_list.Items.Count != 0)
-                enemies_list.SetSelected(0, true);
-        }
-
-        private void Update_battle_status()
-        {
-            if (Core.BC.Status == Battle_status.player_win)
-            {
-                atk_body_RadioButton.Checked = true;
-                def_body_RadioButton.Checked = true;
-
-                Change_controls_properties("battle_form", false);
-
-                if (Core.Player_squad[0].Current_stats[(int)Stat.stat_points] != 0)
-                    Show_lvlup_panel();
-                else
-                    Start_battle_button_initializer(true);
-            }
-
-            if (Core.BC.Status == Battle_status.enemies_win)
-            {
-                New_battle = true;
-                atk_body_RadioButton.Checked = true;
-                def_body_RadioButton.Checked = true;
-
-                Change_controls_properties("battle_form", false);
-                Start_battle_button_initializer(true);
-            }
         }
 
         private void start_battle_btn_Click(object sender, EventArgs e)
@@ -431,9 +420,64 @@ namespace RPG_game
             }
         }
 
+        #region Unit_stats
+        private void Configure_enemy_data_source()
+        {
+            int index = enemies_list.SelectedIndex;
+            Enemy_ds.Clear();
+            enemies_list.Items.Clear();
+            int j = 0;
+
+            for (int i = 0; i < Core.BC.Enemy_squad.Count; i++)
+            {
+                if (!Core.BC.Enemy_squad[i].Is_dead)
+                {
+                    Enemy_ds.Add(Core.BC.Enemy_squad[i]);
+                    enemies_list.Items.Insert(j, Core.BC.Enemy_squad[i].Name);
+                    j++;
+                }
+            }
+
+            if (index >= 0 && enemies_list.Items.Count > index)
+                enemies_list.SetSelected(index, true);
+            else
+            if (enemies_list.Items.Count != 0)
+                enemies_list.SetSelected(0, true);
+        }
+
+        private void Configure_player_data_source()
+        {
+            int index = players_list.SelectedIndex;
+            Player_ds.Clear();
+            players_list.Items.Clear();
+            int j = 0;
+
+            for (int i = 0; i < Core.Player_squad.Count; i++)
+            {
+                if (!Core.Player_squad[i].Is_dead)
+                {
+                    Player_ds.Add(Core.Player_squad[i]);
+                    players_list.Items.Insert(j, Core.Player_squad[i].Name);
+                    j++;
+                }
+            }
+
+            if (index >= 0 && players_list.Items.Count > index)
+                players_list.SetSelected(index, true);
+            else
+            if (players_list.Items.Count != 0)
+                players_list.SetSelected(0, true);
+        }
+
         private void enemies_list_SelectedIndexChanged(object sender, EventArgs e)
         {
             Show_stats(Enemy_ds[enemies_list.SelectedIndex]);
         }
+
+        private void players_list_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Show_stats(Player_ds[players_list.SelectedIndex]);
+        } 
+        #endregion
     }
 }

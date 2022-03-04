@@ -17,7 +17,6 @@ namespace RPG_game
 
         public Rpg_core()
         {
-                          
         }
 
         public void Initialize_player_squad()

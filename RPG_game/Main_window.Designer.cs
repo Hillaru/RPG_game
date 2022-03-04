@@ -321,9 +321,7 @@ namespace RPG_game
             this.enemy_stats.FormattingEnabled = true;
             this.enemy_stats.ItemHeight = 17;
             this.enemy_stats.Items.AddRange(new object[] {
-            "asd",
-            "asd",
-            "asd"});
+            " "});
             this.enemy_stats.Location = new System.Drawing.Point(7, 22);
             this.enemy_stats.MultiColumn = true;
             this.enemy_stats.Name = "enemy_stats";
@@ -353,6 +351,7 @@ namespace RPG_game
             this.players_list.Name = "players_list";
             this.players_list.Size = new System.Drawing.Size(248, 104);
             this.players_list.TabIndex = 13;
+            this.players_list.SelectedIndexChanged += new System.EventHandler(this.players_list_SelectedIndexChanged);
             // 
             // player_stats_group
             // 
@@ -381,9 +380,7 @@ namespace RPG_game
             this.player_stats.FormattingEnabled = true;
             this.player_stats.ItemHeight = 17;
             this.player_stats.Items.AddRange(new object[] {
-            "asd",
-            "asd",
-            "asd"});
+            " "});
             this.player_stats.Location = new System.Drawing.Point(6, 21);
             this.player_stats.MultiColumn = true;
             this.player_stats.Name = "player_stats";

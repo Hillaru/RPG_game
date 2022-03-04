@@ -69,6 +69,19 @@ namespace RPG_game
             }
         }
 
+        private void Alive_check(Unit unit)
+        {
+            if (unit.Current_stats[(int)Stat.hp] <= 0 && !unit.Is_dead)
+            {
+                Turn_order.Remove(unit);
+                unit.Is_dead = true;
+
+                Logger(Log_type.death, unit);
+            }
+
+            Status = Win_condition();
+        }
+
         private Battle_status Win_condition()
         {
             int Enemy_count = 0, Players_count = 0;
@@ -280,11 +293,10 @@ namespace RPG_game
                 }
 
                 Skill_caster(Skill_index, Attacker, target, Part_to_attack);
+                Turn();
             }
             else
-                Next_turn();
-
-            Turn();
+                Next_turn();            
         }
         public void Turn(Body_part Defended_part, Body_part Part_to_attack, Unit Target, int Skill_index)
         {          
@@ -301,9 +313,6 @@ namespace RPG_game
 
             if (Can_cast(Skill_index, Attacker))
                 Skill_caster(Skill_index, Attacker, Target, Part_to_attack);
-
-            if (Status != Battle_status.in_process)
-                Next_turn();
         }
 
         public void Next_turn()
@@ -417,19 +426,6 @@ namespace RPG_game
             Logger(Log_type.attack, Defender, false, block, Atk);
 
             Alive_check(Defender);
-        }
-
-        private void Alive_check(Unit unit)
-        {
-            if (unit.Current_stats[(int)Stat.hp] <= 0 && !unit.Is_dead)
-            {
-                Turn_order.Remove(unit);
-                unit.Is_dead = true;
-
-                Logger(Log_type.death, unit);
-            }
-
-            Status = Win_condition();
         }
 
         #endregion
