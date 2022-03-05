@@ -21,9 +21,11 @@ namespace RPG_game
         bool New_battle = true;
         List<Enemy> Enemy_ds = new List<Enemy>();
         List<Player> Player_ds = new List<Player>();
+        List<int> Skills_ds = new List<int>();
         Panel lvl_up_panel;
         int[] Stats_to_add;
         int Stat_points = 0;
+        Skills_db s_Db = new Skills_db();
 
         public Main_window()
         {
@@ -40,10 +42,17 @@ namespace RPG_game
             Start_battle_button_initializer(true);
         }
 
+        private void Main_window_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
+        }
+
         #region Log_actions
         enum ErrorType : int
         {
-            no_target = 0
+            no_target = 0, 
+            no_skill,
+            cant_cast
         }
 
         private void Log_error(ErrorType err)
@@ -56,49 +65,18 @@ namespace RPG_game
                     error_definition = "Не выбрана цель для атаки\n";
                     log_window.Text += error_definition;
                     break;
+                case ErrorType.no_skill:
+                    error_definition = "Не выбрана способность\n";
+                    log_window.Text += error_definition;
+                    break;
+                case ErrorType.cant_cast:
+                    error_definition = "Невозможно использовать способность\n";
+                    log_window.Text += error_definition;
+                    break;
                 default:
                     error_definition = "Возникла неизвестная ошибка\n";
                     log_window.Text += error_definition;
                     return;
-            }
-        }
-
-        private void Show_stats()
-        {
-            enemy_stats.Items.Clear();
-        }
-        private void Show_stats(Enemy unit)
-        {
-            enemy_stats.Items.Clear();
-            int j = 0;
-
-            for (int i = 1; i < 30; i++)
-            {
-                if (unit.Max_stats[i] != 0)
-                {
-                    String line = $"{Stat_to_string((Stat)i)}: {unit.Current_stats[i]}";
-                    if (unit.Current_stats[i] != unit.Max_stats[i])
-                        line += $" / {unit.Max_stats[i]}";
-                    enemy_stats.Items.Insert(j, line);
-                    j++;
-                }
-            }
-        }
-        private void Show_stats(Player unit)
-        {
-            player_stats.Items.Clear();
-            int j = 0;
-
-            for (int i = 1; i < 30; i++)
-            {
-                if (unit.Max_stats[i] != 0)
-                {
-                    String line = $"{Stat_to_string((Stat)i)}: {unit.Current_stats[i]}";
-                    if (unit.Current_stats[i] != unit.Max_stats[i])
-                        line += $" / {unit.Max_stats[i]}";
-                    player_stats.Items.Insert(j, line);
-                    j++;
-                }
             }
         }
 
@@ -117,6 +95,7 @@ namespace RPG_game
             Update_log();
             Update_battle_status();
             Configure_player_data_source();
+            Configure_skills_data_source();
             Show_stats(Core.Player_squad[0]);
         }
 
@@ -154,8 +133,8 @@ namespace RPG_game
             log_window.SelectionStart = log_window.Text.Length;
             log_window.ScrollToCaret();
         }
-        #endregion
 
+        #endregion
         #region Lvl_up_panel
         private void Show_lvlup_panel()
         {
@@ -342,10 +321,10 @@ namespace RPG_game
 
         private void use_skill_btn_Click(object sender, EventArgs e)
         {
-            Enemy Target;
+            Enemy target;
             try
             {
-                Target = Enemy_ds[enemies_list.SelectedIndex];
+                target = Enemy_ds[enemies_list.SelectedIndex];
             }
             catch
             {
@@ -353,7 +332,24 @@ namespace RPG_game
                 return;
             }
 
-            Core.BC.Turn(Def_part, Atk_part, Target, 0);
+            int skill_index;
+            try
+            {
+                skill_index = skills_list.SelectedIndex;
+            }
+            catch
+            {
+                Log_error(ErrorType.no_skill);
+                return;
+            }
+
+            if (!Core.BC.Can_cast(skill_index, Core.BC.Turn_order[Core.BC.Curent_turn]))
+            {
+                Log_error(ErrorType.cant_cast);
+                return;
+            }
+
+            Core.BC.Turn(Def_part, Atk_part, target, skill_index);
             Configure_enemy_data_source();
             Update_interface();
         }
@@ -367,11 +363,6 @@ namespace RPG_game
                 Configure_player_data_source();
                 Update_interface();
             }
-        }
-
-        private void Main_window_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            
         }
 
         private void start_battle_btn_Click(object sender, EventArgs e)
@@ -420,7 +411,77 @@ namespace RPG_game
             }
         }
 
+        private void Configure_skills_data_source()
+        {
+            Skills_ds.Clear();
+            skills_list.Items.Clear();
+            int j = 0;
+            Unit caster;
+
+            try
+            {
+                caster = Core.BC.Turn_order[Core.BC.Curent_turn];
+            }
+            catch
+            {
+                caster = Core.Player_squad[0];
+            }
+
+            for (int i = 0; i < caster.Skills.Length; i++)
+            {
+                Skills_ds.Add(caster.Skills[i].skill_id);
+                skills_list.Items.Insert(j, s_Db.Skills_list[caster.Skills[i].skill_id].Name);
+                j++;
+            }
+
+            if (skills_list.Items.Count != 0)
+                skills_list.SetSelected(0, true);
+        }
+
+        private void skills_list_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (skills_list.SelectedIndex != -1)
+                skill_description.Text = s_Db.Skills_list[Skills_ds[skills_list.SelectedIndex]].Description;
+            else
+                skill_description.Text = "";
+        }
+
         #region Unit_stats
+        private void Show_stats(Enemy unit)
+        {
+            enemy_stats.Items.Clear();
+            int j = 0;
+
+            for (int i = 1; i < 30; i++)
+            {
+                if (unit.Max_stats[i] != 0)
+                {
+                    String line = $"{Stat_to_string((Stat)i)}: {unit.Current_stats[i]}";
+                    if (unit.Current_stats[i] != unit.Max_stats[i])
+                        line += $" / {unit.Max_stats[i]}";
+                    enemy_stats.Items.Insert(j, line);
+                    j++;
+                }
+            }
+        }
+        private void Show_stats(Player unit)
+        {
+            player_stats.Items.Clear();
+            int j = 0;
+
+            for (int i = 1; i < 30; i++)
+            {
+                if (unit.Max_stats[i] != 0)
+                {
+                    String line = $"{Stat_to_string((Stat)i)}: {unit.Current_stats[i]}";
+                    if (unit.Current_stats[i] != unit.Max_stats[i])
+                        line += $" / {unit.Max_stats[i]}";
+                    player_stats.Items.Insert(j, line);
+                    j++;
+                }
+            }
+        }
+
         private void Configure_enemy_data_source()
         {
             int index = enemies_list.SelectedIndex;
@@ -477,7 +538,7 @@ namespace RPG_game
         private void players_list_SelectedIndexChanged(object sender, EventArgs e)
         {
             Show_stats(Player_ds[players_list.SelectedIndex]);
-        } 
+        }
         #endregion
     }
 }

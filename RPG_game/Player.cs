@@ -126,7 +126,7 @@ namespace RPG_game
             _Body_part_multiplier[(int)Body_part.head] = 1.2;
             _Body_part_multiplier[(int)Body_part.body] = 1;
             _Body_part_multiplier[(int)Body_part.legs] = 0.8;
-            _Skills = new int[] { (int)Skills.medium_atk };
+            _Skills = new int[] { (int)Skills.medium_atk, (int)Skills.light_atk, (int)Skills.heavy_atk };
             Playable_characters_list[(int)PlayableCharacters.hero] = new Player("Герой", _Stats, _Body_part_multiplier, PlayableCharacters.hero, _Skills);
 
             _Stats = new int[Stats_list_size];

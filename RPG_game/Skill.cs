@@ -42,13 +42,15 @@ namespace RPG_game
         public int Skill_id;
         public string Name;
         public Skill_interface_type Interface_Type = Skill_interface_type.Select_none;
+        public string Description;
 
         public int Cd;
         public List<Resource_use> resources = new List<Resource_use>();
         public List<Skill_component> components = new List<Skill_component>();
 
-        public Skill(int id, string name, int cd, Skill_interface_type interface_type)
+        public Skill(int id, string name, int cd, Skill_interface_type interface_type, string _description)
         {
+            Description = _description;
             Name = name;
             Cd = cd;
             Skill_id = id;
@@ -61,12 +63,14 @@ namespace RPG_game
         public Skill[] Skills_list = new Skill[Skills_count];
         String _Name;
         int _cd;
+        String _description;
 
         public Skills_db()
         {
             _Name = "Легкая атака";
+            _description = "Обычная атака. Урон зависит от физической силы.";
             _cd = 0;
-            Skills_list[(int)Skills.light_atk] = new Skill((int)Skills.light_atk, _Name, _cd, Skill_interface_type.Select_enemy);
+            Skills_list[(int)Skills.light_atk] = new Skill((int)Skills.light_atk, _Name, _cd, Skill_interface_type.Select_enemy, _description);
             Skills_list[(int)Skills.light_atk].resources.Add(new Resource_use { resource = Stat.action_points, amount = 2 });
             Skills_list[(int)Skills.light_atk].components.Add(
                 new Skill_component 
@@ -79,8 +83,9 @@ namespace RPG_game
                 });
 
             _Name = "Обычная атака";
+            _description = "Обычная атака. Урон зависит от физической силы.";
             _cd = 0;
-            Skills_list[(int)Skills.medium_atk] = new Skill((int)Skills.medium_atk, _Name, _cd, Skill_interface_type.Select_enemy);
+            Skills_list[(int)Skills.medium_atk] = new Skill((int)Skills.medium_atk, _Name, _cd, Skill_interface_type.Select_enemy, _description);
             Skills_list[(int)Skills.medium_atk].resources.Add(new Resource_use { resource = Stat.action_points, amount = 3 });
             Skills_list[(int)Skills.medium_atk].components.Add(
                 new Skill_component
@@ -93,8 +98,9 @@ namespace RPG_game
                 });
 
             _Name = "Тяжелая атака";
+            _description = "Обычная атака. Урон зависит от физической силы.";
             _cd = 0;
-            Skills_list[(int)Skills.heavy_atk] = new Skill((int)Skills.heavy_atk, _Name, _cd, Skill_interface_type.Select_enemy);
+            Skills_list[(int)Skills.heavy_atk] = new Skill((int)Skills.heavy_atk, _Name, _cd, Skill_interface_type.Select_enemy, _description);
             Skills_list[(int)Skills.heavy_atk].resources.Add(new Resource_use { resource = Stat.action_points, amount = 4 });
             Skills_list[(int)Skills.heavy_atk].components.Add(
                 new Skill_component
@@ -107,8 +113,9 @@ namespace RPG_game
                 });
 
             _Name = "Сверхтяжелая атака";
+            _description = "Обычная атака. Урон зависит от физической силы.";
             _cd = 0;
-            Skills_list[(int)Skills.super_heavy_atk] = new Skill((int)Skills.super_heavy_atk, _Name, _cd, Skill_interface_type.Select_enemy);
+            Skills_list[(int)Skills.super_heavy_atk] = new Skill((int)Skills.super_heavy_atk, _Name, _cd, Skill_interface_type.Select_enemy, _description);
             Skills_list[(int)Skills.super_heavy_atk].resources.Add(new Resource_use { resource = Stat.action_points, amount = 5 });
             Skills_list[(int)Skills.super_heavy_atk].components.Add(
                 new Skill_component

@@ -34,6 +34,7 @@ namespace RPG_game
                 Turn();
         }
 
+        #region System
         private void Update_turn_order()
         {
             Turn_order = new List<Unit>();
@@ -117,7 +118,7 @@ namespace RPG_game
             return Battle_status.in_process;
         }
 
-        public void Reset_action_points()
+        private void Reset_action_points()
         {
             for (int i = 0; i < Player_squad.Count; i++)
             {
@@ -132,7 +133,7 @@ namespace RPG_game
             }
         }
 
-        public void Cooldowns_decrese()
+        private void Cooldowns_decrese()
         {
             for (int i = 0; i < Player_squad.Count; i++)
                 for (int j = 0; j < Player_squad[i].Skills.Length; j++)
@@ -141,8 +142,10 @@ namespace RPG_game
             for (int i = 0; i < Enemy_squad.Count; i++)
                 for (int j = 0; j < Enemy_squad[i].Skills.Length; j++)
                     Enemy_squad[i].Skills[j].cd = Enemy_squad[i].Skills[j].cd != 0 ? Enemy_squad[i].Skills[j].cd - 1 : 0;
-        }
+        } 
+        #endregion
 
+        #region Skills
         public bool Can_cast(int skill_index, Unit caster)
         {
             if (caster.Skills[skill_index].cd != 0)
@@ -157,7 +160,7 @@ namespace RPG_game
             return true;
         }
 
-        public void Skill_caster(int skill_index, Unit caster, Unit target, Body_part body_Part)
+        private void Skill_caster(int skill_index, Unit caster, Unit target, Body_part body_Part)
         {
             Skill skill = skills_db.Skills_list[caster.Skills[skill_index].skill_id];
 
@@ -234,7 +237,8 @@ namespace RPG_game
                     default: break;
                 }
             }
-        }
+        } 
+        #endregion
 
         private void Turn()
         {

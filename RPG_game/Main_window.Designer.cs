@@ -415,15 +415,13 @@ namespace RPG_game
             this.skills_list.FormattingEnabled = true;
             this.skills_list.ItemHeight = 17;
             this.skills_list.Items.AddRange(new object[] {
-            "asd",
-            "asd",
-            "asd"});
+            " "});
             this.skills_list.Location = new System.Drawing.Point(7, 22);
             this.skills_list.MultiColumn = true;
             this.skills_list.Name = "skills_list";
-            this.skills_list.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.skills_list.Size = new System.Drawing.Size(242, 272);
             this.skills_list.TabIndex = 0;
+            this.skills_list.SelectedIndexChanged += new System.EventHandler(this.skills_list_SelectedIndexChanged);
             // 
             // Main_window
             // 
