@@ -150,6 +150,7 @@ namespace RPG_game
 
         physical,
         magical,
+        true_dmg,
         buff,
         debuff,
         heal,

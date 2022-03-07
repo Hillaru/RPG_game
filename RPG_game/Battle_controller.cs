@@ -234,6 +234,11 @@ namespace RPG_game
                             Magical_attack(caster, Targets[ind], body_Part, Atk);
                         break;
 
+                    case Skill_tag.true_dmg:
+                        for (int ind = 0; ind < Targets.Count; ind++)
+                            True_attack(caster, Targets[ind], Atk);
+                        break;
+
                     default: break;
                 }
             }
@@ -398,36 +403,55 @@ namespace RPG_game
 
         private void Magical_attack(Unit Attacker, Unit Defender, Body_part body_Part, int Atk)
         {
-            int Def = Defender.Current_stats[(int)Stat.resistance];
+            int Res = Defender.Current_stats[(int)Stat.resistance];
             int Eva = Defender.Current_stats[(int)Stat.evasion];
             int Acc = Attacker.Current_stats[(int)Stat.accuracy];
             int A_lvl = Attacker.Current_stats[(int)Stat.lvl];
             int D_lvl = Defender.Current_stats[(int)Stat.lvl];
             bool block = false;
 
+            int res_mod = 0;
+
             if (Defender.Can_dodge)
             {
-                double Dodge_chance = 1 - ((A_lvl * Acc) / (Eva * D_lvl));
+                double Hit_chance = A_lvl * Acc / ((double)Eva * D_lvl);
+                double Dodge_chance = 1 - Hit_chance;
                 if (Dodge_chance > 0 && rand.NextDouble() < Dodge_chance)
                 {
-                    Logger(Log_type.attack, Defender, true);
+                    Logger(Log_type.attack, Defender, true, false, (int)(Dodge_chance * 100));
                     return;
                 }
             }
 
             if (Defender.Defended_state[(int)body_Part] && Defender.Can_block)
             {
-                Def *= 2;
+                res_mod = 2;
+                Res = (int)Math.Round(Res * 1.7);
                 block = true;
             }
 
             Atk = (int)Math.Round(Atk * Defender.Body_part_multiplier[(int)body_Part]);
-            Atk -= Def;
+            Atk -= (int)(Atk * (D_lvl * (Res * 0.1) / ((4 - res_mod + Res * 0.1) * A_lvl)));
 
             if (Atk < 1) Atk = 1;
 
             Defender.Current_stats[(int)Stat.hp] -= Atk;
             Logger(Log_type.attack, Defender, false, block, Atk);
+
+            Alive_check(Defender);
+        }
+
+        private void True_attack(Unit Attacker, Unit Defender, int Atk)
+        {
+            int A_lvl = Attacker.Current_stats[(int)Stat.lvl];
+            int D_lvl = Defender.Current_stats[(int)Stat.lvl];
+
+            Atk = (int)Math.Round((double)(Atk * (D_lvl / A_lvl))); 
+
+            if (Atk < 1) Atk = 1;
+
+            Defender.Current_stats[(int)Stat.hp] -= Atk;
+            Logger(Log_type.attack, Defender, false, false, Atk);
 
             Alive_check(Defender);
         }

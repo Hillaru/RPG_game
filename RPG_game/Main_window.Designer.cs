@@ -54,6 +54,7 @@ namespace RPG_game
             this.player_stats = new System.Windows.Forms.ListBox();
             this.skill_panel = new System.Windows.Forms.GroupBox();
             this.skills_list = new System.Windows.Forms.ListBox();
+            this.action_points_lbl = new System.Windows.Forms.Label();
             this.atk_panel.SuspendLayout();
             this.def_panel.SuspendLayout();
             this.turn_panel.SuspendLayout();
@@ -248,6 +249,7 @@ namespace RPG_game
             // turn_panel
             // 
             this.turn_panel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.turn_panel.Controls.Add(this.action_points_lbl);
             this.turn_panel.Controls.Add(this.skill_description);
             this.turn_panel.Controls.Add(this.def_panel);
             this.turn_panel.Controls.Add(this.use_skill_btn);
@@ -270,11 +272,11 @@ namespace RPG_game
             this.skill_description.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.skill_description.Font = new System.Drawing.Font("Segoe UI Semibold", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.skill_description.ForeColor = System.Drawing.SystemColors.Window;
-            this.skill_description.Location = new System.Drawing.Point(3, 306);
+            this.skill_description.Location = new System.Drawing.Point(3, 303);
             this.skill_description.Name = "skill_description";
             this.skill_description.ReadOnly = true;
             this.skill_description.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.skill_description.Size = new System.Drawing.Size(255, 128);
+            this.skill_description.Size = new System.Drawing.Size(255, 106);
             this.skill_description.TabIndex = 14;
             this.skill_description.Tag = "";
             this.skill_description.Text = "";
@@ -397,7 +399,7 @@ namespace RPG_game
             this.skill_panel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.skill_panel.Location = new System.Drawing.Point(15, 3);
             this.skill_panel.Name = "skill_panel";
-            this.skill_panel.Size = new System.Drawing.Size(255, 300);
+            this.skill_panel.Size = new System.Drawing.Size(255, 297);
             this.skill_panel.TabIndex = 12;
             this.skill_panel.TabStop = false;
             this.skill_panel.Tag = "battle_form";
@@ -422,6 +424,16 @@ namespace RPG_game
             this.skills_list.Size = new System.Drawing.Size(242, 272);
             this.skills_list.TabIndex = 0;
             this.skills_list.SelectedIndexChanged += new System.EventHandler(this.skills_list_SelectedIndexChanged);
+            // 
+            // action_points_lbl
+            // 
+            this.action_points_lbl.AutoSize = true;
+            this.action_points_lbl.Font = new System.Drawing.Font("Segoe UI Semibold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.action_points_lbl.Location = new System.Drawing.Point(5, 415);
+            this.action_points_lbl.Name = "action_points_lbl";
+            this.action_points_lbl.Size = new System.Drawing.Size(162, 25);
+            this.action_points_lbl.TabIndex = 15;
+            this.action_points_lbl.Text = "Очки действия: -";
             // 
             // Main_window
             // 
@@ -482,6 +494,7 @@ namespace RPG_game
         private System.Windows.Forms.GroupBox skill_panel;
         private System.Windows.Forms.ListBox skills_list;
         private System.Windows.Forms.RichTextBox skill_description;
+        private System.Windows.Forms.Label action_points_lbl;
     }
 }
 

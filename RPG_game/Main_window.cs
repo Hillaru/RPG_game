@@ -480,6 +480,11 @@ namespace RPG_game
                     j++;
                 }
             }
+
+            if (unit.Current_stats[(int)Stat.action_points] != unit.Max_stats[(int)Stat.action_points])
+                action_points_lbl.Text = $"Очки действия: {unit.Current_stats[(int)Stat.action_points]}/{unit.Max_stats[(int)Stat.action_points]}";
+            else
+                action_points_lbl.Text = $"Очки действия: {unit.Current_stats[(int)Stat.action_points]}";
         }
 
         private void Configure_enemy_data_source()

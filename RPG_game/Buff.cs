@@ -8,5 +8,6 @@ namespace RPG_game
 {
     public class Buff
     {
+
     }
 }
